@@ -1,10 +1,7 @@
-/*
-  Eric Villasenor
-  evillase@gmail.com
-
-  this block is the coherence protocol
-  and artibtration for ram
-*/
+// File name:   memory_control.sv
+// Updated:     1 September 2016
+// Author:      Brian Rieder 
+// Description: Controller to interface between caches and RAM
 
 // interface include
 `include "cache_control_if.vh"
