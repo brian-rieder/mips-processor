@@ -135,6 +135,20 @@ interface cache_control_if(
             // coherence outputs to cache
             ccwait, ccinv, ccsnoopaddr
   );
+  modport tb (
+            // cache outputs
+    input   iwait, dwait, iload, dload,
+            // ram outputs
+            ramstore, ramaddr, ramWEN, ramREN,
+            // coherence outputs to cache
+            ccwait, ccinv, ccsnoopaddr,
+            // cache inputs
+    output   iREN, dREN, dWEN, dstore, iaddr, daddr,
+            // ram inputs
+            ramload, ramstate,
+            // coherence inputs from cache
+            ccwrite, cctrans
+  );
 
 endinterface
 

@@ -42,6 +42,12 @@ interface cpu_ram_if;
     input   ramaddr, ramstore, ramREN, ramWEN,
     output  ramstate, ramload
   );
+
+  modport tb (
+    input   ramstate, ramload,
+    output  ramaddr, ramstore, ramREN, ramWEN
+  );
+
 endinterface
 
 `endif //CPU_RAM_IF_VH
