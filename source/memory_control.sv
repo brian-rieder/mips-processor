@@ -22,7 +22,7 @@ module memory_control (
   // load/store signals
   assign ccif.iload = ccif.ramload;
   assign ccif.dload = ccif.ramload;
-  assign ccif.dstore = ccif.ramstore;
+  assign ccif.ramstore = ccif.dstore;
 
   // read/write enable signals
   assign ccif.ramWEN = ccif.dWEN;
@@ -36,7 +36,7 @@ module memory_control (
     else begin
       ccif.ramaddr = ccif.iaddr;
     end
-    casez(ccif.ramstate) begin
+    casez(ccif.ramstate) 
       FREE: begin
         ccif.iwait = 1;
         ccif.dwait = 1;
@@ -73,7 +73,7 @@ endmodule
 // [x] dREN
 // [x] dWEN
 // [x] dstore        ccif.dwait = 1;
-        ccif.iwait = 1;
+        // ccif.iwait = 1;
 
 // [x] iaddr
 // [x] daddr
