@@ -28,8 +28,16 @@ interface request_unit_if;
            pcWEN
   );
   // request unit tb
-  // modport tb (
-  // );
+  modport tb (
+           // to caches
+    input  dmemWEN, dmemREN, imemREN,
+           // to program counter
+           pcWEN,
+           // from control unit
+    output halt, dWEN, dREN, 
+           // from caches
+           ihit, dhit
+  );
 endinterface
 
 `endif //REQUEST_UNIT_IF_VH
