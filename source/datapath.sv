@@ -41,7 +41,7 @@ module datapath (
 
   // Misc. Datapath Internal Signals
   logic  branch_mode;
-  word_t extended_imm, pcplus4;
+  word_t extended_imm, pcplus4, jumpdest;
   assign pcplus4 = pcif.pc_out + 4;
 
   // Immediate Extension
@@ -143,6 +143,7 @@ module datapath (
     end
     // Jump Instruction
     else if (cuif.JumpSel == 2'b10) begin
+      jumpdest = {pcplus4[31:28], dpif.imemload[25:0], 2'b00};
       pcif.pc_next = {pcplus4, dpif.imemload[25:0]};
     end
   end
