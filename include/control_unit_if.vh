@@ -16,8 +16,8 @@ interface control_unit_if;
   word_t      imemload, shamt;
   aluop_t     alu_op;
   logic [1:0] ALUsrc, RegDst, JumpSel;
-  logic       MemToReg, halt, dWEN, dREN, 
-              RegWr, JAL, LUI, PCsrc, ExtOp;
+  logic       MemToReg, halt, dWEN, dREN, RegWr,
+              BNE, JAL, LUI, PCsrc, ExtOp;
   regbits_t   Rs, Rt, Rd;
   logic [IMM_W-1:0] imm16;
 
@@ -31,7 +31,7 @@ interface control_unit_if;
             // Register File logic outputs
             Rs, Rt, Rd, RegDst, RegWr, JAL, LUI, shamt,
             // PC logic outputs
-            JumpSel, PCsrc,
+            JumpSel, PCsrc, BNE,
             // Datapath logic outputs
             ExtOp
   );
