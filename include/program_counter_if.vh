@@ -16,14 +16,16 @@ interface program_counter_if;
   word_t pc_next, pc_out;
   logic  pcWEN;
 
-  // request unit ports
+  // program counter ports
   modport pc (
     input  pc_next, pcWEN,
     output pc_out
   );
-  // request unit tb
-  // modport tb (
-  // );
+  // program counter tb
+  modport tb (
+    input  pc_out,
+    output pc_next, pcWEN
+  );
 endinterface
 
 `endif //PROGRAM_COUNTER_IF_VH
