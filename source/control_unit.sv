@@ -42,6 +42,7 @@ module memory_control (
         cuif.MemToReg = 0; // Don't care
         cuif.JAL = 0; // Not JAL
         cuif.LUI = 0; // Not LUI
+        cuif.BNE = 0; // Don't care 
         cuif.PCsrc = 0; // Don't care
         cuif.JumpSel = 2'b10; // Jump mux
         // To Request Unit
@@ -58,6 +59,7 @@ module memory_control (
         cuif.MemToReg = 0; // Don't care
         cuif.JAL = 1; // JAL
         cuif.LUI = 0; // Not LUI
+        cuif.BNE = 0; // Don't care 
         cuif.PCsrc = 0; // Don't care
         cuif.JumpSel = 2'b10; // Jump mux
         // To Request Unit
@@ -74,6 +76,7 @@ module memory_control (
         cuif.MemToReg = 0; // Don't care - zero flag
         cuif.JAL = 0; // Not JAL
         cuif.LUI = 0; // Not LUI
+        cuif.BNE = 0; // Choose Zero flag
         cuif.PCsrc = 1; // Branch addition
         cuif.JumpSel = 2'b00; // Branch/PC+4 mux
         // To Request Unit
@@ -82,7 +85,21 @@ module memory_control (
         cuif.dREN = 0;
       end
       BNE: begin
-
+        cuif.RegDst = 2'b00; // Don't care
+        cuif.RegWr = 0; // Not writing
+        cuif.ExtOp  = 0; // Zero Extension
+        cuif.ALUsrc = 2'b01; // rdat2 R[rt]
+        cuif.alu_op = ALU_SUB; // Subtraction to find if equal
+        cuif.MemToReg = 0; // Don't care - zero flag
+        cuif.JAL = 0; // Not JAL
+        cuif.LUI = 0; // Not LUI
+        cuif.BNE = 1; // Not Zero flag
+        cuif.PCsrc = 1; // Branch addition
+        cuif.JumpSel = 2'b00; // Branch/PC+4 mux
+        // To Request Unit
+        cuif.halt = 0;
+        cuif.dWEN = 0;
+        cuif.dREN = 0;
       end
       ADDI: begin
         cuif.RegDst = 2'b00; // Rt
@@ -93,6 +110,7 @@ module memory_control (
         cuif.MemToReg = 0; // ALU output
         cuif.JAL = 0; // Not JAL
         cuif.LUI = 0; // Not LUI
+        cuif.BNE = 0; // Don't care 
         cuif.PCsrc = 0; // PC+4
         cuif.JumpSel = 2'b00; // Branch/PC+4 mux
         // To Request Unit
@@ -109,6 +127,7 @@ module memory_control (
         cuif.MemToReg = 2'b00; // ALU output
         cuif.JAL = 0; // Not JAL
         cuif.LUI = 0; // Not LUI
+        cuif.BNE = 0; // Don't care 
         cuif.PCsrc = 0; // PC+4
         cuif.JumpSel = 0; // Branch/PC+4 mux
         // To Request Unit
@@ -117,10 +136,38 @@ module memory_control (
         cuif.dREN = 0;
       end
       SLTI: begin
-
+        cuif.RegDst = 2'b00; // Rt
+        cuif.RegWr = 1; // Writing to register
+        cuif.ExtOp  = 1; // Signed Extension
+        cuif.ALUsrc = 2'b00; // Immediate
+        cuif.alu_op = ALU_SLT;
+        cuif.MemToReg = 2'b00; // ALU output
+        cuif.JAL = 0; // Not JAL
+        cuif.LUI = 0; // Not LUI
+        cuif.BNE = 0; // Don't care 
+        cuif.PCsrc = 0; // PC+4
+        cuif.JumpSel = 0; // Branch/PC+4 mux
+        // To Request Unit
+        cuif.halt = 0;
+        cuif.dWEN = 0;
+        cuif.dREN = 0;
       end
       SLTIU: begin
-
+        cuif.RegDst = 2'b00; // Rt
+        cuif.RegWr = 1; // Writing to register
+        cuif.ExtOp  = 1; // Signed Extension
+        cuif.ALUsrc = 2'b00; // Immediate
+        cuif.alu_op = ALU_SLTU;
+        cuif.MemToReg = 2'b00; // ALU output
+        cuif.JAL = 0; // Not JAL
+        cuif.LUI = 0; // Not LUI
+        cuif.BNE = 0; // Don't care 
+        cuif.PCsrc = 0; // PC+4
+        cuif.JumpSel = 0; // Branch/PC+4 mux
+        // To Request Unit
+        cuif.halt = 0;
+        cuif.dWEN = 0;
+        cuif.dREN = 0;
       end
       ANDI: begin
         cuif.RegDst = 2'b00; // Rt
@@ -131,6 +178,7 @@ module memory_control (
         cuif.MemToReg = 0; // ALU output
         cuif.JAL = 0; // Not JAL
         cuif.LUI = 0; // Not LUI
+        cuif.BNE = 0; // Don't care 
         cuif.PCsrc = 0; // PC+4
         cuif.JumpSel = 2'b00; // Branch/PC+4 mux
         // To Request Unit
@@ -147,6 +195,7 @@ module memory_control (
         cuif.MemToReg = 0; // ALU output
         cuif.JAL = 0; // Not JAL
         cuif.LUI = 0; // Not LUI
+        cuif.BNE = 0; // Don't care 
         cuif.PCsrc = 0; // PC+4
         cuif.JumpSel = 2'b00; // Branch/PC+4 mux
         // To Request Unit
@@ -163,6 +212,7 @@ module memory_control (
         cuif.MemToReg = 0; // ALU output
         cuif.JAL = 0; // Not JAL
         cuif.LUI = 0; // Not LUI
+        cuif.BNE = 0; // Don't care 
         cuif.PCsrc = 0; // PC+4
         cuif.JumpSel = 2'b00; // Branch/PC+4 mux
         // To Request Unit
@@ -179,6 +229,7 @@ module memory_control (
         cuif.MemToReg = 0; // Don't care
         cuif.JAL = 0; // Not JAL
         cuif.LUI = 1; // LUI
+        cuif.BNE = 0; // Don't care 
         cuif.PCsrc = 0; // PC+4
         cuif.JumpSel = 2'b00; // Branch/PC+4 mux
         // To Request Unit
@@ -187,17 +238,55 @@ module memory_control (
         cuif.dREN = 0;
       end
       LW: begin
-
+        cuif.RegDst = 2'b00; // Rt
+        cuif.RegWr = 1; // Writing to register
+        cuif.ExtOp  = 1; // Signed Extension
+        cuif.ALUsrc = 2'b00; // Immediate
+        cuif.alu_op = ALU_ADD; // Calculate memory offset
+        cuif.MemToReg = 1; // dmemload
+        cuif.JAL = 0; // Not JAL
+        cuif.LUI = 0; // Not LUI
+        cuif.BNE = 0; // Don't care 
+        cuif.PCsrc = 0; // PC+4
+        cuif.JumpSel = 2'b00; // Branch/PC+4 mux
+        // To Request Unit
+        cuif.halt = 0;
+        cuif.dWEN = 0;
+        cuif.dREN = 1;
       end
       SW: begin
-
+        cuif.RegDst = 2'b00; // Rt
+        cuif.RegWr = 0; // Not writing to register
+        cuif.ExtOp  = 1; // Signed Extension
+        cuif.ALUsrc = 2'b00; // Immediate
+        cuif.alu_op = ALU_ADD; // Calculate memory offset
+        cuif.MemToReg = 0; // Don't care
+        cuif.JAL = 0; // Not JAL
+        cuif.LUI = 0; // Not LUI
+        cuif.BNE = 0; // Don't care 
+        cuif.PCsrc = 0; // PC+4
+        cuif.JumpSel = 2'b00; // Branch/PC+4 mux
+        // To Request Unit
+        cuif.halt = 0;
+        cuif.dWEN = 1;
+        cuif.dREN = 0;
       end
       HALT: begin
+        cuif.RegWr = 0; // Not writing to register -- this one is needed
+        cuif.RegDst = 2'b00; // Don't care
+        cuif.ExtOp  = 0; // Don't care
+        cuif.ALUsrc = 2'b00; // Don't care
+        cuif.alu_op = ALU_ADD; // Don't care
+        cuif.MemToReg = 0; // Don't care
+        cuif.JAL = 0; // Don't care
+        cuif.LUI = 0; // Don't care
+        cuif.BNE = 0; // Don't care 
+        cuif.PCsrc = 0; // PC+4
+        cuif.JumpSel = 2'b00; // Branch/PC+4 mux
+        // To Request Unit
         cuif.halt = 1;
         cuif.dWEN = 0;
         cuif.dREN = 0;
-        // Damage control
-        cuif.RegWr = 0;
       end
       default: begin
 
