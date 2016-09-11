@@ -1,5 +1,5 @@
 // File name:   control_unit.sv
-// Updated:     9 September 2016
+// Updated:     11 September 2016
 // Author:      Brian Rieder 
 // Description: Brains of the system
 
@@ -31,7 +31,181 @@ module memory_control (
   always_comb begin
     casez (op)
       RTYPE: begin
-
+        casez(funct)
+          SLL: begin
+            cuif.RegDst = 2'b00; // Rd
+            cuif.RegWr = 1; // Write to registers
+            cuif.ExtOp  = 0; // Don't care
+            cuif.ALUsrc = 2'b10; // shamt
+            cuif.alu_op = ALU_SLL;
+            cuif.MemToReg = 0; // ALU output
+            cuif.JAL = 0; // Not JAL
+            cuif.LUI = 0; // Not LUI
+            cuif.BNE = 0; // Don't care 
+            cuif.PCsrc = 0; // PC + 4
+            cuif.JumpSel = 2'b00; // PC + 4/Branch mux
+          end
+          SRL: begin
+            cuif.RegDst = 2'b00; // Rd
+            cuif.RegWr = 1; // Write to registers
+            cuif.ExtOp  = 0; // Don't care
+            cuif.ALUsrc = 2'b10; // shamt
+            cuif.alu_op = ALU_SRL;
+            cuif.MemToReg = 0; // ALU output
+            cuif.JAL = 0; // Not JAL
+            cuif.LUI = 0; // Not LUI
+            cuif.BNE = 0; // Don't care 
+            cuif.PCsrc = 0; // PC + 4
+            cuif.JumpSel = 2'b00; // PC + 4/Branch mux
+          end
+          JR: begin
+            cuif.RegDst = 2'b00; // Don't care
+            cuif.RegWr = 0; // Don't write to registers
+            cuif.ExtOp  = 0; // Don't care
+            cuif.ALUsrc = 2'b00; // Don't care
+            cuif.alu_op = ALU_SLL; // Don't care
+            cuif.MemToReg = 0; // Don't care
+            cuif.JAL = 0; // Not JAL
+            cuif.LUI = 0; // Not LUI
+            cuif.BNE = 0; // Don't care 
+            cuif.PCsrc = 0; // Don't care
+            cuif.JumpSel = 2'b01; // rdat1 for JR
+          end
+          ADD: begin
+            cuif.RegDst = 2'b00; // Rd
+            cuif.RegWr = 1; // Write to registers
+            cuif.ExtOp  = 0; // Don't care
+            cuif.ALUsrc = 2'b01; // rdat2
+            cuif.alu_op = ALU_ADD;
+            cuif.MemToReg = 0; // ALU output
+            cuif.JAL = 0; // Not JAL
+            cuif.LUI = 0; // Not LUI
+            cuif.BNE = 0; // Don't care 
+            cuif.PCsrc = 0; // PC + 4
+            cuif.JumpSel = 2'b00; // PC + 4/Branch mux
+          end
+          ADDU: begin
+            cuif.RegDst = 2'b00; // Rd
+            cuif.RegWr = 1; // Write to registers
+            cuif.ExtOp  = 0; // Don't care
+            cuif.ALUsrc = 2'b01; // rdat2
+            cuif.alu_op = ALU_ADD;
+            cuif.MemToReg = 0; // ALU output
+            cuif.JAL = 0; // Not JAL
+            cuif.LUI = 0; // Not LUI
+            cuif.BNE = 0; // Don't care 
+            cuif.PCsrc = 0; // PC + 4
+            cuif.JumpSel = 2'b00; // PC + 4/Branch mux
+          end
+          SUB: begin
+            cuif.RegDst = 2'b00; // Rd
+            cuif.RegWr = 1; // Write to registers
+            cuif.ExtOp  = 0; // Don't care
+            cuif.ALUsrc = 2'b01; // rdat2
+            cuif.alu_op = ALU_SUB;
+            cuif.MemToReg = 0; // ALU output
+            cuif.JAL = 0; // Not JAL
+            cuif.LUI = 0; // Not LUI
+            cuif.BNE = 0; // Don't care 
+            cuif.PCsrc = 0; // PC + 4
+            cuif.JumpSel = 2'b00; // PC + 4/Branch mux
+          end
+          SUBU: begin
+            cuif.RegDst = 2'b00; // Rd
+            cuif.RegWr = 1; // Write to registers
+            cuif.ExtOp  = 0; // Don't care
+            cuif.ALUsrc = 2'b01; // rdat2
+            cuif.alu_op = ALU_SUB;
+            cuif.MemToReg = 0; // ALU output
+            cuif.JAL = 0; // Not JAL
+            cuif.LUI = 0; // Not LUI
+            cuif.BNE = 0; // Don't care 
+            cuif.PCsrc = 0; // PC + 4
+            cuif.JumpSel = 2'b00; // PC + 4/Branch mux
+          end
+          AND: begin
+            cuif.RegDst = 2'b00; // Rd
+            cuif.RegWr = 1; // Write to registers
+            cuif.ExtOp  = 0; // Don't care
+            cuif.ALUsrc = 2'b01; // rdat2
+            cuif.alu_op = ALU_AND;
+            cuif.MemToReg = 0; // ALU output
+            cuif.JAL = 0; // Not JAL
+            cuif.LUI = 0; // Not LUI
+            cuif.BNE = 0; // Don't care 
+            cuif.PCsrc = 0; // PC + 4
+            cuif.JumpSel = 2'b00; // PC + 4/Branch mux
+          end
+          OR: begin
+            cuif.RegDst = 2'b00; // Rd
+            cuif.RegWr = 1; // Write to registers
+            cuif.ExtOp  = 0; // Don't care
+            cuif.ALUsrc = 2'b01; // rdat2
+            cuif.alu_op = ALU_OR;
+            cuif.MemToReg = 0; // ALU output
+            cuif.JAL = 0; // Not JAL
+            cuif.LUI = 0; // Not LUI
+            cuif.BNE = 0; // Don't care 
+            cuif.PCsrc = 0; // PC + 4
+            cuif.JumpSel = 2'b00; // PC + 4/Branch mux
+          end
+          XOR: begin
+            cuif.RegDst = 2'b00; // Rd
+            cuif.RegWr = 1; // Write to registers
+            cuif.ExtOp  = 0; // Don't care
+            cuif.ALUsrc = 2'b01; // rdat2
+            cuif.alu_op = ALU_XOR;
+            cuif.MemToReg = 0; // ALU output
+            cuif.JAL = 0; // Not JAL
+            cuif.LUI = 0; // Not LUI
+            cuif.BNE = 0; // Don't care 
+            cuif.PCsrc = 0; // PC + 4
+            cuif.JumpSel = 2'b00; // PC + 4/Branch mux
+          end
+          NOR: begin
+            cuif.RegDst = 2'b00; // Rd
+            cuif.RegWr = 1; // Write to registers
+            cuif.ExtOp  = 0; // Don't care
+            cuif.ALUsrc = 2'b01; // rdat2
+            cuif.alu_op = ALU_NOR;
+            cuif.MemToReg = 0; // ALU output
+            cuif.JAL = 0; // Not JAL
+            cuif.LUI = 0; // Not LUI
+            cuif.BNE = 0; // Don't care 
+            cuif.PCsrc = 0; // PC + 4
+            cuif.JumpSel = 2'b00; // PC + 4/Branch mux
+          end
+          SLT: begin
+            cuif.RegDst = 2'b00; // Rd
+            cuif.RegWr = 1; // Write to registers
+            cuif.ExtOp  = 0; // Don't care
+            cuif.ALUsrc = 2'b01; // rdat2
+            cuif.alu_op = ALU_SLT;
+            cuif.MemToReg = 0; // ALU output
+            cuif.JAL = 0; // Not JAL
+            cuif.LUI = 0; // Not LUI
+            cuif.BNE = 0; // Don't care 
+            cuif.PCsrc = 0; // PC + 4
+            cuif.JumpSel = 2'b00; // PC + 4/Branch mux
+          end
+          SLTU: begin
+            cuif.RegDst = 2'b00; // Rd
+            cuif.RegWr = 1; // Write to registers
+            cuif.ExtOp  = 0; // Don't care
+            cuif.ALUsrc = 2'b01; // rdat2
+            cuif.alu_op = ALU_SLTU;
+            cuif.MemToReg = 0; // ALU output
+            cuif.JAL = 0; // Not JAL
+            cuif.LUI = 0; // Not LUI
+            cuif.BNE = 0; // Don't care 
+            cuif.PCsrc = 0; // PC + 4
+            cuif.JumpSel = 2'b00; // PC + 4/Branch mux
+          end
+        endcase
+        // To Request Unit
+        cuif.halt = 0;
+        cuif.dWEN = 0;
+        cuif.dREN = 0;
       end
       J: begin
         cuif.RegDst = 2'b00; // Don't care
