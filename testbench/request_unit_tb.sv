@@ -50,10 +50,56 @@ program test(input logic clk, request_unit_if.tb rutb);
     ruif.dhit = 0;
     #(PERIOD);
 
-    // ********** Test 1: Halt interaction**************************
+    // ********** Test 1: Halt interaction *************************
     test_num += 1;
+    ruif.halt = 1;
     #(PERIOD * 2); // expected value: imemREN = 0
 
+
+    // ********** Test 2: ihit interaction *************************
+    test_num += 1;
+    ruif.halt = 0;
+    ruif.ihit = 1;
+    #(PERIOD * 2); // expected value: pcWEN = 1
+
+
+    // ********** Test 3: dWEN high ********************************
+    test_num += 1;
+    ruif.ihit = 0;
+    ruif.dWEN = 1;
+    #(PERIOD * 2); // expected value: dmemWEN = 1
+
+    // ********** Test 4: dREN high ********************************
+    test_num += 1;
+    ruif.dWEN = 0;
+    ruif.dREN = 1;
+    #(PERIOD * 2); // expected value: dmemREN = 1
+
+    // ********** Test 5: dhit high ********************************
+    test_num += 1;
+    ruif.dhit = 1;
+    #(PERIOD * 2); // expected value: dmemREN and dmemWEN = 0
+
+    // ********** Test 6: Moving around dWEN/dREN ******************
+    test_num += 1;
+    ruif.dhit = 1;
+    ruif.dREN = 0;
+    ruif.dWEN = 1;
+    #(PERIOD * 2); // expected value: dmemREN and dmemWEN = 0
+
+    // ********** Test 7: Both high, dhit high *********************
+    test_num += 1;
+    ruif.dhit = 1;
+    ruif.dREN = 1;
+    ruif.dWEN = 1;
+    #(PERIOD * 2); // expected value: dmemREN and dmemWEN = 0
+
+    // ********** Test 8: Both high, dhit low *********************
+    test_num += 1;
+    ruif.dhit = 0;
+    ruif.dREN = 1;
+    ruif.dWEN = 1;
+    #(PERIOD * 2); // expected value: dmemREN and dmemWEN = 0
 
   end
 
