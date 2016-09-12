@@ -1,5 +1,5 @@
 // File name:   control_unit.vh
-// Updated:     9 September 2016
+// Updated:     12 September 2016
 // Author:      Brian Rieder 
 // Description: Interface file for Control Unit
 
@@ -36,8 +36,20 @@ interface control_unit_if;
             ExtOp
   );
   // control unit tb
-  // modport tb (
-  // );
+  modport tb (
+            // ALU logic outputs
+    input   alu_op, ALUsrc, MemToReg, imm16,
+            // Request Unit logic outputs
+            halt, dWEN, dREN,
+            // Register File logic outputs
+            Rs, Rt, Rd, RegDst, RegWr, JAL, LUI, shamt,
+            // PC logic outputs
+            JumpSel, PCsrc, BNE,
+            // Datapath logic outputs
+            ExtOp,
+            // Instruction
+    output  imemload
+  );
 endinterface
 
 `endif //CONTROL_UNIT_IF_VH
