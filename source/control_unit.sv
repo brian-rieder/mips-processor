@@ -9,16 +9,16 @@
 // memory types
 `include "cpu_types_pkg.vh"
 
-module memory_control (
+module control_unit (
   control_unit_if.cu cuif
 );
   import cpu_types_pkg::*;
   
   // Internal Values
   opcode_t op; 
-  assign op = cuif.imemload[31:26];
+  assign op = opcode_t'(cuif.imemload[31:26]);
   funct_t funct;
-  assign funct = cuif.imemload[5:0];
+  assign funct = funct_t'(cuif.imemload[5:0]);
 
   // Non-logic dependent Outputs
   assign cuif.Rs = cuif.imemload[25:21];
