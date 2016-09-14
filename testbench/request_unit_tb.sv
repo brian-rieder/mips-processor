@@ -43,7 +43,7 @@ program test(input logic clk, request_unit_if.tb rutb);
 
     // ********** Test Initialization ******************************
     import cpu_types_pkg::*; // for data types
-    ruif.halt = 0;
+    // ruif.halt = 0;
     ruif.dWEN = 0;
     ruif.dREN = 0;
     ruif.ihit = 0;
@@ -52,13 +52,13 @@ program test(input logic clk, request_unit_if.tb rutb);
 
     // ********** Test 1: Halt interaction *************************
     test_num += 1;
-    ruif.halt = 1;
+    // ruif.halt = 1;
     #(PERIOD * 2); // expected value: imemREN = 0
 
 
     // ********** Test 2: ihit interaction *************************
     test_num += 1;
-    ruif.halt = 0;
+    // ruif.halt = 0;
     ruif.ihit = 1;
     #(PERIOD * 2); // expected value: pcWEN = 1
 
