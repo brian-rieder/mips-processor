@@ -14,7 +14,8 @@ module request_unit (
   request_unit_if.ru ruif
 );
 
-  assign ruif.imemREN = ~(ruif.halt);
+  // assign ruif.imemREN = ~(ruif.halt);
+  // assign ruif.imemREN = 1;
   assign ruif.pcWEN   = ruif.ihit;
 
   always_ff @ (posedge CLK, negedge nRST) begin
