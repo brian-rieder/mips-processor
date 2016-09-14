@@ -17,7 +17,7 @@ interface control_unit_if;
   aluop_t     alu_op;
   logic [1:0] ALUsrc, RegDst, JumpSel;
   logic       MemToReg, halt, dWEN, dREN, RegWr,
-              BNE, JAL, LUI, PCsrc, ExtOp;
+              BNE, JAL, LUI, PCsrc, ExtOp, imemREN;
   regbits_t   Rs, Rt, Rd;
   logic [IMM_W-1:0] imm16;
 
@@ -33,7 +33,7 @@ interface control_unit_if;
             // PC logic outputs
             JumpSel, PCsrc, BNE,
             // Datapath logic outputs
-            ExtOp
+            ExtOp, imemREN
   );
   // control unit tb
   modport tb (
@@ -46,7 +46,7 @@ interface control_unit_if;
             // PC logic outputs
             JumpSel, PCsrc, BNE,
             // Datapath logic outputs
-            ExtOp,
+            ExtOp, imemREN,
             // Instruction
     output  imemload
   );
