@@ -36,7 +36,7 @@ module datapath (
   alu ALU (aluif.alu);
   register_file RF (CLK, nRST, rfif.rf);
   control_unit CU (cuif.cu);
-  program_counter_if PC (CLK, nRST, pcif.pc);
+  program_counter PC (CLK, nRST, pcif.pc);
   request_unit RU (CLK, nRST, ruif.ru);
 
   // Misc. Datapath Internal Signals
@@ -59,7 +59,8 @@ module datapath (
 
   // Datapath input assignment
   assign dpif.halt      = cuif.halt;
-  assign dpif.imemREN   = ruif.imemREN;
+  // assign dpif.imemREN   = ruif.imemREN;
+  assign dpif.imemREN   = cuif.imemREN;
   assign dpif.imemaddr  = pcif.pc_out;
   assign dpif.dmemREN   = ruif.dmemREN;
   assign dpif.dmemWEN   = ruif.dmemWEN;
@@ -68,7 +69,7 @@ module datapath (
   assign dpif.dmemaddr  = aluif.port_o;
 
   // Request Unit input assignment
-  assign ruif.halt      = cuif.halt;
+  // assign ruif.halt      = cuif.halt;
   assign ruif.dWEN      = cuif.dWEN;
   assign ruif.dREN      = cuif.dREN;
   assign ruif.ihit      = dpif.ihit;
@@ -81,13 +82,14 @@ module datapath (
   assign aluif.port_a   = rfif.rdat1;
   assign aluif.alu_op   = cuif.alu_op;
   always_comb begin
-    if (aluif.ALUsrc == 2'b00) begin
+    aluif.port_b = '0;
+    if (cuif.ALUsrc == 2'b00) begin
       aluif.port_b = extended_imm;
     end
-    else if (aluif.ALUsrc == 2'b01) begin
+    else if (cuif.ALUsrc == 2'b01) begin
       aluif.port_b = rfif.rdat2;
     end
-    else if (aluif.ALUsrc == 2'b10) begin
+    else if (cuif.ALUsrc == 2'b10) begin
       aluif.port_b = cuif.shamt;
     end
   end
@@ -96,7 +98,15 @@ module datapath (
   assign rfif.rsel1     = cuif.Rs;
   assign rfif.rsel2     = cuif.Rt;
   always_comb begin
-    rfif.WEN = (cuif.RegWr & dpif.ihit) ? 1 : 0;
+    rfif.wsel = '0;
+    rfif.wdat = '0;
+    // Write Enable
+    if(cuif.dREN) begin
+      rfif.WEN = (cuif.RegWr && dpif.dhit) ? 1 : 0;
+    end
+    else begin
+      rfif.WEN = (cuif.RegWr && dpif.ihit) ? 1 : 0;
+    end
     // Write Select assignment
     // Rt
     if (cuif.RegDst == 2'b00) begin
@@ -125,6 +135,9 @@ module datapath (
   // Program Counter input assignment
   assign pcif.pcWEN     = ruif.pcWEN;
   always_comb begin
+    pcif.pc_next = '0;
+    branch_mode = 0;
+    jumpdest = '0;
     // Branch/PC + 4
     if (cuif.JumpSel == 2'b00) begin
       branch_mode = cuif.BNE ? ~(aluif.z_flag) : aluif.z_flag;
@@ -144,7 +157,7 @@ module datapath (
     // Jump Instruction
     else if (cuif.JumpSel == 2'b10) begin
       jumpdest = {pcplus4[31:28], dpif.imemload[25:0], 2'b00};
-      pcif.pc_next = {pcplus4, dpif.imemload[25:0]};
+      pcif.pc_next = jumpdest;
     end
   end
 
