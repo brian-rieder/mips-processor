@@ -13,28 +13,32 @@ interface request_unit_if;
   // import types
   import cpu_types_pkg::*;
 
-  logic halt, dWEN, dREN, ihit, dhit,
+  logic dWEN, dREN, ihit, dhit,
         dmemWEN, dmemREN, imemREN, pcWEN;
 
   // request unit ports
   modport ru (
            // from control unit
-    input  halt, dWEN, dREN, 
+    // input  halt, dWEN, dREN, 
+    input  dWEN, dREN, 
            // from caches
            ihit, dhit,
            // to caches
-    output dmemWEN, dmemREN, imemREN,
+    // output dmemWEN, dmemREN, imemREN,
+    output dmemWEN, dmemREN,
            // to program counter
            pcWEN
   );
   // request unit tb
   modport tb (
            // to caches
-    input  dmemWEN, dmemREN, imemREN,
+    // input  dmemWEN, dmemREN, imemREN,
+    input  dmemWEN, dmemREN,
            // to program counter
            pcWEN,
            // from control unit
-    output halt, dWEN, dREN, 
+    // output halt, dWEN, dREN, 
+    output dWEN, dREN, 
            // from caches
            ihit, dhit
   );
