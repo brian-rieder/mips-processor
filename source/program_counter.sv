@@ -15,7 +15,10 @@ module program_counter (
 );
 
   always_ff @ (posedge CLK, negedge nRST) begin
-    if(pcif.pcWEN) begin
+    if(!nRST) begin
+      pcif.pc_out <= '0;
+    end
+    else if(pcif.pcWEN) begin
       pcif.pc_out <= pcif.pc_next;
     end
   end 
