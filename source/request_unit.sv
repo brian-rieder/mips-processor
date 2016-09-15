@@ -1,5 +1,5 @@
 // File name:   request_unit.sv
-// Updated:     8 September 2016
+// Updated:     14 September 2016
 // Author:      Brian Rieder 
 // Description: Unit to determine when to request instructions and enable data read/write
 
@@ -19,17 +19,21 @@ module request_unit (
   assign ruif.pcWEN   = ruif.ihit;
 
   always_ff @ (posedge CLK, negedge nRST) begin
-    ruif.dmemREN <= 0;
-    ruif.dmemWEN <= 0;
-    if(ruif.dhit) begin
+    if(!nRST) begin
       ruif.dmemREN <= 0;
       ruif.dmemWEN <= 0;
-    end
-    else if(ruif.dhit == 0 && ruif.dWEN == 1) begin
-      ruif.dmemWEN <= 1;
-    end
-    else if(ruif.dhit == 0 && ruif.dREN == 1) begin
-      ruif.dmemREN <= 1;
+    end 
+    else begin
+      if(ruif.dhit) begin
+        ruif.dmemREN <= 0;
+        ruif.dmemWEN <= 0;
+      end
+      else if(ruif.ihit && ruif.dWEN) begin
+        ruif.dmemWEN <= 1;
+      end
+      else if(ruif.ihit && ruif.dREN) begin
+        ruif.dmemREN <= 1;
+      end
     end
   end
 
