@@ -52,6 +52,9 @@ module memory_control (
         end else if (ccif.iREN) begin
           ccif.iwait = 0;
           ccif.dwait = 1;
+        end else begin
+          ccif.iwait = 1;
+          ccif.dwait = 1;
         end
       end
       ERROR: begin
