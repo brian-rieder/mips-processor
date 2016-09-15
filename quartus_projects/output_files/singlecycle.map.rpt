@@ -1,0 +1,1055 @@
+Analysis & Synthesis report for singlecycle
+Thu Sep 15 13:13:52 2016
+Quartus II 32-bit Version 13.0.1 Build 232 06/12/2013 Service Pack 1 SJ Full Version
+
+
+---------------------
+; Table of Contents ;
+---------------------
+  1. Legal Notice
+  2. Analysis & Synthesis Summary
+  3. Analysis & Synthesis Settings
+  4. Parallel Compilation
+  5. Analysis & Synthesis Source Files Read
+  6. Partition Status Summary
+  7. Partition for Top-Level Resource Utilization by Entity
+  8. Registers Removed During Synthesis
+  9. Multiplexer Restructuring Statistics (Restructuring Performed)
+ 10. Source assignments for system:SYS|ram:RAM|altsyncram:altsyncram_component|altsyncram_99f1:auto_generated|altsyncram_fta2:altsyncram1
+ 11. Parameter Settings for User Entity Instance: system:SYS
+ 12. Parameter Settings for User Entity Instance: system:SYS|singlecycle:CPU
+ 13. Parameter Settings for User Entity Instance: system:SYS|singlecycle:CPU|cache_control_if:ccif
+ 14. Parameter Settings for User Entity Instance: system:SYS|singlecycle:CPU|datapath:DP
+ 15. Parameter Settings for User Entity Instance: system:SYS|singlecycle:CPU|caches:CM
+ 16. Parameter Settings for User Entity Instance: system:SYS|singlecycle:CPU|memory_control:CC
+ 17. Parameter Settings for User Entity Instance: system:SYS|ram:RAM
+ 18. Parameter Settings for User Entity Instance: system:SYS|ram:RAM|altsyncram:altsyncram_component
+ 19. Partition Dependent Files
+ 20. Parameter Settings for Inferred Entity Instance: sld_signaltap:auto_signaltap_0
+ 21. SignalTap II Logic Analyzer Settings
+ 22. In-System Memory Content Editor Settings
+ 23. Analysis & Synthesis Messages
+
+
+
+----------------
+; Legal Notice ;
+----------------
+Copyright (C) 1991-2013 Altera Corporation
+Your use of Altera Corporation's design tools, logic functions 
+and other software and tools, and its AMPP partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Altera Program License 
+Subscription Agreement, Altera MegaCore Function License 
+Agreement, or other applicable license agreement, including, 
+without limitation, that your use is for the sole purpose of 
+programming logic devices manufactured by Altera and sold by 
+Altera or its authorized distributors.  Please refer to the 
+applicable agreement for further details.
+
+
+
++---------------------------------------------------------------------------------------+
+; Analysis & Synthesis Summary                                                          ;
++------------------------------------+--------------------------------------------------+
+; Analysis & Synthesis Status        ; Successful - Thu Sep 15 13:13:52 2016            ;
+; Quartus II 32-bit Version          ; 13.0.1 Build 232 06/12/2013 SP 1 SJ Full Version ;
+; Revision Name                      ; singlecycle                                      ;
+; Top-level Entity Name              ; system_fpga                                      ;
+; Family                             ; Cyclone IV E                                     ;
+; Total logic elements               ; N/A until Partition Merge                        ;
+;     Total combinational functions  ; N/A until Partition Merge                        ;
+;     Dedicated logic registers      ; N/A until Partition Merge                        ;
+; Total registers                    ; N/A until Partition Merge                        ;
+; Total pins                         ; N/A until Partition Merge                        ;
+; Total virtual pins                 ; N/A until Partition Merge                        ;
+; Total memory bits                  ; N/A until Partition Merge                        ;
+; Embedded Multiplier 9-bit elements ; N/A until Partition Merge                        ;
+; Total PLLs                         ; N/A until Partition Merge                        ;
++------------------------------------+--------------------------------------------------+
+
+
++----------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Settings                                                                                        ;
++----------------------------------------------------------------------------+--------------------+--------------------+
+; Option                                                                     ; Setting            ; Default Value      ;
++----------------------------------------------------------------------------+--------------------+--------------------+
+; Device                                                                     ; EP4CE115F29C7      ;                    ;
+; Top-level entity name                                                      ; system_fpga        ; singlecycle        ;
+; Family name                                                                ; Cyclone IV E       ; Cyclone IV GX      ;
+; Use smart compilation                                                      ; Off                ; Off                ;
+; Enable parallel Assembler and TimeQuest Timing Analyzer during compilation ; On                 ; On                 ;
+; Enable compact report table                                                ; Off                ; Off                ;
+; Restructure Multiplexers                                                   ; Auto               ; Auto               ;
+; Create Debugging Nodes for IP Cores                                        ; Off                ; Off                ;
+; Preserve fewer node names                                                  ; On                 ; On                 ;
+; Disable OpenCore Plus hardware evaluation                                  ; Off                ; Off                ;
+; Verilog Version                                                            ; Verilog_2001       ; Verilog_2001       ;
+; VHDL Version                                                               ; VHDL_1993          ; VHDL_1993          ;
+; State Machine Processing                                                   ; Auto               ; Auto               ;
+; Safe State Machine                                                         ; Off                ; Off                ;
+; Extract Verilog State Machines                                             ; On                 ; On                 ;
+; Extract VHDL State Machines                                                ; On                 ; On                 ;
+; Ignore Verilog initial constructs                                          ; Off                ; Off                ;
+; Iteration limit for constant Verilog loops                                 ; 5000               ; 5000               ;
+; Iteration limit for non-constant Verilog loops                             ; 250                ; 250                ;
+; Add Pass-Through Logic to Inferred RAMs                                    ; On                 ; On                 ;
+; Infer RAMs from Raw Logic                                                  ; On                 ; On                 ;
+; Parallel Synthesis                                                         ; On                 ; On                 ;
+; DSP Block Balancing                                                        ; Auto               ; Auto               ;
+; NOT Gate Push-Back                                                         ; On                 ; On                 ;
+; Power-Up Don't Care                                                        ; On                 ; On                 ;
+; Remove Redundant Logic Cells                                               ; Off                ; Off                ;
+; Remove Duplicate Registers                                                 ; On                 ; On                 ;
+; Ignore CARRY Buffers                                                       ; Off                ; Off                ;
+; Ignore CASCADE Buffers                                                     ; Off                ; Off                ;
+; Ignore GLOBAL Buffers                                                      ; Off                ; Off                ;
+; Ignore ROW GLOBAL Buffers                                                  ; Off                ; Off                ;
+; Ignore LCELL Buffers                                                       ; Off                ; Off                ;
+; Ignore SOFT Buffers                                                        ; On                 ; On                 ;
+; Limit AHDL Integers to 32 Bits                                             ; Off                ; Off                ;
+; Optimization Technique                                                     ; Balanced           ; Balanced           ;
+; Carry Chain Length                                                         ; 70                 ; 70                 ;
+; Auto Carry Chains                                                          ; On                 ; On                 ;
+; Auto Open-Drain Pins                                                       ; On                 ; On                 ;
+; Perform WYSIWYG Primitive Resynthesis                                      ; Off                ; Off                ;
+; Auto ROM Replacement                                                       ; On                 ; On                 ;
+; Auto RAM Replacement                                                       ; On                 ; On                 ;
+; Auto DSP Block Replacement                                                 ; On                 ; On                 ;
+; Auto Shift Register Replacement                                            ; Auto               ; Auto               ;
+; Allow Shift Register Merging across Hierarchies                            ; Auto               ; Auto               ;
+; Auto Clock Enable Replacement                                              ; On                 ; On                 ;
+; Strict RAM Replacement                                                     ; Off                ; Off                ;
+; Allow Synchronous Control Signals                                          ; On                 ; On                 ;
+; Force Use of Synchronous Clear Signals                                     ; Off                ; Off                ;
+; Auto RAM Block Balancing                                                   ; On                 ; On                 ;
+; Auto RAM to Logic Cell Conversion                                          ; Off                ; Off                ;
+; Auto Resource Sharing                                                      ; Off                ; Off                ;
+; Allow Any RAM Size For Recognition                                         ; Off                ; Off                ;
+; Allow Any ROM Size For Recognition                                         ; Off                ; Off                ;
+; Allow Any Shift Register Size For Recognition                              ; Off                ; Off                ;
+; Use LogicLock Constraints during Resource Balancing                        ; On                 ; On                 ;
+; Ignore translate_off and synthesis_off directives                          ; Off                ; Off                ;
+; Timing-Driven Synthesis                                                    ; On                 ; On                 ;
+; Report Parameter Settings                                                  ; On                 ; On                 ;
+; Report Source Assignments                                                  ; On                 ; On                 ;
+; Report Connectivity Checks                                                 ; On                 ; On                 ;
+; Ignore Maximum Fan-Out Assignments                                         ; Off                ; Off                ;
+; Synchronization Register Chain Length                                      ; 2                  ; 2                  ;
+; PowerPlay Power Optimization                                               ; Normal compilation ; Normal compilation ;
+; HDL message level                                                          ; Level2             ; Level2             ;
+; Suppress Register Optimization Related Messages                            ; Off                ; Off                ;
+; Number of Removed Registers Reported in Synthesis Report                   ; 5000               ; 5000               ;
+; Number of Swept Nodes Reported in Synthesis Report                         ; 5000               ; 5000               ;
+; Number of Inverted Registers Reported in Synthesis Report                  ; 100                ; 100                ;
+; Clock MUX Protection                                                       ; On                 ; On                 ;
+; Auto Gated Clock Conversion                                                ; Off                ; Off                ;
+; Block Design Naming                                                        ; Auto               ; Auto               ;
+; SDC constraint protection                                                  ; Off                ; Off                ;
+; Synthesis Effort                                                           ; Auto               ; Auto               ;
+; Shift Register Replacement - Allow Asynchronous Clear Signal               ; On                 ; On                 ;
+; Pre-Mapping Resynthesis Optimization                                       ; Off                ; Off                ;
+; Analysis & Synthesis Message Level                                         ; Medium             ; Medium             ;
+; Disable Register Merging Across Hierarchies                                ; Auto               ; Auto               ;
+; Resource Aware Inference For Block RAM                                     ; On                 ; On                 ;
+; Synthesis Seed                                                             ; 1                  ; 1                  ;
++----------------------------------------------------------------------------+--------------------+--------------------+
+
+
++------------------------------------------+
+; Parallel Compilation                     ;
++----------------------------+-------------+
+; Processors                 ; Number      ;
++----------------------------+-------------+
+; Number detected on machine ; 8           ;
+; Maximum allowed            ; 4           ;
+;                            ;             ;
+; Average used               ; 1.00        ;
+; Maximum used               ; 1           ;
+;                            ;             ;
+; Usage by Processor         ; % Time Used ;
+;     Processor 1            ; 100.0%      ;
+;     Processors 2-8         ;   0.0%      ;
++----------------------------+-------------+
+
+
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Source Files Read                                                                                                                                                       ;
++----------------------------------+-----------------+------------------------------+------------------------------------------------------------------------------------------------+---------+
+; File Name with User-Entered Path ; Used in Netlist ; File Type                    ; File Name with Absolute Path                                                                   ; Library ;
++----------------------------------+-----------------+------------------------------+------------------------------------------------------------------------------------------------+---------+
+; ../include/system_if.vh          ; yes             ; User Unspecified File        ; /home/ecegrid/a/mg267/mips-processor/include/system_if.vh                                      ;         ;
+; ../include/request_unit_if.vh    ; yes             ; User Unspecified File        ; /home/ecegrid/a/mg267/mips-processor/include/request_unit_if.vh                                ;         ;
+; ../include/register_file_if.vh   ; yes             ; User Unspecified File        ; /home/ecegrid/a/mg267/mips-processor/include/register_file_if.vh                               ;         ;
+; ../include/program_counter_if.vh ; yes             ; User Unspecified File        ; /home/ecegrid/a/mg267/mips-processor/include/program_counter_if.vh                             ;         ;
+; ../include/datapath_cache_if.vh  ; yes             ; User Unspecified File        ; /home/ecegrid/a/mg267/mips-processor/include/datapath_cache_if.vh                              ;         ;
+; ../include/cpu_types_pkg.vh      ; yes             ; User Unspecified File        ; /home/ecegrid/a/mg267/mips-processor/include/cpu_types_pkg.vh                                  ;         ;
+; ../include/cpu_ram_if.vh         ; yes             ; User Unspecified File        ; /home/ecegrid/a/mg267/mips-processor/include/cpu_ram_if.vh                                     ;         ;
+; ../include/control_unit_if.vh    ; yes             ; User Unspecified File        ; /home/ecegrid/a/mg267/mips-processor/include/control_unit_if.vh                                ;         ;
+; ../include/caches_if.vh          ; yes             ; User Unspecified File        ; /home/ecegrid/a/mg267/mips-processor/include/caches_if.vh                                      ;         ;
+; ../include/cache_control_if.vh   ; yes             ; User Unspecified File        ; /home/ecegrid/a/mg267/mips-processor/include/cache_control_if.vh                               ;         ;
+; ../include/alu_if.vh             ; yes             ; User Unspecified File        ; /home/ecegrid/a/mg267/mips-processor/include/alu_if.vh                                         ;         ;
+; ../source/system_fpga.sv         ; yes             ; User SystemVerilog HDL File  ; /home/ecegrid/a/mg267/mips-processor/source/system_fpga.sv                                     ;         ;
+; ../source/system.sv              ; yes             ; User SystemVerilog HDL File  ; /home/ecegrid/a/mg267/mips-processor/source/system.sv                                          ;         ;
+; ../source/singlecycle.sv         ; yes             ; User SystemVerilog HDL File  ; /home/ecegrid/a/mg267/mips-processor/source/singlecycle.sv                                     ;         ;
+; ../source/request_unit.sv        ; yes             ; User SystemVerilog HDL File  ; /home/ecegrid/a/mg267/mips-processor/source/request_unit.sv                                    ;         ;
+; ../source/register_file.sv       ; yes             ; User SystemVerilog HDL File  ; /home/ecegrid/a/mg267/mips-processor/source/register_file.sv                                   ;         ;
+; ../source/ram.sv                 ; yes             ; User SystemVerilog HDL File  ; /home/ecegrid/a/mg267/mips-processor/source/ram.sv                                             ;         ;
+; ../source/program_counter.sv     ; yes             ; User SystemVerilog HDL File  ; /home/ecegrid/a/mg267/mips-processor/source/program_counter.sv                                 ;         ;
+; ../source/memory_control.sv      ; yes             ; User SystemVerilog HDL File  ; /home/ecegrid/a/mg267/mips-processor/source/memory_control.sv                                  ;         ;
+; ../source/datapath.sv            ; yes             ; User SystemVerilog HDL File  ; /home/ecegrid/a/mg267/mips-processor/source/datapath.sv                                        ;         ;
+; ../source/control_unit.sv        ; yes             ; User SystemVerilog HDL File  ; /home/ecegrid/a/mg267/mips-processor/source/control_unit.sv                                    ;         ;
+; ../source/caches.sv              ; yes             ; User SystemVerilog HDL File  ; /home/ecegrid/a/mg267/mips-processor/source/caches.sv                                          ;         ;
+; ../source/alu.sv                 ; yes             ; User SystemVerilog HDL File  ; /home/ecegrid/a/mg267/mips-processor/source/alu.sv                                             ;         ;
+; altsyncram.tdf                   ; yes             ; Megafunction                 ; /package/eda/altera/altera13.0sp1/quartus/libraries/megafunctions/altsyncram.tdf               ;         ;
+; stratix_ram_block.inc            ; yes             ; Megafunction                 ; /package/eda/altera/altera13.0sp1/quartus/libraries/megafunctions/stratix_ram_block.inc        ;         ;
+; lpm_mux.inc                      ; yes             ; Megafunction                 ; /package/eda/altera/altera13.0sp1/quartus/libraries/megafunctions/lpm_mux.inc                  ;         ;
+; lpm_decode.inc                   ; yes             ; Megafunction                 ; /package/eda/altera/altera13.0sp1/quartus/libraries/megafunctions/lpm_decode.inc               ;         ;
+; aglobal130.inc                   ; yes             ; Megafunction                 ; /package/eda/altera/altera13.0sp1/quartus/libraries/megafunctions/aglobal130.inc               ;         ;
+; a_rdenreg.inc                    ; yes             ; Megafunction                 ; /package/eda/altera/altera13.0sp1/quartus/libraries/megafunctions/a_rdenreg.inc                ;         ;
+; altrom.inc                       ; yes             ; Megafunction                 ; /package/eda/altera/altera13.0sp1/quartus/libraries/megafunctions/altrom.inc                   ;         ;
+; altram.inc                       ; yes             ; Megafunction                 ; /package/eda/altera/altera13.0sp1/quartus/libraries/megafunctions/altram.inc                   ;         ;
+; altdpram.inc                     ; yes             ; Megafunction                 ; /package/eda/altera/altera13.0sp1/quartus/libraries/megafunctions/altdpram.inc                 ;         ;
+; db/altsyncram_99f1.tdf           ; yes             ; Auto-Generated Megafunction  ; /home/ecegrid/a/mg267/mips-processor/quartus_projects/db/altsyncram_99f1.tdf                   ;         ;
+; db/altsyncram_fta2.tdf           ; yes             ; Auto-Generated Megafunction  ; /home/ecegrid/a/mg267/mips-processor/quartus_projects/db/altsyncram_fta2.tdf                   ;         ;
+; db/decode_jsa.tdf                ; yes             ; Auto-Generated Megafunction  ; /home/ecegrid/a/mg267/mips-processor/quartus_projects/db/decode_jsa.tdf                        ;         ;
+; db/decode_c8a.tdf                ; yes             ; Auto-Generated Megafunction  ; /home/ecegrid/a/mg267/mips-processor/quartus_projects/db/decode_c8a.tdf                        ;         ;
+; db/mux_gob.tdf                   ; yes             ; Auto-Generated Megafunction  ; /home/ecegrid/a/mg267/mips-processor/quartus_projects/db/mux_gob.tdf                           ;         ;
+; sld_mod_ram_rom.vhd              ; yes             ; Encrypted Megafunction       ; /package/eda/altera/altera13.0sp1/quartus/libraries/megafunctions/sld_mod_ram_rom.vhd          ;         ;
+; sld_rom_sr.vhd                   ; yes             ; Encrypted Megafunction       ; /package/eda/altera/altera13.0sp1/quartus/libraries/megafunctions/sld_rom_sr.vhd               ;         ;
+; sld_signaltap.vhd                ; yes             ; Megafunction                 ; /package/eda/altera/altera13.0sp1/quartus/libraries/megafunctions/sld_signaltap.vhd            ;         ;
+; sld_signaltap_impl.vhd           ; yes             ; Encrypted Megafunction       ; /package/eda/altera/altera13.0sp1/quartus/libraries/megafunctions/sld_signaltap_impl.vhd       ;         ;
+; sld_ela_control.vhd              ; yes             ; Encrypted Megafunction       ; /package/eda/altera/altera13.0sp1/quartus/libraries/megafunctions/sld_ela_control.vhd          ;         ;
+; lpm_shiftreg.tdf                 ; yes             ; Megafunction                 ; /package/eda/altera/altera13.0sp1/quartus/libraries/megafunctions/lpm_shiftreg.tdf             ;         ;
+; lpm_constant.inc                 ; yes             ; Megafunction                 ; /package/eda/altera/altera13.0sp1/quartus/libraries/megafunctions/lpm_constant.inc             ;         ;
+; dffeea.inc                       ; yes             ; Megafunction                 ; /package/eda/altera/altera13.0sp1/quartus/libraries/megafunctions/dffeea.inc                   ;         ;
+; sld_mbpmg.vhd                    ; yes             ; Encrypted Megafunction       ; /package/eda/altera/altera13.0sp1/quartus/libraries/megafunctions/sld_mbpmg.vhd                ;         ;
+; sld_ela_trigger_flow_mgr.vhd     ; yes             ; Encrypted Megafunction       ; /package/eda/altera/altera13.0sp1/quartus/libraries/megafunctions/sld_ela_trigger_flow_mgr.vhd ;         ;
+; sld_buffer_manager.vhd           ; yes             ; Encrypted Megafunction       ; /package/eda/altera/altera13.0sp1/quartus/libraries/megafunctions/sld_buffer_manager.vhd       ;         ;
+; db/altsyncram_cr14.tdf           ; yes             ; Auto-Generated Megafunction  ; /home/ecegrid/a/mg267/mips-processor/quartus_projects/db/altsyncram_cr14.tdf                   ;         ;
+; altdpram.tdf                     ; yes             ; Megafunction                 ; /package/eda/altera/altera13.0sp1/quartus/libraries/megafunctions/altdpram.tdf                 ;         ;
+; memmodes.inc                     ; yes             ; Megafunction                 ; /package/eda/altera/altera13.0sp1/quartus/libraries/others/maxplus2/memmodes.inc               ;         ;
+; a_hdffe.inc                      ; yes             ; Megafunction                 ; /package/eda/altera/altera13.0sp1/quartus/libraries/megafunctions/a_hdffe.inc                  ;         ;
+; alt_le_rden_reg.inc              ; yes             ; Megafunction                 ; /package/eda/altera/altera13.0sp1/quartus/libraries/megafunctions/alt_le_rden_reg.inc          ;         ;
+; altsyncram.inc                   ; yes             ; Megafunction                 ; /package/eda/altera/altera13.0sp1/quartus/libraries/megafunctions/altsyncram.inc               ;         ;
+; lpm_mux.tdf                      ; yes             ; Megafunction                 ; /package/eda/altera/altera13.0sp1/quartus/libraries/megafunctions/lpm_mux.tdf                  ;         ;
+; muxlut.inc                       ; yes             ; Megafunction                 ; /package/eda/altera/altera13.0sp1/quartus/libraries/megafunctions/muxlut.inc                   ;         ;
+; bypassff.inc                     ; yes             ; Megafunction                 ; /package/eda/altera/altera13.0sp1/quartus/libraries/megafunctions/bypassff.inc                 ;         ;
+; altshift.inc                     ; yes             ; Megafunction                 ; /package/eda/altera/altera13.0sp1/quartus/libraries/megafunctions/altshift.inc                 ;         ;
+; db/mux_ssc.tdf                   ; yes             ; Auto-Generated Megafunction  ; /home/ecegrid/a/mg267/mips-processor/quartus_projects/db/mux_ssc.tdf                           ;         ;
+; lpm_decode.tdf                   ; yes             ; Megafunction                 ; /package/eda/altera/altera13.0sp1/quartus/libraries/megafunctions/lpm_decode.tdf               ;         ;
+; declut.inc                       ; yes             ; Megafunction                 ; /package/eda/altera/altera13.0sp1/quartus/libraries/megafunctions/declut.inc                   ;         ;
+; lpm_compare.inc                  ; yes             ; Megafunction                 ; /package/eda/altera/altera13.0sp1/quartus/libraries/megafunctions/lpm_compare.inc              ;         ;
+; db/decode_dvf.tdf                ; yes             ; Auto-Generated Megafunction  ; /home/ecegrid/a/mg267/mips-processor/quartus_projects/db/decode_dvf.tdf                        ;         ;
+; lpm_counter.tdf                  ; yes             ; Megafunction                 ; /package/eda/altera/altera13.0sp1/quartus/libraries/megafunctions/lpm_counter.tdf              ;         ;
+; lpm_add_sub.inc                  ; yes             ; Megafunction                 ; /package/eda/altera/altera13.0sp1/quartus/libraries/megafunctions/lpm_add_sub.inc              ;         ;
+; cmpconst.inc                     ; yes             ; Megafunction                 ; /package/eda/altera/altera13.0sp1/quartus/libraries/megafunctions/cmpconst.inc                 ;         ;
+; lpm_counter.inc                  ; yes             ; Megafunction                 ; /package/eda/altera/altera13.0sp1/quartus/libraries/megafunctions/lpm_counter.inc              ;         ;
+; alt_counter_stratix.inc          ; yes             ; Megafunction                 ; /package/eda/altera/altera13.0sp1/quartus/libraries/megafunctions/alt_counter_stratix.inc      ;         ;
+; db/cntr_tei.tdf                  ; yes             ; Auto-Generated Megafunction  ; /home/ecegrid/a/mg267/mips-processor/quartus_projects/db/cntr_tei.tdf                          ;         ;
+; db/cmpr_pgc.tdf                  ; yes             ; Auto-Generated Megafunction  ; /home/ecegrid/a/mg267/mips-processor/quartus_projects/db/cmpr_pgc.tdf                          ;         ;
+; db/cntr_i6j.tdf                  ; yes             ; Auto-Generated Megafunction  ; /home/ecegrid/a/mg267/mips-processor/quartus_projects/db/cntr_i6j.tdf                          ;         ;
+; db/cntr_egi.tdf                  ; yes             ; Auto-Generated Megafunction  ; /home/ecegrid/a/mg267/mips-processor/quartus_projects/db/cntr_egi.tdf                          ;         ;
+; db/cmpr_qgc.tdf                  ; yes             ; Auto-Generated Megafunction  ; /home/ecegrid/a/mg267/mips-processor/quartus_projects/db/cmpr_qgc.tdf                          ;         ;
+; db/cntr_23j.tdf                  ; yes             ; Auto-Generated Megafunction  ; /home/ecegrid/a/mg267/mips-processor/quartus_projects/db/cntr_23j.tdf                          ;         ;
+; db/cmpr_ngc.tdf                  ; yes             ; Auto-Generated Megafunction  ; /home/ecegrid/a/mg267/mips-processor/quartus_projects/db/cmpr_ngc.tdf                          ;         ;
+; sld_hub.vhd                      ; yes             ; Encrypted Megafunction       ; /package/eda/altera/altera13.0sp1/quartus/libraries/megafunctions/sld_hub.vhd                  ;         ;
+; sld_jtag_hub.vhd                 ; yes             ; Encrypted Megafunction       ; /package/eda/altera/altera13.0sp1/quartus/libraries/megafunctions/sld_jtag_hub.vhd             ;         ;
++----------------------------------+-----------------+------------------------------+------------------------------------------------------------------------------------------------+---------+
+
+
++--------------------------------------------------------------------+
+; Partition Status Summary                                           ;
++--------------------------------+-------------+---------------------+
+; Partition Name                 ; Synthesized ; Reason              ;
++--------------------------------+-------------+---------------------+
+; Top                            ; no          ; No relevant changes ;
+; sld_hub:auto_hub               ; no          ; No relevant changes ;
+; sld_signaltap:auto_signaltap_0 ; no          ; No relevant changes ;
++--------------------------------+-------------+---------------------+
+
+
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Partition for Top-Level Resource Utilization by Entity                                                                                                                                                                                                                                                                                                                          ;
++------------------------------------------------------------------------+-------------------+--------------+-------------+--------------+---------+-----------+------+--------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------+
+; Compilation Hierarchy Node                                             ; LC Combinationals ; LC Registers ; Memory Bits ; DSP Elements ; DSP 9x9 ; DSP 18x18 ; Pins ; Virtual Pins ; Full Hierarchy Name                                                                                                                                                         ; Library Name ;
++------------------------------------------------------------------------+-------------------+--------------+-------------+--------------+---------+-----------+------+--------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------+
+; |system_fpga                                                           ; 2781 (71)         ; 1206 (5)     ; 524288      ; 0            ; 0       ; 0         ; 0    ; 0            ; |system_fpga                                                                                                                                                                ; work         ;
+;    |system:SYS|                                                        ; 2710 (106)        ; 1201 (5)     ; 524288      ; 0            ; 0       ; 0         ; 0    ; 0            ; |system_fpga|system:SYS                                                                                                                                                     ; work         ;
+;       |ram:RAM|                                                        ; 165 (63)          ; 106 (37)     ; 524288      ; 0            ; 0       ; 0         ; 0    ; 0            ; |system_fpga|system:SYS|ram:RAM                                                                                                                                             ; work         ;
+;          |altsyncram:altsyncram_component|                             ; 102 (0)           ; 69 (0)       ; 524288      ; 0            ; 0       ; 0         ; 0    ; 0            ; |system_fpga|system:SYS|ram:RAM|altsyncram:altsyncram_component                                                                                                             ; work         ;
+;             |altsyncram_99f1:auto_generated|                           ; 102 (0)           ; 69 (0)       ; 524288      ; 0            ; 0       ; 0         ; 0    ; 0            ; |system_fpga|system:SYS|ram:RAM|altsyncram:altsyncram_component|altsyncram_99f1:auto_generated                                                                              ; work         ;
+;                |altsyncram_fta2:altsyncram1|                           ; 4 (0)             ; 2 (2)        ; 524288      ; 0            ; 0       ; 0         ; 0    ; 0            ; |system_fpga|system:SYS|ram:RAM|altsyncram:altsyncram_component|altsyncram_99f1:auto_generated|altsyncram_fta2:altsyncram1                                                  ; work         ;
+;                   |decode_jsa:decode4|                                 ; 2 (2)             ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |system_fpga|system:SYS|ram:RAM|altsyncram:altsyncram_component|altsyncram_99f1:auto_generated|altsyncram_fta2:altsyncram1|decode_jsa:decode4                               ; work         ;
+;                   |decode_jsa:decode5|                                 ; 2 (2)             ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |system_fpga|system:SYS|ram:RAM|altsyncram:altsyncram_component|altsyncram_99f1:auto_generated|altsyncram_fta2:altsyncram1|decode_jsa:decode5                               ; work         ;
+;                |sld_mod_ram_rom:mgl_prim2|                             ; 98 (75)           ; 67 (58)      ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |system_fpga|system:SYS|ram:RAM|altsyncram:altsyncram_component|altsyncram_99f1:auto_generated|sld_mod_ram_rom:mgl_prim2                                                    ; work         ;
+;                   |sld_rom_sr:\ram_rom_logic_gen:name_gen:info_rom_sr| ; 23 (23)           ; 9 (9)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |system_fpga|system:SYS|ram:RAM|altsyncram:altsyncram_component|altsyncram_99f1:auto_generated|sld_mod_ram_rom:mgl_prim2|sld_rom_sr:\ram_rom_logic_gen:name_gen:info_rom_sr ; work         ;
+;       |singlecycle:CPU|                                                ; 2439 (0)          ; 1090 (0)     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |system_fpga|system:SYS|singlecycle:CPU                                                                                                                                     ; work         ;
+;          |caches:CM|                                                   ; 96 (96)           ; 64 (64)      ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |system_fpga|system:SYS|singlecycle:CPU|caches:CM                                                                                                                           ; work         ;
+;          |datapath:DP|                                                 ; 2341 (277)        ; 1026 (0)     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |system_fpga|system:SYS|singlecycle:CPU|datapath:DP                                                                                                                         ; work         ;
+;             |alu:ALU|                                                  ; 667 (667)         ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |system_fpga|system:SYS|singlecycle:CPU|datapath:DP|alu:ALU                                                                                                                 ; work         ;
+;             |control_unit:CU|                                          ; 42 (42)           ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |system_fpga|system:SYS|singlecycle:CPU|datapath:DP|control_unit:CU                                                                                                         ; work         ;
+;             |program_counter:PC|                                       ; 0 (0)             ; 32 (32)      ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |system_fpga|system:SYS|singlecycle:CPU|datapath:DP|program_counter:PC                                                                                                      ; work         ;
+;             |register_file:RF|                                         ; 1351 (1351)       ; 992 (992)    ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |system_fpga|system:SYS|singlecycle:CPU|datapath:DP|register_file:RF                                                                                                        ; work         ;
+;             |request_unit:RU|                                          ; 4 (4)             ; 2 (2)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |system_fpga|system:SYS|singlecycle:CPU|datapath:DP|request_unit:RU                                                                                                         ; work         ;
+;          |memory_control:CC|                                           ; 2 (2)             ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |system_fpga|system:SYS|singlecycle:CPU|memory_control:CC                                                                                                                   ; work         ;
++------------------------------------------------------------------------+-------------------+--------------+-------------+--------------+---------+-----------+------+--------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------+
+Note: For table entries with two numbers listed, the numbers in parentheses indicate the number of resources of the given type used by the specific entity alone. The numbers listed outside of parentheses indicate the total resources of the given type used by the specific entity and all of its sub-entities in the hierarchy.
+
+
++------------------------------------------------------------------------------------------------------------------------+
+; Registers Removed During Synthesis                                                                                     ;
++--------------------------------------------------------------------------+---------------------------------------------+
+; Register name                                                            ; Reason for Removal                          ;
++--------------------------------------------------------------------------+---------------------------------------------+
+; system:SYS|singlecycle:CPU|datapath:DP|register_file:RF|registers[0][0]  ; Stuck at GND due to stuck port clock_enable ;
+; system:SYS|singlecycle:CPU|datapath:DP|register_file:RF|registers[0][1]  ; Stuck at GND due to stuck port clock_enable ;
+; system:SYS|singlecycle:CPU|datapath:DP|register_file:RF|registers[0][2]  ; Stuck at GND due to stuck port clock_enable ;
+; system:SYS|singlecycle:CPU|datapath:DP|register_file:RF|registers[0][3]  ; Stuck at GND due to stuck port clock_enable ;
+; system:SYS|singlecycle:CPU|datapath:DP|register_file:RF|registers[0][4]  ; Stuck at GND due to stuck port clock_enable ;
+; system:SYS|singlecycle:CPU|datapath:DP|register_file:RF|registers[0][5]  ; Stuck at GND due to stuck port clock_enable ;
+; system:SYS|singlecycle:CPU|datapath:DP|register_file:RF|registers[0][6]  ; Stuck at GND due to stuck port clock_enable ;
+; system:SYS|singlecycle:CPU|datapath:DP|register_file:RF|registers[0][7]  ; Stuck at GND due to stuck port clock_enable ;
+; system:SYS|singlecycle:CPU|datapath:DP|register_file:RF|registers[0][8]  ; Stuck at GND due to stuck port clock_enable ;
+; system:SYS|singlecycle:CPU|datapath:DP|register_file:RF|registers[0][9]  ; Stuck at GND due to stuck port clock_enable ;
+; system:SYS|singlecycle:CPU|datapath:DP|register_file:RF|registers[0][10] ; Stuck at GND due to stuck port clock_enable ;
+; system:SYS|singlecycle:CPU|datapath:DP|register_file:RF|registers[0][11] ; Stuck at GND due to stuck port clock_enable ;
+; system:SYS|singlecycle:CPU|datapath:DP|register_file:RF|registers[0][12] ; Stuck at GND due to stuck port clock_enable ;
+; system:SYS|singlecycle:CPU|datapath:DP|register_file:RF|registers[0][13] ; Stuck at GND due to stuck port clock_enable ;
+; system:SYS|singlecycle:CPU|datapath:DP|register_file:RF|registers[0][14] ; Stuck at GND due to stuck port clock_enable ;
+; system:SYS|singlecycle:CPU|datapath:DP|register_file:RF|registers[0][15] ; Stuck at GND due to stuck port clock_enable ;
+; system:SYS|singlecycle:CPU|datapath:DP|register_file:RF|registers[0][16] ; Stuck at GND due to stuck port clock_enable ;
+; system:SYS|singlecycle:CPU|datapath:DP|register_file:RF|registers[0][17] ; Stuck at GND due to stuck port clock_enable ;
+; system:SYS|singlecycle:CPU|datapath:DP|register_file:RF|registers[0][18] ; Stuck at GND due to stuck port clock_enable ;
+; system:SYS|singlecycle:CPU|datapath:DP|register_file:RF|registers[0][19] ; Stuck at GND due to stuck port clock_enable ;
+; system:SYS|singlecycle:CPU|datapath:DP|register_file:RF|registers[0][20] ; Stuck at GND due to stuck port clock_enable ;
+; system:SYS|singlecycle:CPU|datapath:DP|register_file:RF|registers[0][21] ; Stuck at GND due to stuck port clock_enable ;
+; system:SYS|singlecycle:CPU|datapath:DP|register_file:RF|registers[0][22] ; Stuck at GND due to stuck port clock_enable ;
+; system:SYS|singlecycle:CPU|datapath:DP|register_file:RF|registers[0][23] ; Stuck at GND due to stuck port clock_enable ;
+; system:SYS|singlecycle:CPU|datapath:DP|register_file:RF|registers[0][24] ; Stuck at GND due to stuck port clock_enable ;
+; system:SYS|singlecycle:CPU|datapath:DP|register_file:RF|registers[0][25] ; Stuck at GND due to stuck port clock_enable ;
+; system:SYS|singlecycle:CPU|datapath:DP|register_file:RF|registers[0][26] ; Stuck at GND due to stuck port clock_enable ;
+; system:SYS|singlecycle:CPU|datapath:DP|register_file:RF|registers[0][27] ; Stuck at GND due to stuck port clock_enable ;
+; system:SYS|singlecycle:CPU|datapath:DP|register_file:RF|registers[0][28] ; Stuck at GND due to stuck port clock_enable ;
+; system:SYS|singlecycle:CPU|datapath:DP|register_file:RF|registers[0][29] ; Stuck at GND due to stuck port clock_enable ;
+; system:SYS|singlecycle:CPU|datapath:DP|register_file:RF|registers[0][30] ; Stuck at GND due to stuck port clock_enable ;
+; system:SYS|singlecycle:CPU|datapath:DP|register_file:RF|registers[0][31] ; Stuck at GND due to stuck port clock_enable ;
+; system:SYS|ram:RAM|en[1]                                                 ; Stuck at VCC due to stuck port data_in      ;
+; Total Number of Removed Registers = 33                                   ;                                             ;
++--------------------------------------------------------------------------+---------------------------------------------+
+
+
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Multiplexer Restructuring Statistics (Restructuring Performed)                                                                                                                                                                                                                                            ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output                                                                                                                                                                  ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; 3:1                ; 6 bits    ; 12 LEs        ; 6 LEs                ; 6 LEs                  ; Yes        ; |system_fpga|system:SYS|ram:RAM|altsyncram:altsyncram_component|altsyncram_99f1:auto_generated|sld_mod_ram_rom:mgl_prim2|ram_rom_data_shift_cntr_reg[5]                                     ;
+; 3:1                ; 14 bits   ; 28 LEs        ; 14 LEs               ; 14 LEs                 ; Yes        ; |system_fpga|system:SYS|ram:RAM|altsyncram:altsyncram_component|altsyncram_99f1:auto_generated|sld_mod_ram_rom:mgl_prim2|ram_rom_addr_reg[5]                                                ;
+; 3:1                ; 4 bits    ; 8 LEs         ; 4 LEs                ; 4 LEs                  ; Yes        ; |system_fpga|system:SYS|ram:RAM|count[2]                                                                                                                                                    ;
+; 3:1                ; 64 bits   ; 128 LEs       ; 64 LEs               ; 64 LEs                 ; Yes        ; |system_fpga|system:SYS|singlecycle:CPU|caches:CM|instr[2]                                                                                                                                  ;
+; 4:1                ; 32 bits   ; 64 LEs        ; 64 LEs               ; 0 LEs                  ; Yes        ; |system_fpga|system:SYS|ram:RAM|altsyncram:altsyncram_component|altsyncram_99f1:auto_generated|sld_mod_ram_rom:mgl_prim2|ram_rom_data_reg[0]                                                ;
+; 5:1                ; 5 bits    ; 15 LEs        ; 5 LEs                ; 10 LEs                 ; Yes        ; |system_fpga|system:SYS|ram:RAM|altsyncram:altsyncram_component|altsyncram_99f1:auto_generated|sld_mod_ram_rom:mgl_prim2|sld_rom_sr:\ram_rom_logic_gen:name_gen:info_rom_sr|word_counter[2] ;
+; 24:1               ; 4 bits    ; 64 LEs        ; 48 LEs               ; 16 LEs                 ; Yes        ; |system_fpga|system:SYS|ram:RAM|altsyncram:altsyncram_component|altsyncram_99f1:auto_generated|sld_mod_ram_rom:mgl_prim2|sld_rom_sr:\ram_rom_logic_gen:name_gen:info_rom_sr|WORD_SR[0]      ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 64 LEs               ; 0 LEs                  ; No         ; |system_fpga|system:SYS|ram:RAM|ramif.ramload[9]                                                                                                                                            ;
+; 4:1                ; 32 bits   ; 64 LEs        ; 64 LEs               ; 0 LEs                  ; No         ; |system_fpga|system:SYS|singlecycle:CPU|datapath:DP|port_b                                                                                                                                  ;
+; 5:1                ; 4 bits    ; 12 LEs        ; 8 LEs                ; 4 LEs                  ; No         ; |system_fpga|system:SYS|singlecycle:CPU|datapath:DP|pc_next                                                                                                                                 ;
+; 5:1                ; 26 bits   ; 78 LEs        ; 52 LEs               ; 26 LEs                 ; No         ; |system_fpga|system:SYS|singlecycle:CPU|datapath:DP|pc_next                                                                                                                                 ;
+; 5:1                ; 16 bits   ; 48 LEs        ; 32 LEs               ; 16 LEs                 ; No         ; |system_fpga|system:SYS|singlecycle:CPU|datapath:DP|wdat                                                                                                                                    ;
+; 5:1                ; 16 bits   ; 48 LEs        ; 32 LEs               ; 16 LEs                 ; No         ; |system_fpga|system:SYS|singlecycle:CPU|datapath:DP|wdat                                                                                                                                    ;
+; 3:1                ; 5 bits    ; 10 LEs        ; 10 LEs               ; 0 LEs                  ; No         ; |system_fpga|system:SYS|singlecycle:CPU|datapath:DP|wsel                                                                                                                                    ;
+; 3:1                ; 2 bits    ; 4 LEs         ; 4 LEs                ; 0 LEs                  ; No         ; |system_fpga|system:SYS|singlecycle:CPU|datapath:DP|pc_next                                                                                                                                 ;
+; 32:1               ; 32 bits   ; 672 LEs       ; 672 LEs              ; 0 LEs                  ; No         ; |system_fpga|system:SYS|singlecycle:CPU|datapath:DP|register_file:RF|Mux44                                                                                                                  ;
+; 32:1               ; 32 bits   ; 672 LEs       ; 672 LEs              ; 0 LEs                  ; No         ; |system_fpga|system:SYS|singlecycle:CPU|datapath:DP|register_file:RF|Mux26                                                                                                                  ;
+; 15:1               ; 8 bits    ; 80 LEs        ; 72 LEs               ; 8 LEs                  ; No         ; |system_fpga|system:SYS|singlecycle:CPU|datapath:DP|alu:ALU|Selector14                                                                                                                      ;
+; 15:1               ; 8 bits    ; 80 LEs        ; 72 LEs               ; 8 LEs                  ; No         ; |system_fpga|system:SYS|singlecycle:CPU|datapath:DP|alu:ALU|Selector23                                                                                                                      ;
+; 16:1               ; 4 bits    ; 40 LEs        ; 40 LEs               ; 0 LEs                  ; No         ; |system_fpga|system:SYS|singlecycle:CPU|datapath:DP|alu:ALU|Selector7                                                                                                                       ;
+; 16:1               ; 4 bits    ; 40 LEs        ; 40 LEs               ; 0 LEs                  ; No         ; |system_fpga|system:SYS|singlecycle:CPU|datapath:DP|alu:ALU|Selector25                                                                                                                      ;
+; 17:1               ; 2 bits    ; 22 LEs        ; 20 LEs               ; 2 LEs                  ; No         ; |system_fpga|system:SYS|singlecycle:CPU|datapath:DP|alu:ALU|Selector3                                                                                                                       ;
+; 17:1               ; 2 bits    ; 22 LEs        ; 20 LEs               ; 2 LEs                  ; No         ; |system_fpga|system:SYS|singlecycle:CPU|datapath:DP|alu:ALU|Selector29                                                                                                                      ;
+; 18:1               ; 2 bits    ; 24 LEs        ; 22 LEs               ; 2 LEs                  ; No         ; |system_fpga|system:SYS|singlecycle:CPU|datapath:DP|alu:ALU|Selector1                                                                                                                       ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+
++--------------------------------------------------------------------------------------------------------------------------------------+
+; Source assignments for system:SYS|ram:RAM|altsyncram:altsyncram_component|altsyncram_99f1:auto_generated|altsyncram_fta2:altsyncram1 ;
++---------------------------------+--------------------+------+------------------------------------------------------------------------+
+; Assignment                      ; Value              ; From ; To                                                                     ;
++---------------------------------+--------------------+------+------------------------------------------------------------------------+
+; OPTIMIZE_POWER_DURING_SYNTHESIS ; NORMAL_COMPILATION ; -    ; -                                                                      ;
++---------------------------------+--------------------+------+------------------------------------------------------------------------+
+
+
++---------------------------------------------------------+
+; Parameter Settings for User Entity Instance: system:SYS ;
++----------------+-------+--------------------------------+
+; Parameter Name ; Value ; Type                           ;
++----------------+-------+--------------------------------+
+; CLKDIV         ; 2     ; Signed Integer                 ;
++----------------+-------+--------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: system:SYS|singlecycle:CPU ;
++----------------+----------------------------------+---------------------+
+; Parameter Name ; Value                            ; Type                ;
++----------------+----------------------------------+---------------------+
+; PC0            ; 00000000000000000000000000000000 ; Unsigned Binary     ;
++----------------+----------------------------------+---------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: system:SYS|singlecycle:CPU|cache_control_if:ccif ;
++----------------+-------+----------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                 ;
++----------------+-------+----------------------------------------------------------------------+
+; CPUS           ; 1     ; Signed Integer                                                       ;
++----------------+-------+----------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: system:SYS|singlecycle:CPU|datapath:DP ;
++----------------+----------------------------------+---------------------------------+
+; Parameter Name ; Value                            ; Type                            ;
++----------------+----------------------------------+---------------------------------+
+; PC_INIT        ; 00000000000000000000000000000000 ; Unsigned Binary                 ;
++----------------+----------------------------------+---------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: system:SYS|singlecycle:CPU|caches:CM ;
++----------------+-------+----------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                     ;
++----------------+-------+----------------------------------------------------------+
+; CPUID          ; 0     ; Signed Integer                                           ;
++----------------+-------+----------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: system:SYS|singlecycle:CPU|memory_control:CC ;
++----------------+-------+------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                             ;
++----------------+-------+------------------------------------------------------------------+
+; CPUS           ; 1     ; Signed Integer                                                   ;
++----------------+-------+------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++---------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: system:SYS|ram:RAM     ;
++----------------+----------------------------------+-----------------+
+; Parameter Name ; Value                            ; Type            ;
++----------------+----------------------------------+-----------------+
+; BAD            ; 10111010110100011011101011010001 ; Unsigned Binary ;
+; LAT            ; 1                                ; Signed Integer  ;
++----------------+----------------------------------+-----------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: system:SYS|ram:RAM|altsyncram:altsyncram_component ;
++------------------------------------+----------------------+-------------------------------------+
+; Parameter Name                     ; Value                ; Type                                ;
++------------------------------------+----------------------+-------------------------------------+
+; BYTE_SIZE_BLOCK                    ; 8                    ; Untyped                             ;
+; AUTO_CARRY_CHAINS                  ; ON                   ; AUTO_CARRY                          ;
+; IGNORE_CARRY_BUFFERS               ; OFF                  ; IGNORE_CARRY                        ;
+; AUTO_CASCADE_CHAINS                ; ON                   ; AUTO_CASCADE                        ;
+; IGNORE_CASCADE_BUFFERS             ; OFF                  ; IGNORE_CASCADE                      ;
+; WIDTH_BYTEENA                      ; 1                    ; Untyped                             ;
+; OPERATION_MODE                     ; SINGLE_PORT          ; Untyped                             ;
+; WIDTH_A                            ; 32                   ; Signed Integer                      ;
+; WIDTHAD_A                          ; 14                   ; Signed Integer                      ;
+; NUMWORDS_A                         ; 16384                ; Signed Integer                      ;
+; OUTDATA_REG_A                      ; UNREGISTERED         ; Untyped                             ;
+; ADDRESS_ACLR_A                     ; NONE                 ; Untyped                             ;
+; OUTDATA_ACLR_A                     ; NONE                 ; Untyped                             ;
+; WRCONTROL_ACLR_A                   ; NONE                 ; Untyped                             ;
+; INDATA_ACLR_A                      ; NONE                 ; Untyped                             ;
+; BYTEENA_ACLR_A                     ; NONE                 ; Untyped                             ;
+; WIDTH_B                            ; 1                    ; Untyped                             ;
+; WIDTHAD_B                          ; 1                    ; Untyped                             ;
+; NUMWORDS_B                         ; 1                    ; Untyped                             ;
+; INDATA_REG_B                       ; CLOCK1               ; Untyped                             ;
+; WRCONTROL_WRADDRESS_REG_B          ; CLOCK1               ; Untyped                             ;
+; RDCONTROL_REG_B                    ; CLOCK1               ; Untyped                             ;
+; ADDRESS_REG_B                      ; CLOCK1               ; Untyped                             ;
+; OUTDATA_REG_B                      ; UNREGISTERED         ; Untyped                             ;
+; BYTEENA_REG_B                      ; CLOCK1               ; Untyped                             ;
+; INDATA_ACLR_B                      ; NONE                 ; Untyped                             ;
+; WRCONTROL_ACLR_B                   ; NONE                 ; Untyped                             ;
+; ADDRESS_ACLR_B                     ; NONE                 ; Untyped                             ;
+; OUTDATA_ACLR_B                     ; NONE                 ; Untyped                             ;
+; RDCONTROL_ACLR_B                   ; NONE                 ; Untyped                             ;
+; BYTEENA_ACLR_B                     ; NONE                 ; Untyped                             ;
+; WIDTH_BYTEENA_A                    ; 1                    ; Signed Integer                      ;
+; WIDTH_BYTEENA_B                    ; 1                    ; Untyped                             ;
+; RAM_BLOCK_TYPE                     ; AUTO                 ; Untyped                             ;
+; BYTE_SIZE                          ; 8                    ; Untyped                             ;
+; READ_DURING_WRITE_MODE_MIXED_PORTS ; DONT_CARE            ; Untyped                             ;
+; READ_DURING_WRITE_MODE_PORT_A      ; NEW_DATA_NO_NBE_READ ; Untyped                             ;
+; READ_DURING_WRITE_MODE_PORT_B      ; NEW_DATA_NO_NBE_READ ; Untyped                             ;
+; INIT_FILE                          ; meminit.hex          ; Untyped                             ;
+; INIT_FILE_LAYOUT                   ; PORT_A               ; Untyped                             ;
+; MAXIMUM_DEPTH                      ; 0                    ; Untyped                             ;
+; CLOCK_ENABLE_INPUT_A               ; BYPASS               ; Untyped                             ;
+; CLOCK_ENABLE_INPUT_B               ; NORMAL               ; Untyped                             ;
+; CLOCK_ENABLE_OUTPUT_A              ; BYPASS               ; Untyped                             ;
+; CLOCK_ENABLE_OUTPUT_B              ; NORMAL               ; Untyped                             ;
+; CLOCK_ENABLE_CORE_A                ; USE_INPUT_CLKEN      ; Untyped                             ;
+; CLOCK_ENABLE_CORE_B                ; USE_INPUT_CLKEN      ; Untyped                             ;
+; ENABLE_ECC                         ; FALSE                ; Untyped                             ;
+; ECC_PIPELINE_STAGE_ENABLED         ; FALSE                ; Untyped                             ;
+; WIDTH_ECCSTATUS                    ; 3                    ; Untyped                             ;
+; DEVICE_FAMILY                      ; Cyclone IV E         ; Untyped                             ;
+; CBXI_PARAMETER                     ; altsyncram_99f1      ; Untyped                             ;
++------------------------------------+----------------------+-------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------------------+
+; Partition Dependent Files                                                                                       ;
++-----------------------------------------------+--------------------+---------+----------------------------------+
+; File                                          ; Location           ; Library ; Checksum                         ;
++-----------------------------------------------+--------------------+---------+----------------------------------+
+; ../include/alu_if.vh                          ; Project Directory  ; work    ; a9c5f714ed5ab2b2abd86bef4e87e1b7 ;
+; ../include/cache_control_if.vh                ; Project Directory  ; work    ; 91e1a0fd5772a2f7316ccc8e570a4968 ;
+; ../include/caches_if.vh                       ; Project Directory  ; work    ; 95da185fe0d7e3a99da0c6563dc3f792 ;
+; ../include/control_unit_if.vh                 ; Project Directory  ; work    ; 6db1c764a21d4c8750d0c665ea7f50c6 ;
+; ../include/cpu_ram_if.vh                      ; Project Directory  ; work    ; 2405d2daf88cfc8b6bcd183843499ce2 ;
+; ../include/cpu_types_pkg.vh                   ; Project Directory  ; work    ; 62d4a90eff191ccb306113900568ca6b ;
+; ../include/datapath_cache_if.vh               ; Project Directory  ; work    ; 8b044bbcc429ac55f98a6eb58db171aa ;
+; ../include/program_counter_if.vh              ; Project Directory  ; work    ; cbf240b3fc4b33088ae4f73573154031 ;
+; ../include/register_file_if.vh                ; Project Directory  ; work    ; bf6603c52ffc9b13e08eb8cb02be46b7 ;
+; ../include/request_unit_if.vh                 ; Project Directory  ; work    ; df4a7ec9ab20637cb8554ddedff3bcf7 ;
+; ../include/system_if.vh                       ; Project Directory  ; work    ; 7940b31751f0a019ee571ed7ae1b494f ;
+; db/altsyncram_99f1.tdf                        ; Project Directory  ; work    ; ed9cfb62af7547d4f3fa6e0bd61a2e80 ;
+; db/altsyncram_fta2.tdf                        ; Project Directory  ; work    ; 2c556dbd193391f9ef1151771d4541f2 ;
+; db/decode_c8a.tdf                             ; Project Directory  ; work    ; 97a658b1a0598ef73b1c4eb319d44dd8 ;
+; db/decode_jsa.tdf                             ; Project Directory  ; work    ; 12f584791a1cf9bfff003aa182edac1e ;
+; db/mux_gob.tdf                                ; Project Directory  ; work    ; 138e827ab7047eeaf627b2a7592a4262 ;
+; ../source/alu.sv                              ; Project Directory  ; work    ; 013b5b30e9bbf6eecc058098e7fa4976 ;
+; ../source/caches.sv                           ; Project Directory  ; work    ; 2f8f36e61fca795099a94b19f11e7cc2 ;
+; ../source/control_unit.sv                     ; Project Directory  ; work    ; ead4d2ba012f60df2fe0672757f6d875 ;
+; ../source/datapath.sv                         ; Project Directory  ; work    ; 91c126e681b0c249f6d312015902b918 ;
+; ../source/memory_control.sv                   ; Project Directory  ; work    ; b0e32b8b8da3fca72ffda514abdd234c ;
+; ../source/program_counter.sv                  ; Project Directory  ; work    ; 3cca8961bd74038f43784eec178193ee ;
+; ../source/ram.sv                              ; Project Directory  ; work    ; b42ff0847e33d72748ba69325e8780ad ;
+; ../source/register_file.sv                    ; Project Directory  ; work    ; 87edffaff3d954d8733553b95edf16d4 ;
+; ../source/request_unit.sv                     ; Project Directory  ; work    ; c4cc877bc640724169ff837a24a946d3 ;
+; ../source/singlecycle.sv                      ; Project Directory  ; work    ; 8046ab1615357b6f67ed414ffa6123f3 ;
+; ../source/system.sv                           ; Project Directory  ; work    ; 47208ad2c2bbe69d31f50e187812d399 ;
+; ../source/system_fpga.sv                      ; Project Directory  ; work    ; ebb5c126f8e12356ac3c2e00997590eb ;
+; libraries/megafunctions/a_rdenreg.inc         ; Quartus II Install ; work    ; 60d2293400bc3c24acb0a137b4849830 ;
+; libraries/megafunctions/aglobal130.inc        ; Quartus II Install ; work    ; 118c5cab6c78306763f0005d47591797 ;
+; libraries/megafunctions/altdpram.inc          ; Quartus II Install ; work    ; 99d442b5b66c88db4daf94d99c6e4e77 ;
+; libraries/megafunctions/altram.inc            ; Quartus II Install ; work    ; e66a83eccf67170bed97c99d891ad085 ;
+; libraries/megafunctions/altrom.inc            ; Quartus II Install ; work    ; d4e3a69a331d3a99d3281790d99a1ebd ;
+; libraries/megafunctions/altsyncram.tdf        ; Quartus II Install ; work    ; 4c28f1fda116a29f67aca7db7dedcd77 ;
+; libraries/megafunctions/lpm_decode.inc        ; Quartus II Install ; work    ; 0bd0e20f5e001c1bd360461dceb53d48 ;
+; libraries/megafunctions/lpm_mux.inc           ; Quartus II Install ; work    ; c22bfd353214c01495b560fc34e47d79 ;
+; libraries/megafunctions/sld_mod_ram_rom.vhd   ; Quartus II Install ; work    ; bc30e2eebd0dd7e5f04f31c4c84e90e0 ;
+; libraries/megafunctions/sld_rom_sr.vhd        ; Quartus II Install ; work    ; f2a3c1090ac5b28134a1db2ac792aa45 ;
+; libraries/megafunctions/stratix_ram_block.inc ; Quartus II Install ; work    ; 2263a3bdfffeb150af0977ee13902f70 ;
++-----------------------------------------------+--------------------+---------+----------------------------------+
+
+
++------------------------------------------------------------------------------------------------------------+
+; Parameter Settings for Inferred Entity Instance: sld_signaltap:auto_signaltap_0                            ;
++-------------------------------------------------+-----------------------------------------+----------------+
+; Parameter Name                                  ; Value                                   ; Type           ;
++-------------------------------------------------+-----------------------------------------+----------------+
+; lpm_type                                        ; sld_signaltap                           ; String         ;
+; sld_node_info                                   ; 805334528                               ; Untyped        ;
+; SLD_IP_VERSION                                  ; 6                                       ; Signed Integer ;
+; SLD_IP_MINOR_VERSION                            ; 0                                       ; Signed Integer ;
+; SLD_COMMON_IP_VERSION                           ; 0                                       ; Signed Integer ;
+; sld_data_bits                                   ; 6                                       ; Untyped        ;
+; sld_trigger_bits                                ; 6                                       ; Untyped        ;
+; SLD_NODE_CRC_BITS                               ; 32                                      ; Signed Integer ;
+; sld_node_crc_hiword                             ; 28774                                   ; Untyped        ;
+; sld_node_crc_loword                             ; 62401                                   ; Untyped        ;
+; SLD_INCREMENTAL_ROUTING                         ; 0                                       ; Signed Integer ;
+; sld_sample_depth                                ; 128                                     ; Untyped        ;
+; sld_segment_size                                ; 128                                     ; Untyped        ;
+; SLD_RAM_BLOCK_TYPE                              ; AUTO                                    ; String         ;
+; sld_state_bits                                  ; 11                                      ; Untyped        ;
+; sld_buffer_full_stop                            ; 1                                       ; Untyped        ;
+; SLD_MEM_ADDRESS_BITS                            ; 7                                       ; Signed Integer ;
+; SLD_DATA_BIT_CNTR_BITS                          ; 4                                       ; Signed Integer ;
+; sld_trigger_level                               ; 1                                       ; Untyped        ;
+; sld_trigger_in_enabled                          ; 0                                       ; Untyped        ;
+; SLD_HPS_TRIGGER_IN_ENABLED                      ; 0                                       ; Signed Integer ;
+; SLD_HPS_TRIGGER_OUT_ENABLED                     ; 0                                       ; Signed Integer ;
+; SLD_HPS_EVENT_ENABLED                           ; 0                                       ; Signed Integer ;
+; SLD_HPS_EVENT_ID                                ; 0                                       ; Signed Integer ;
+; sld_advanced_trigger_entity                     ; basic,1,                                ; Untyped        ;
+; sld_trigger_level_pipeline                      ; 1                                       ; Untyped        ;
+; sld_enable_advanced_trigger                     ; 0                                       ; Untyped        ;
+; SLD_ADVANCED_TRIGGER_1                          ; NONE                                    ; String         ;
+; SLD_ADVANCED_TRIGGER_2                          ; NONE                                    ; String         ;
+; SLD_ADVANCED_TRIGGER_3                          ; NONE                                    ; String         ;
+; SLD_ADVANCED_TRIGGER_4                          ; NONE                                    ; String         ;
+; SLD_ADVANCED_TRIGGER_5                          ; NONE                                    ; String         ;
+; SLD_ADVANCED_TRIGGER_6                          ; NONE                                    ; String         ;
+; SLD_ADVANCED_TRIGGER_7                          ; NONE                                    ; String         ;
+; SLD_ADVANCED_TRIGGER_8                          ; NONE                                    ; String         ;
+; SLD_ADVANCED_TRIGGER_9                          ; NONE                                    ; String         ;
+; SLD_ADVANCED_TRIGGER_10                         ; NONE                                    ; String         ;
+; sld_inversion_mask_length                       ; 39                                      ; Untyped        ;
+; sld_inversion_mask                              ; 000000000000000000000000000000000000000 ; Untyped        ;
+; sld_power_up_trigger                            ; 0                                       ; Untyped        ;
+; SLD_STATE_FLOW_MGR_ENTITY                       ; state_flow_mgr_entity.vhd               ; String         ;
+; sld_state_flow_use_generated                    ; 0                                       ; Untyped        ;
+; sld_current_resource_width                      ; 1                                       ; Untyped        ;
+; sld_attribute_mem_mode                          ; OFF                                     ; Untyped        ;
+; SLD_STORAGE_QUALIFIER_BITS                      ; 1                                       ; Signed Integer ;
+; SLD_STORAGE_QUALIFIER_GAP_RECORD                ; 0                                       ; Signed Integer ;
+; SLD_STORAGE_QUALIFIER_MODE                      ; OFF                                     ; String         ;
+; SLD_STORAGE_QUALIFIER_ENABLE_ADVANCED_CONDITION ; 0                                       ; Signed Integer ;
+; sld_storage_qualifier_inversion_mask_length     ; 0                                       ; Untyped        ;
+; SLD_STORAGE_QUALIFIER_ADVANCED_CONDITION_ENTITY ; basic                                   ; String         ;
+; SLD_STORAGE_QUALIFIER_PIPELINE                  ; 0                                       ; Signed Integer ;
++-------------------------------------------------+-----------------------------------------+----------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; SignalTap II Logic Analyzer Settings                                                                                                                                                                                                                                    ;
++----------------+------------------+---------------------+------------------+--------------+----------+------------------------+----------------------+--------------------+-----------------------------+-----------------+------------------+--------------------------+
+; Instance Index ; Instance Name    ; Trigger Input Width ; Data Input Width ; Sample Depth ; Segments ; Storage Qualifier Type ; Trigger Flow Control ; Trigger Conditions ; Advanced Trigger Conditions ; Trigger In Used ; Trigger Out Used ; Power-Up Trigger Enabled ;
++----------------+------------------+---------------------+------------------+--------------+----------+------------------------+----------------------+--------------------+-----------------------------+-----------------+------------------+--------------------------+
+; 0              ; auto_signaltap_0 ; 6                   ; 6                ; 128          ; 1        ; continuous             ; sequential           ; 1                  ; 0                           ; no              ; no               ; no                       ;
++----------------+------------------+---------------------+------------------+--------------+----------+------------------------+----------------------+--------------------+-----------------------------+-----------------+------------------+--------------------------+
+
+
++-----------------------------------------------------------------------------------------------------------------------------------------------+
+; In-System Memory Content Editor Settings                                                                                                      ;
++----------------+-------------+-------+-------+------------+-----------------------------------------------------------------------------------+
+; Instance Index ; Instance ID ; Width ; Depth ; Mode       ; Hierarchy Location                                                                ;
++----------------+-------------+-------+-------+------------+-----------------------------------------------------------------------------------+
+; 0              ; RAM         ; 32    ; 16384 ; Read/Write ; system:SYS|ram:RAM|altsyncram:altsyncram_component|altsyncram_99f1:auto_generated ;
++----------------+-------------+-------+-------+------------+-----------------------------------------------------------------------------------+
+
+
++-------------------------------+
+; Analysis & Synthesis Messages ;
++-------------------------------+
+Info: *******************************************************************
+Info: Running Quartus II 32-bit Analysis & Synthesis
+    Info: Version 13.0.1 Build 232 06/12/2013 Service Pack 1 SJ Full Version
+    Info: Processing started: Thu Sep 15 13:13:45 2016
+Info: Command: quartus_map --read_settings_files=on --write_settings_files=off singlecycle -c singlecycle
+Info (11104): Parallel Compilation has detected 8 hyper-threaded processors. However, the extra hyper-threaded processors will not be used by default. Parallel Compilation will use 4 of the 4 physical processors detected instead.
+Info (12021): Found 3 design units, including 2 entities, in source file /home/ecegrid/a/mg267/mips-processor/source/system_fpga.sv
+    Info (12022): Found design unit 1: cpu_types_pkg (SystemVerilog)
+    Info (12023): Found entity 1: system_if
+    Info (12023): Found entity 2: system_fpga
+Info (12021): Found 1 design units, including 1 entities, in source file /home/ecegrid/a/mg267/mips-processor/source/system.sv
+    Info (12023): Found entity 1: system
+Info (12021): Found 1 design units, including 1 entities, in source file /home/ecegrid/a/mg267/mips-processor/source/singlecycle.sv
+    Info (12023): Found entity 1: singlecycle
+Info (12021): Found 2 design units, including 2 entities, in source file /home/ecegrid/a/mg267/mips-processor/source/request_unit.sv
+    Info (12023): Found entity 1: request_unit_if
+    Info (12023): Found entity 2: request_unit
+Info (12021): Found 2 design units, including 2 entities, in source file /home/ecegrid/a/mg267/mips-processor/source/register_file_fpga.sv
+    Info (12023): Found entity 1: register_file_if
+    Info (12023): Found entity 2: register_file_fpga
+Info (12021): Found 1 design units, including 1 entities, in source file /home/ecegrid/a/mg267/mips-processor/source/register_file.sv
+    Info (12023): Found entity 1: register_file
+Info (12021): Found 2 design units, including 2 entities, in source file /home/ecegrid/a/mg267/mips-processor/source/ram.sv
+    Info (12023): Found entity 1: cpu_ram_if
+    Info (12023): Found entity 2: ram
+Info (12021): Found 2 design units, including 2 entities, in source file /home/ecegrid/a/mg267/mips-processor/source/program_counter.sv
+    Info (12023): Found entity 1: program_counter_if
+    Info (12023): Found entity 2: program_counter
+Info (12021): Found 3 design units, including 3 entities, in source file /home/ecegrid/a/mg267/mips-processor/source/memory_control.sv
+    Info (12023): Found entity 1: caches_if
+    Info (12023): Found entity 2: cache_control_if
+    Info (12023): Found entity 3: memory_control
+Info (12021): Found 4 design units, including 4 entities, in source file /home/ecegrid/a/mg267/mips-processor/source/datapath.sv
+    Info (12023): Found entity 1: datapath_cache_if
+    Info (12023): Found entity 2: alu_if
+    Info (12023): Found entity 3: control_unit_if
+    Info (12023): Found entity 4: datapath
+Info (12021): Found 1 design units, including 1 entities, in source file /home/ecegrid/a/mg267/mips-processor/source/control_unit.sv
+    Info (12023): Found entity 1: control_unit
+Info (12021): Found 1 design units, including 1 entities, in source file /home/ecegrid/a/mg267/mips-processor/source/caches.sv
+    Info (12023): Found entity 1: caches
+Info (12021): Found 1 design units, including 1 entities, in source file /home/ecegrid/a/mg267/mips-processor/source/alu_fpga.sv
+    Info (12023): Found entity 1: alu_fpga
+Info (12021): Found 1 design units, including 1 entities, in source file /home/ecegrid/a/mg267/mips-processor/source/alu.sv
+    Info (12023): Found entity 1: alu
+Info (12127): Elaborating entity "system_fpga" for the top level hierarchy
+Warning (10034): Output port "LEDR[17..16]" at system_fpga.sv(18) has no driver
+Warning (10034): Output port "LEDG[7..0]" at system_fpga.sv(19) has no driver
+Info (12128): Elaborating entity "system_if" for hierarchy "system_if:syif"
+Warning (12158): Entity "system_if" contains only dangling pins
+Info (12128): Elaborating entity "system" for hierarchy "system:SYS"
+Warning (10230): Verilog HDL assignment warning at system.sv(41): truncated value with size 32 to match size of target (4)
+Info (12128): Elaborating entity "cpu_ram_if" for hierarchy "system:SYS|cpu_ram_if:prif"
+Warning (12158): Entity "cpu_ram_if" contains only dangling pins
+Info (12128): Elaborating entity "singlecycle" for hierarchy "system:SYS|singlecycle:CPU"
+Info (12128): Elaborating entity "datapath_cache_if" for hierarchy "system:SYS|singlecycle:CPU|datapath_cache_if:dcif"
+Warning (12158): Entity "datapath_cache_if" contains only dangling pins
+Info (12128): Elaborating entity "caches_if" for hierarchy "system:SYS|singlecycle:CPU|caches_if:cif0"
+Warning (12158): Entity "caches_if" contains only dangling pins
+Info (12128): Elaborating entity "cache_control_if" for hierarchy "system:SYS|singlecycle:CPU|cache_control_if:ccif"
+Warning (10665): Bidirectional port "cif0.iREN" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.iREN[0]"
+Warning (10665): Bidirectional port "cif0.dREN" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.dREN[0]"
+Warning (10665): Bidirectional port "cif0.dWEN" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.dWEN[0]"
+Warning (10665): Bidirectional port "cif0.dstore[31]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.dstore[0][31]"
+Warning (10665): Bidirectional port "cif0.dstore[30]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.dstore[0][30]"
+Warning (10665): Bidirectional port "cif0.dstore[29]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.dstore[0][29]"
+Warning (10665): Bidirectional port "cif0.dstore[28]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.dstore[0][28]"
+Warning (10665): Bidirectional port "cif0.dstore[27]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.dstore[0][27]"
+Warning (10665): Bidirectional port "cif0.dstore[26]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.dstore[0][26]"
+Warning (10665): Bidirectional port "cif0.dstore[25]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.dstore[0][25]"
+Warning (10665): Bidirectional port "cif0.dstore[24]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.dstore[0][24]"
+Warning (10665): Bidirectional port "cif0.dstore[23]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.dstore[0][23]"
+Warning (10665): Bidirectional port "cif0.dstore[22]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.dstore[0][22]"
+Warning (10665): Bidirectional port "cif0.dstore[21]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.dstore[0][21]"
+Warning (10665): Bidirectional port "cif0.dstore[20]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.dstore[0][20]"
+Warning (10665): Bidirectional port "cif0.dstore[19]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.dstore[0][19]"
+Warning (10665): Bidirectional port "cif0.dstore[18]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.dstore[0][18]"
+Warning (10665): Bidirectional port "cif0.dstore[17]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.dstore[0][17]"
+Warning (10665): Bidirectional port "cif0.dstore[16]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.dstore[0][16]"
+Warning (10665): Bidirectional port "cif0.dstore[15]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.dstore[0][15]"
+Warning (10665): Bidirectional port "cif0.dstore[14]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.dstore[0][14]"
+Warning (10665): Bidirectional port "cif0.dstore[13]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.dstore[0][13]"
+Warning (10665): Bidirectional port "cif0.dstore[12]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.dstore[0][12]"
+Warning (10665): Bidirectional port "cif0.dstore[11]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.dstore[0][11]"
+Warning (10665): Bidirectional port "cif0.dstore[10]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.dstore[0][10]"
+Warning (10665): Bidirectional port "cif0.dstore[9]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.dstore[0][9]"
+Warning (10665): Bidirectional port "cif0.dstore[8]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.dstore[0][8]"
+Warning (10665): Bidirectional port "cif0.dstore[7]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.dstore[0][7]"
+Warning (10665): Bidirectional port "cif0.dstore[6]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.dstore[0][6]"
+Warning (10665): Bidirectional port "cif0.dstore[5]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.dstore[0][5]"
+Warning (10665): Bidirectional port "cif0.dstore[4]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.dstore[0][4]"
+Warning (10665): Bidirectional port "cif0.dstore[3]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.dstore[0][3]"
+Warning (10665): Bidirectional port "cif0.dstore[2]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.dstore[0][2]"
+Warning (10665): Bidirectional port "cif0.dstore[1]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.dstore[0][1]"
+Warning (10665): Bidirectional port "cif0.dstore[0]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.dstore[0][0]"
+Warning (10665): Bidirectional port "cif0.iaddr[31]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.iaddr[0][31]"
+Warning (10665): Bidirectional port "cif0.iaddr[30]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.iaddr[0][30]"
+Warning (10665): Bidirectional port "cif0.iaddr[29]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.iaddr[0][29]"
+Warning (10665): Bidirectional port "cif0.iaddr[28]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.iaddr[0][28]"
+Warning (10665): Bidirectional port "cif0.iaddr[27]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.iaddr[0][27]"
+Warning (10665): Bidirectional port "cif0.iaddr[26]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.iaddr[0][26]"
+Warning (10665): Bidirectional port "cif0.iaddr[25]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.iaddr[0][25]"
+Warning (10665): Bidirectional port "cif0.iaddr[24]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.iaddr[0][24]"
+Warning (10665): Bidirectional port "cif0.iaddr[23]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.iaddr[0][23]"
+Warning (10665): Bidirectional port "cif0.iaddr[22]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.iaddr[0][22]"
+Warning (10665): Bidirectional port "cif0.iaddr[21]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.iaddr[0][21]"
+Warning (10665): Bidirectional port "cif0.iaddr[20]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.iaddr[0][20]"
+Warning (10665): Bidirectional port "cif0.iaddr[19]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.iaddr[0][19]"
+Warning (10665): Bidirectional port "cif0.iaddr[18]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.iaddr[0][18]"
+Warning (10665): Bidirectional port "cif0.iaddr[17]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.iaddr[0][17]"
+Warning (10665): Bidirectional port "cif0.iaddr[16]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.iaddr[0][16]"
+Warning (10665): Bidirectional port "cif0.iaddr[15]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.iaddr[0][15]"
+Warning (10665): Bidirectional port "cif0.iaddr[14]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.iaddr[0][14]"
+Warning (10665): Bidirectional port "cif0.iaddr[13]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.iaddr[0][13]"
+Warning (10665): Bidirectional port "cif0.iaddr[12]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.iaddr[0][12]"
+Warning (10665): Bidirectional port "cif0.iaddr[11]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.iaddr[0][11]"
+Warning (10665): Bidirectional port "cif0.iaddr[10]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.iaddr[0][10]"
+Warning (10665): Bidirectional port "cif0.iaddr[9]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.iaddr[0][9]"
+Warning (10665): Bidirectional port "cif0.iaddr[8]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.iaddr[0][8]"
+Warning (10665): Bidirectional port "cif0.iaddr[7]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.iaddr[0][7]"
+Warning (10665): Bidirectional port "cif0.iaddr[6]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.iaddr[0][6]"
+Warning (10665): Bidirectional port "cif0.iaddr[5]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.iaddr[0][5]"
+Warning (10665): Bidirectional port "cif0.iaddr[4]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.iaddr[0][4]"
+Warning (10665): Bidirectional port "cif0.iaddr[3]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.iaddr[0][3]"
+Warning (10665): Bidirectional port "cif0.iaddr[2]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.iaddr[0][2]"
+Warning (10665): Bidirectional port "cif0.iaddr[1]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.iaddr[0][1]"
+Warning (10665): Bidirectional port "cif0.iaddr[0]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.iaddr[0][0]"
+Warning (10665): Bidirectional port "cif0.daddr[31]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.daddr[0][31]"
+Warning (10665): Bidirectional port "cif0.daddr[30]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.daddr[0][30]"
+Warning (10665): Bidirectional port "cif0.daddr[29]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.daddr[0][29]"
+Warning (10665): Bidirectional port "cif0.daddr[28]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.daddr[0][28]"
+Warning (10665): Bidirectional port "cif0.daddr[27]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.daddr[0][27]"
+Warning (10665): Bidirectional port "cif0.daddr[26]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.daddr[0][26]"
+Warning (10665): Bidirectional port "cif0.daddr[25]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.daddr[0][25]"
+Warning (10665): Bidirectional port "cif0.daddr[24]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.daddr[0][24]"
+Warning (10665): Bidirectional port "cif0.daddr[23]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.daddr[0][23]"
+Warning (10665): Bidirectional port "cif0.daddr[22]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.daddr[0][22]"
+Warning (10665): Bidirectional port "cif0.daddr[21]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.daddr[0][21]"
+Warning (10665): Bidirectional port "cif0.daddr[20]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.daddr[0][20]"
+Warning (10665): Bidirectional port "cif0.daddr[19]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.daddr[0][19]"
+Warning (10665): Bidirectional port "cif0.daddr[18]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.daddr[0][18]"
+Warning (10665): Bidirectional port "cif0.daddr[17]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.daddr[0][17]"
+Warning (10665): Bidirectional port "cif0.daddr[16]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.daddr[0][16]"
+Warning (10665): Bidirectional port "cif0.daddr[15]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.daddr[0][15]"
+Warning (10665): Bidirectional port "cif0.daddr[14]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.daddr[0][14]"
+Warning (10665): Bidirectional port "cif0.daddr[13]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.daddr[0][13]"
+Warning (10665): Bidirectional port "cif0.daddr[12]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.daddr[0][12]"
+Warning (10665): Bidirectional port "cif0.daddr[11]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.daddr[0][11]"
+Warning (10665): Bidirectional port "cif0.daddr[10]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.daddr[0][10]"
+Warning (10665): Bidirectional port "cif0.daddr[9]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.daddr[0][9]"
+Warning (10665): Bidirectional port "cif0.daddr[8]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.daddr[0][8]"
+Warning (10665): Bidirectional port "cif0.daddr[7]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.daddr[0][7]"
+Warning (10665): Bidirectional port "cif0.daddr[6]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.daddr[0][6]"
+Warning (10665): Bidirectional port "cif0.daddr[5]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.daddr[0][5]"
+Warning (10665): Bidirectional port "cif0.daddr[4]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.daddr[0][4]"
+Warning (10665): Bidirectional port "cif0.daddr[3]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.daddr[0][3]"
+Warning (10665): Bidirectional port "cif0.daddr[2]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.daddr[0][2]"
+Warning (10665): Bidirectional port "cif0.daddr[1]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.daddr[0][1]"
+Warning (10665): Bidirectional port "cif0.daddr[0]" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.daddr[0][0]"
+Warning (10665): Bidirectional port "cif0.ccwrite" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.ccwrite[0]"
+Warning (10665): Bidirectional port "cif0.cctrans" at cache_control_if.vh(26) has a one-way connection to bidirectional port "cache_control_if.cctrans[0]"
+Warning (10665): Bidirectional port "cache_control_if.iwait[0]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.iwait"
+Warning (10665): Bidirectional port "cache_control_if.dwait[0]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.dwait"
+Warning (10665): Bidirectional port "cache_control_if.iload[0][31]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.iload[31]"
+Warning (10665): Bidirectional port "cache_control_if.iload[0][30]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.iload[30]"
+Warning (10665): Bidirectional port "cache_control_if.iload[0][29]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.iload[29]"
+Warning (10665): Bidirectional port "cache_control_if.iload[0][28]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.iload[28]"
+Warning (10665): Bidirectional port "cache_control_if.iload[0][27]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.iload[27]"
+Warning (10665): Bidirectional port "cache_control_if.iload[0][26]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.iload[26]"
+Warning (10665): Bidirectional port "cache_control_if.iload[0][25]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.iload[25]"
+Warning (10665): Bidirectional port "cache_control_if.iload[0][24]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.iload[24]"
+Warning (10665): Bidirectional port "cache_control_if.iload[0][23]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.iload[23]"
+Warning (10665): Bidirectional port "cache_control_if.iload[0][22]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.iload[22]"
+Warning (10665): Bidirectional port "cache_control_if.iload[0][21]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.iload[21]"
+Warning (10665): Bidirectional port "cache_control_if.iload[0][20]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.iload[20]"
+Warning (10665): Bidirectional port "cache_control_if.iload[0][19]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.iload[19]"
+Warning (10665): Bidirectional port "cache_control_if.iload[0][18]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.iload[18]"
+Warning (10665): Bidirectional port "cache_control_if.iload[0][17]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.iload[17]"
+Warning (10665): Bidirectional port "cache_control_if.iload[0][16]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.iload[16]"
+Warning (10665): Bidirectional port "cache_control_if.iload[0][15]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.iload[15]"
+Warning (10665): Bidirectional port "cache_control_if.iload[0][14]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.iload[14]"
+Warning (10665): Bidirectional port "cache_control_if.iload[0][13]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.iload[13]"
+Warning (10665): Bidirectional port "cache_control_if.iload[0][12]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.iload[12]"
+Warning (10665): Bidirectional port "cache_control_if.iload[0][11]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.iload[11]"
+Warning (10665): Bidirectional port "cache_control_if.iload[0][10]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.iload[10]"
+Warning (10665): Bidirectional port "cache_control_if.iload[0][9]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.iload[9]"
+Warning (10665): Bidirectional port "cache_control_if.iload[0][8]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.iload[8]"
+Warning (10665): Bidirectional port "cache_control_if.iload[0][7]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.iload[7]"
+Warning (10665): Bidirectional port "cache_control_if.iload[0][6]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.iload[6]"
+Warning (10665): Bidirectional port "cache_control_if.iload[0][5]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.iload[5]"
+Warning (10665): Bidirectional port "cache_control_if.iload[0][4]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.iload[4]"
+Warning (10665): Bidirectional port "cache_control_if.iload[0][3]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.iload[3]"
+Warning (10665): Bidirectional port "cache_control_if.iload[0][2]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.iload[2]"
+Warning (10665): Bidirectional port "cache_control_if.iload[0][1]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.iload[1]"
+Warning (10665): Bidirectional port "cache_control_if.iload[0][0]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.iload[0]"
+Warning (10665): Bidirectional port "cache_control_if.dload[0][31]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.dload[31]"
+Warning (10665): Bidirectional port "cache_control_if.dload[0][30]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.dload[30]"
+Warning (10665): Bidirectional port "cache_control_if.dload[0][29]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.dload[29]"
+Warning (10665): Bidirectional port "cache_control_if.dload[0][28]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.dload[28]"
+Warning (10665): Bidirectional port "cache_control_if.dload[0][27]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.dload[27]"
+Warning (10665): Bidirectional port "cache_control_if.dload[0][26]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.dload[26]"
+Warning (10665): Bidirectional port "cache_control_if.dload[0][25]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.dload[25]"
+Warning (10665): Bidirectional port "cache_control_if.dload[0][24]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.dload[24]"
+Warning (10665): Bidirectional port "cache_control_if.dload[0][23]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.dload[23]"
+Warning (10665): Bidirectional port "cache_control_if.dload[0][22]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.dload[22]"
+Warning (10665): Bidirectional port "cache_control_if.dload[0][21]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.dload[21]"
+Warning (10665): Bidirectional port "cache_control_if.dload[0][20]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.dload[20]"
+Warning (10665): Bidirectional port "cache_control_if.dload[0][19]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.dload[19]"
+Warning (10665): Bidirectional port "cache_control_if.dload[0][18]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.dload[18]"
+Warning (10665): Bidirectional port "cache_control_if.dload[0][17]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.dload[17]"
+Warning (10665): Bidirectional port "cache_control_if.dload[0][16]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.dload[16]"
+Warning (10665): Bidirectional port "cache_control_if.dload[0][15]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.dload[15]"
+Warning (10665): Bidirectional port "cache_control_if.dload[0][14]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.dload[14]"
+Warning (10665): Bidirectional port "cache_control_if.dload[0][13]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.dload[13]"
+Warning (10665): Bidirectional port "cache_control_if.dload[0][12]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.dload[12]"
+Warning (10665): Bidirectional port "cache_control_if.dload[0][11]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.dload[11]"
+Warning (10665): Bidirectional port "cache_control_if.dload[0][10]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.dload[10]"
+Warning (10665): Bidirectional port "cache_control_if.dload[0][9]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.dload[9]"
+Warning (10665): Bidirectional port "cache_control_if.dload[0][8]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.dload[8]"
+Warning (10665): Bidirectional port "cache_control_if.dload[0][7]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.dload[7]"
+Warning (10665): Bidirectional port "cache_control_if.dload[0][6]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.dload[6]"
+Warning (10665): Bidirectional port "cache_control_if.dload[0][5]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.dload[5]"
+Warning (10665): Bidirectional port "cache_control_if.dload[0][4]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.dload[4]"
+Warning (10665): Bidirectional port "cache_control_if.dload[0][3]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.dload[3]"
+Warning (10665): Bidirectional port "cache_control_if.dload[0][2]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.dload[2]"
+Warning (10665): Bidirectional port "cache_control_if.dload[0][1]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.dload[1]"
+Warning (10665): Bidirectional port "cache_control_if.dload[0][0]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.dload[0]"
+Warning (10665): Bidirectional port "cache_control_if.ccwait[0]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.ccwait"
+Warning (10665): Bidirectional port "cache_control_if.ccinv[0]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.ccinv"
+Warning (10665): Bidirectional port "cache_control_if.ccsnoopaddr[0][31]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.ccsnoopaddr[31]"
+Warning (10665): Bidirectional port "cache_control_if.ccsnoopaddr[0][30]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.ccsnoopaddr[30]"
+Warning (10665): Bidirectional port "cache_control_if.ccsnoopaddr[0][29]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.ccsnoopaddr[29]"
+Warning (10665): Bidirectional port "cache_control_if.ccsnoopaddr[0][28]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.ccsnoopaddr[28]"
+Warning (10665): Bidirectional port "cache_control_if.ccsnoopaddr[0][27]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.ccsnoopaddr[27]"
+Warning (10665): Bidirectional port "cache_control_if.ccsnoopaddr[0][26]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.ccsnoopaddr[26]"
+Warning (10665): Bidirectional port "cache_control_if.ccsnoopaddr[0][25]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.ccsnoopaddr[25]"
+Warning (10665): Bidirectional port "cache_control_if.ccsnoopaddr[0][24]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.ccsnoopaddr[24]"
+Warning (10665): Bidirectional port "cache_control_if.ccsnoopaddr[0][23]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.ccsnoopaddr[23]"
+Warning (10665): Bidirectional port "cache_control_if.ccsnoopaddr[0][22]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.ccsnoopaddr[22]"
+Warning (10665): Bidirectional port "cache_control_if.ccsnoopaddr[0][21]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.ccsnoopaddr[21]"
+Warning (10665): Bidirectional port "cache_control_if.ccsnoopaddr[0][20]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.ccsnoopaddr[20]"
+Warning (10665): Bidirectional port "cache_control_if.ccsnoopaddr[0][19]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.ccsnoopaddr[19]"
+Warning (10665): Bidirectional port "cache_control_if.ccsnoopaddr[0][18]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.ccsnoopaddr[18]"
+Warning (10665): Bidirectional port "cache_control_if.ccsnoopaddr[0][17]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.ccsnoopaddr[17]"
+Warning (10665): Bidirectional port "cache_control_if.ccsnoopaddr[0][16]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.ccsnoopaddr[16]"
+Warning (10665): Bidirectional port "cache_control_if.ccsnoopaddr[0][15]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.ccsnoopaddr[15]"
+Warning (10665): Bidirectional port "cache_control_if.ccsnoopaddr[0][14]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.ccsnoopaddr[14]"
+Warning (10665): Bidirectional port "cache_control_if.ccsnoopaddr[0][13]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.ccsnoopaddr[13]"
+Warning (10665): Bidirectional port "cache_control_if.ccsnoopaddr[0][12]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.ccsnoopaddr[12]"
+Warning (10665): Bidirectional port "cache_control_if.ccsnoopaddr[0][11]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.ccsnoopaddr[11]"
+Warning (10665): Bidirectional port "cache_control_if.ccsnoopaddr[0][10]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.ccsnoopaddr[10]"
+Warning (10665): Bidirectional port "cache_control_if.ccsnoopaddr[0][9]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.ccsnoopaddr[9]"
+Warning (10665): Bidirectional port "cache_control_if.ccsnoopaddr[0][8]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.ccsnoopaddr[8]"
+Warning (10665): Bidirectional port "cache_control_if.ccsnoopaddr[0][7]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.ccsnoopaddr[7]"
+Warning (10665): Bidirectional port "cache_control_if.ccsnoopaddr[0][6]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.ccsnoopaddr[6]"
+Warning (10665): Bidirectional port "cache_control_if.ccsnoopaddr[0][5]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.ccsnoopaddr[5]"
+Warning (10665): Bidirectional port "cache_control_if.ccsnoopaddr[0][4]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.ccsnoopaddr[4]"
+Warning (10665): Bidirectional port "cache_control_if.ccsnoopaddr[0][3]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.ccsnoopaddr[3]"
+Warning (10665): Bidirectional port "cache_control_if.ccsnoopaddr[0][2]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.ccsnoopaddr[2]"
+Warning (10665): Bidirectional port "cache_control_if.ccsnoopaddr[0][1]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.ccsnoopaddr[1]"
+Warning (10665): Bidirectional port "cache_control_if.ccsnoopaddr[0][0]" at cache_control_if.vh(25) has a one-way connection to bidirectional port "cif0.ccsnoopaddr[0]"
+Info (12128): Elaborating entity "datapath" for hierarchy "system:SYS|singlecycle:CPU|datapath:DP"
+Warning (10230): Verilog HDL assignment warning at datapath.sv(103): truncated value with size 32 to match size of target (1)
+Warning (10230): Verilog HDL assignment warning at datapath.sv(106): truncated value with size 32 to match size of target (1)
+Warning (10230): Verilog HDL assignment warning at datapath.sv(119): truncated value with size 32 to match size of target (5)
+Warning (10034): Output port "dpif.datomic" at datapath.sv(21) has no driver
+Info (12128): Elaborating entity "alu_if" for hierarchy "system:SYS|singlecycle:CPU|datapath:DP|alu_if:aluif"
+Warning (12158): Entity "alu_if" contains only dangling pins
+Info (12128): Elaborating entity "register_file_if" for hierarchy "system:SYS|singlecycle:CPU|datapath:DP|register_file_if:rfif"
+Warning (12158): Entity "register_file_if" contains only dangling pins
+Info (12128): Elaborating entity "control_unit_if" for hierarchy "system:SYS|singlecycle:CPU|datapath:DP|control_unit_if:cuif"
+Warning (12158): Entity "control_unit_if" contains only dangling pins
+Info (12128): Elaborating entity "program_counter_if" for hierarchy "system:SYS|singlecycle:CPU|datapath:DP|program_counter_if:pcif"
+Warning (12158): Entity "program_counter_if" contains only dangling pins
+Info (12128): Elaborating entity "request_unit_if" for hierarchy "system:SYS|singlecycle:CPU|datapath:DP|request_unit_if:ruif"
+Warning (12158): Entity "request_unit_if" contains only dangling pins
+Info (12128): Elaborating entity "alu" for hierarchy "system:SYS|singlecycle:CPU|datapath:DP|alu:ALU"
+Warning (10230): Verilog HDL assignment warning at alu.sv(15): truncated value with size 32 to match size of target (1)
+Info (12128): Elaborating entity "register_file" for hierarchy "system:SYS|singlecycle:CPU|datapath:DP|register_file:RF"
+Info (12128): Elaborating entity "control_unit" for hierarchy "system:SYS|singlecycle:CPU|datapath:DP|control_unit:CU"
+Warning (10230): Verilog HDL assignment warning at control_unit.sv(307): truncated value with size 2 to match size of target (1)
+Warning (10230): Verilog HDL assignment warning at control_unit.sv(325): truncated value with size 2 to match size of target (1)
+Warning (10230): Verilog HDL assignment warning at control_unit.sv(343): truncated value with size 2 to match size of target (1)
+Info (12128): Elaborating entity "program_counter" for hierarchy "system:SYS|singlecycle:CPU|datapath:DP|program_counter:PC"
+Info (12128): Elaborating entity "request_unit" for hierarchy "system:SYS|singlecycle:CPU|datapath:DP|request_unit:RU"
+Info (12128): Elaborating entity "caches" for hierarchy "system:SYS|singlecycle:CPU|caches:CM"
+Warning (10230): Verilog HDL assignment warning at caches.sv(53): truncated value with size 32 to match size of target (1)
+Warning (10230): Verilog HDL assignment warning at caches.sv(54): truncated value with size 32 to match size of target (1)
+Warning (10034): Output port "cif.ccwrite" at caches.sv(20) has no driver
+Warning (10034): Output port "cif.cctrans" at caches.sv(20) has no driver
+Info (12128): Elaborating entity "memory_control" for hierarchy "system:SYS|singlecycle:CPU|memory_control:CC"
+Warning (10034): Output port "ccif.ccwait[0]" at memory_control.sv(15) has no driver
+Warning (10034): Output port "ccif.ccinv[0]" at memory_control.sv(15) has no driver
+Warning (10034): Output port "ccif.ccsnoopaddr[0]" at memory_control.sv(15) has no driver
+Info (12128): Elaborating entity "ram" for hierarchy "system:SYS|ram:RAM"
+Warning (10230): Verilog HDL assignment warning at ram.sv(66): truncated value with size 32 to match size of target (1)
+Warning (10230): Verilog HDL assignment warning at ram.sv(89): truncated value with size 32 to match size of target (4)
+Info (12128): Elaborating entity "altsyncram" for hierarchy "system:SYS|ram:RAM|altsyncram:altsyncram_component"
+Info (12130): Elaborated megafunction instantiation "system:SYS|ram:RAM|altsyncram:altsyncram_component"
+Info (12133): Instantiated megafunction "system:SYS|ram:RAM|altsyncram:altsyncram_component" with the following parameter:
+    Info (12134): Parameter "clock_enable_input_a" = "BYPASS"
+    Info (12134): Parameter "clock_enable_output_a" = "BYPASS"
+    Info (12134): Parameter "init_file" = "meminit.hex"
+    Info (12134): Parameter "intended_device_family" = "Cyclone II"
+    Info (12134): Parameter "lpm_hint" = "ENABLE_RUNTIME_MOD=YES,INSTANCE_NAME=RAM"
+    Info (12134): Parameter "lpm_type" = "altsyncram"
+    Info (12134): Parameter "numwords_a" = "16384"
+    Info (12134): Parameter "operation_mode" = "SINGLE_PORT"
+    Info (12134): Parameter "outdata_aclr_a" = "NONE"
+    Info (12134): Parameter "outdata_reg_a" = "UNREGISTERED"
+    Info (12134): Parameter "power_up_uninitialized" = "FALSE"
+    Info (12134): Parameter "widthad_a" = "14"
+    Info (12134): Parameter "width_a" = "32"
+    Info (12134): Parameter "width_byteena_a" = "1"
+Info (12021): Found 1 design units, including 1 entities, in source file db/altsyncram_99f1.tdf
+    Info (12023): Found entity 1: altsyncram_99f1
+Info (12128): Elaborating entity "altsyncram_99f1" for hierarchy "system:SYS|ram:RAM|altsyncram:altsyncram_component|altsyncram_99f1:auto_generated"
+Info (12021): Found 1 design units, including 1 entities, in source file db/altsyncram_fta2.tdf
+    Info (12023): Found entity 1: altsyncram_fta2
+Info (12128): Elaborating entity "altsyncram_fta2" for hierarchy "system:SYS|ram:RAM|altsyncram:altsyncram_component|altsyncram_99f1:auto_generated|altsyncram_fta2:altsyncram1"
+Info (12021): Found 1 design units, including 1 entities, in source file db/decode_jsa.tdf
+    Info (12023): Found entity 1: decode_jsa
+Info (12128): Elaborating entity "decode_jsa" for hierarchy "system:SYS|ram:RAM|altsyncram:altsyncram_component|altsyncram_99f1:auto_generated|altsyncram_fta2:altsyncram1|decode_jsa:decode4"
+Info (12021): Found 1 design units, including 1 entities, in source file db/decode_c8a.tdf
+    Info (12023): Found entity 1: decode_c8a
+Info (12128): Elaborating entity "decode_c8a" for hierarchy "system:SYS|ram:RAM|altsyncram:altsyncram_component|altsyncram_99f1:auto_generated|altsyncram_fta2:altsyncram1|decode_c8a:rden_decode_a"
+Info (12021): Found 1 design units, including 1 entities, in source file db/mux_gob.tdf
+    Info (12023): Found entity 1: mux_gob
+Info (12128): Elaborating entity "mux_gob" for hierarchy "system:SYS|ram:RAM|altsyncram:altsyncram_component|altsyncram_99f1:auto_generated|altsyncram_fta2:altsyncram1|mux_gob:mux6"
+Info (12128): Elaborating entity "sld_mod_ram_rom" for hierarchy "system:SYS|ram:RAM|altsyncram:altsyncram_component|altsyncram_99f1:auto_generated|sld_mod_ram_rom:mgl_prim2"
+Info (12130): Elaborated megafunction instantiation "system:SYS|ram:RAM|altsyncram:altsyncram_component|altsyncram_99f1:auto_generated|sld_mod_ram_rom:mgl_prim2"
+Info (12133): Instantiated megafunction "system:SYS|ram:RAM|altsyncram:altsyncram_component|altsyncram_99f1:auto_generated|sld_mod_ram_rom:mgl_prim2" with the following parameter:
+    Info (12134): Parameter "CVALUE" = "00000000000000000000000000000000"
+    Info (12134): Parameter "IS_DATA_IN_RAM" = "1"
+    Info (12134): Parameter "IS_READABLE" = "1"
+    Info (12134): Parameter "NODE_NAME" = "1380011264"
+    Info (12134): Parameter "NUMWORDS" = "16384"
+    Info (12134): Parameter "SHIFT_COUNT_BITS" = "6"
+    Info (12134): Parameter "WIDTH_WORD" = "32"
+    Info (12134): Parameter "WIDTHAD" = "14"
+Info (12128): Elaborating entity "sld_rom_sr" for hierarchy "system:SYS|ram:RAM|altsyncram:altsyncram_component|altsyncram_99f1:auto_generated|sld_mod_ram_rom:mgl_prim2|sld_rom_sr:\ram_rom_logic_gen:name_gen:info_rom_sr"
+Info (12021): Found 1 design units, including 1 entities, in source file db/altsyncram_cr14.tdf
+    Info (12023): Found entity 1: altsyncram_cr14
+Info (12021): Found 1 design units, including 1 entities, in source file db/mux_ssc.tdf
+    Info (12023): Found entity 1: mux_ssc
+Info (12021): Found 1 design units, including 1 entities, in source file db/decode_dvf.tdf
+    Info (12023): Found entity 1: decode_dvf
+Info (12021): Found 1 design units, including 1 entities, in source file db/cntr_tei.tdf
+    Info (12023): Found entity 1: cntr_tei
+Info (12021): Found 1 design units, including 1 entities, in source file db/cmpr_pgc.tdf
+    Info (12023): Found entity 1: cmpr_pgc
+Info (12021): Found 1 design units, including 1 entities, in source file db/cntr_i6j.tdf
+    Info (12023): Found entity 1: cntr_i6j
+Info (12021): Found 1 design units, including 1 entities, in source file db/cntr_egi.tdf
+    Info (12023): Found entity 1: cntr_egi
+Info (12021): Found 1 design units, including 1 entities, in source file db/cmpr_qgc.tdf
+    Info (12023): Found entity 1: cmpr_qgc
+Info (12021): Found 1 design units, including 1 entities, in source file db/cntr_23j.tdf
+    Info (12023): Found entity 1: cntr_23j
+Info (12021): Found 1 design units, including 1 entities, in source file db/cmpr_ngc.tdf
+    Info (12023): Found entity 1: cmpr_ngc
+Info (12033): Analysis and Synthesis generated SignalTap II or debug node instance "auto_signaltap_0"
+Info (12206): 0 design partitions require synthesis
+Info (12208): 3 design partitions do not require synthesis
+    Info (12229): Partition "Top" does not require synthesis because there were no relevant design changes
+    Info (12229): Partition "sld_hub:auto_hub" does not require synthesis because there were no relevant design changes
+    Info (12229): Partition "sld_signaltap:auto_signaltap_0" does not require synthesis because there were no relevant design changes
+Warning (12161): Node "system:SYS|singlecycle:CPU|datapath:DP|request_unit_if:ruif|request_unit_if.imemREN" is stuck at GND because node is in wire loop and does not have a source
+Warning (20013): Ignored assignments for entity "DE2_115_Basic_Computer" -- entity does not exist in design
+    Warning (20014): Assignment for entity set_instance_assignment -name FAST_INPUT_REGISTER ON -to * -entity DE2_115_Basic_Computer was ignored
+    Warning (20014): Assignment for entity set_instance_assignment -name FAST_OUTPUT_REGISTER ON -to * -entity DE2_115_Basic_Computer was ignored
+    Warning (20014): Assignment for entity set_instance_assignment -name IO_MAXIMUM_TOGGLE_RATE "0 MHz" -to HEX0 -entity DE2_115_Basic_Computer was ignored
+    Warning (20014): Assignment for entity set_instance_assignment -name IO_MAXIMUM_TOGGLE_RATE "0 MHz" -to HEX1 -entity DE2_115_Basic_Computer was ignored
+    Warning (20014): Assignment for entity set_instance_assignment -name IO_MAXIMUM_TOGGLE_RATE "0 MHz" -to HEX2 -entity DE2_115_Basic_Computer was ignored
+    Warning (20014): Assignment for entity set_instance_assignment -name IO_MAXIMUM_TOGGLE_RATE "0 MHz" -to HEX3[0] -entity DE2_115_Basic_Computer was ignored
+    Warning (20014): Assignment for entity set_instance_assignment -name IO_MAXIMUM_TOGGLE_RATE "0 MHz" -to HEX3[1] -entity DE2_115_Basic_Computer was ignored
+    Warning (20014): Assignment for entity set_instance_assignment -name IO_MAXIMUM_TOGGLE_RATE "0 MHz" -to KEY -entity DE2_115_Basic_Computer was ignored
+    Warning (20014): Assignment for entity set_instance_assignment -name IO_MAXIMUM_TOGGLE_RATE "0 MHz" -to SW -entity DE2_115_Basic_Computer was ignored
+    Warning (20014): Assignment for entity set_instance_assignment -name TSU_REQUIREMENT "10 ns" -from * -to * -entity DE2_115_Basic_Computer was ignored
+    Warning (20014): Assignment for entity set_global_assignment -name LL_ROOT_REGION ON -entity DE2_115_Basic_Computer -section_id "Root Region" was ignored
+    Warning (20014): Assignment for entity set_global_assignment -name LL_MEMBER_STATE LOCKED -entity DE2_115_Basic_Computer -section_id "Root Region" was ignored
+    Warning (20014): Assignment for entity set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -entity DE2_115_Basic_Computer -section_id Top was ignored
+    Warning (20014): Assignment for entity set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -entity DE2_115_Basic_Computer -section_id Top was ignored
+    Warning (20014): Assignment for entity set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -entity DE2_115_Basic_Computer -section_id Top was ignored
+    Warning (20014): Assignment for entity set_global_assignment -name PARTITION_PRESERVE_HIGH_SPEED_TILES ON -entity DE2_115_Basic_Computer -section_id Top was ignored
+    Warning (20014): Assignment for entity set_global_assignment -name PARTITION_IGNORE_SOURCE_FILE_CHANGES OFF -entity DE2_115_Basic_Computer -section_id Top was ignored
+    Warning (20014): Assignment for entity set_global_assignment -name PARTITION_ALWAYS_USE_QXP_NETLIST OFF -entity DE2_115_Basic_Computer -section_id Top was ignored
+    Warning (20014): Assignment for entity set_global_assignment -name PARTITION_COLOR 16764057 -entity DE2_115_Basic_Computer -section_id Top was ignored
+    Warning (20014): Assignment for entity set_global_assignment -name PARTITION_IMPORT_ASSIGNMENTS ON -entity DE2_115_Basic_Computer -section_id Top was ignored
+    Warning (20014): Assignment for entity set_global_assignment -name PARTITION_IMPORT_EXISTING_ASSIGNMENTS REPLACE_CONFLICTING -entity DE2_115_Basic_Computer -section_id Top was ignored
+    Warning (20014): Assignment for entity set_global_assignment -name PARTITION_IMPORT_EXISTING_LOGICLOCK_REGIONS UPDATE_CONFLICTING -entity DE2_115_Basic_Computer -section_id Top was ignored
+    Warning (20014): Assignment for entity set_global_assignment -name PARTITION_IMPORT_PIN_ASSIGNMENTS ON -entity DE2_115_Basic_Computer -section_id Top was ignored
+    Warning (20014): Assignment for entity set_global_assignment -name PARTITION_IMPORT_PROMOTE_ASSIGNMENTS ON -entity DE2_115_Basic_Computer -section_id Top was ignored
+    Warning (20014): Assignment for entity set_global_assignment -name PARTITION_TYPE STANDARD_PARTITION -entity DE2_115_Basic_Computer -section_id Top was ignored
+    Warning (20014): Assignment for entity set_global_assignment -name ALLOW_MULTIPLE_PERSONAS OFF -entity DE2_115_Basic_Computer -section_id Top was ignored
+    Warning (20014): Assignment for entity set_global_assignment -name PARTITION_ASD_REGION_ID 1 -entity DE2_115_Basic_Computer -section_id Top was ignored
+    Warning (20014): Assignment for entity set_global_assignment -name CROSS_BOUNDARY_OPTIMIZATIONS OFF -entity DE2_115_Basic_Computer -section_id Top was ignored
+    Warning (20014): Assignment for entity set_global_assignment -name PROPAGATE_CONSTANTS_ON_INPUTS ON -entity DE2_115_Basic_Computer -section_id Top was ignored
+    Warning (20014): Assignment for entity set_global_assignment -name PROPAGATE_INVERSIONS_ON_INPUTS ON -entity DE2_115_Basic_Computer -section_id Top was ignored
+    Warning (20014): Assignment for entity set_global_assignment -name REMOVE_LOGIC_ON_UNCONNECTED_OUTPUTS ON -entity DE2_115_Basic_Computer -section_id Top was ignored
+    Warning (20014): Assignment for entity set_global_assignment -name MERGE_EQUIVALENT_INPUTS ON -entity DE2_115_Basic_Computer -section_id Top was ignored
+    Warning (20014): Assignment for entity set_global_assignment -name MERGE_EQUIVALENT_BIDIRS ON -entity DE2_115_Basic_Computer -section_id Top was ignored
+    Warning (20014): Assignment for entity set_global_assignment -name ABSORB_PATHS_FROM_OUTPUTS_TO_INPUTS ON -entity DE2_115_Basic_Computer -section_id Top was ignored
+    Warning (20014): Assignment for entity set_global_assignment -name PARTITION_EXTRACT_HARD_BLOCK_NODES ON -entity DE2_115_Basic_Computer -section_id Top was ignored
+Info: Quartus II 32-bit Analysis & Synthesis was successful. 0 errors, 267 warnings
+    Info: Peak virtual memory: 400 megabytes
+    Info: Processing ended: Thu Sep 15 13:13:52 2016
+    Info: Elapsed time: 00:00:07
+    Info: Total CPU time (on all processors): 00:00:04
+
+
