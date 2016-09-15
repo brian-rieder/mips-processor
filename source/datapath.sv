@@ -59,7 +59,6 @@ module datapath (
 
   // Datapath input assignment
   assign dpif.halt      = cuif.halt;
-  // assign dpif.imemREN   = ruif.imemREN;
   assign dpif.imemREN   = cuif.imemREN;
   assign dpif.imemaddr  = pcif.pc_out;
   assign dpif.dmemREN   = ruif.dmemREN;
@@ -69,7 +68,6 @@ module datapath (
   assign dpif.dmemaddr  = aluif.port_o;
 
   // Request Unit input assignment
-  // assign ruif.halt      = cuif.halt;
   assign ruif.dWEN      = cuif.dWEN;
   assign ruif.dREN      = cuif.dREN;
   assign ruif.ihit      = dpif.ihit;
@@ -134,6 +132,13 @@ module datapath (
 
   // Program Counter input assignment
   assign pcif.pcWEN     = ruif.pcWEN;
+  // always_comb begin
+  //   if (cuif.halt) begin
+  //     pcif.pcWEN        = 0;
+  //   end else begin
+  //     pcif.pcWEN        = ruif.pcWEN;
+  //   end
+  // end
   always_comb begin
     pcif.pc_next = '0;
     branch_mode = 0;
