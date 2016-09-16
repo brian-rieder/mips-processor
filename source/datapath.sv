@@ -1,5 +1,5 @@
 // File name:   datapath.sv
-// Updated:     11 September 2016
+// Updated:     16 September 2016
 // Author:      Brian Rieder 
 // Description: Glue unit that contains register file, control unit, 
 //              program counter, ALU, request unit, and glue logic
@@ -58,7 +58,7 @@ module datapath (
   end
 
   // Datapath input assignment
-  assign dpif.halt      = cuif.halt;
+  //assign dpif.halt      = cuif.halt;
   assign dpif.imemREN   = cuif.imemREN;
   assign dpif.imemaddr  = pcif.pc_out;
   assign dpif.dmemREN   = ruif.dmemREN;
@@ -66,6 +66,12 @@ module datapath (
   // assign datomic        = 0; // related to pipeline
   assign dpif.dmemstore = rfif.rdat2;
   assign dpif.dmemaddr  = aluif.port_o;
+  always_ff @ (posedge CLK, negedge nRST) begin
+    if (nRST) begin
+      dpif.halt <= 0;
+    end
+    dpif.halt <= cuif.halt;
+  end
 
   // Request Unit input assignment
   assign ruif.dWEN      = cuif.dWEN;
