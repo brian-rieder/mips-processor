@@ -67,7 +67,7 @@ module datapath (
   assign dpif.dmemstore = rfif.rdat2;
   assign dpif.dmemaddr  = aluif.port_o;
   always_ff @ (posedge CLK, negedge nRST) begin
-    if (nRST) begin
+    if (!nRST) begin
       dpif.halt <= 0;
     end
     dpif.halt <= cuif.halt;
