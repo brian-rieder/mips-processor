@@ -14,6 +14,7 @@ interface control_unit_if;
   import cpu_types_pkg::*;
 
   word_t      imemload, shamt;
+  opcode_t    opcode;
   aluop_t     alu_op;
   logic [1:0] ALUsrc, RegDst, JumpSel, MemToReg;
   logic       halt, dWEN, dREN, RegWr, jumpFlush,
@@ -35,7 +36,7 @@ interface control_unit_if;
             // PC logic outputs
             JumpSel, PCsrc, BNE, j25,
             // Datapath logic outputs
-            ExtOp, jumpFlush
+            ExtOp, jumpFlush, opcode
   );
   // control unit tb
   modport tb (
