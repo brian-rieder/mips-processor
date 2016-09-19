@@ -21,12 +21,13 @@ module control_unit (
   assign funct = funct_t'(cuif.imemload[5:0]);
 
   // Non-logic dependent Outputs
-  assign cuif.Rs    = cuif.imemload[25:21];
-  assign cuif.Rt    = cuif.imemload[20:16];
-  assign cuif.Rd    = cuif.imemload[15:11];
-  assign cuif.imm16 = cuif.imemload[15:0];
-  assign cuif.j25   = cuif.imemload[25:0];
-  assign cuif.shamt = {27'b0, cuif.imemload[10:6]};
+  assign cuif.opcode = op;
+  assign cuif.Rs     = cuif.imemload[25:21];
+  assign cuif.Rt     = cuif.imemload[20:16];
+  assign cuif.Rd     = cuif.imemload[15:11];
+  assign cuif.imm16  = cuif.imemload[15:0];
+  assign cuif.j25    = cuif.imemload[25:0];
+  assign cuif.shamt  = {27'b0, cuif.imemload[10:6]};
 
   // Instruction Decoding
   always_comb begin
