@@ -44,6 +44,7 @@ module control_unit (
             cuif.BNE = 0; // Don't care 
             cuif.PCsrc = 0; // PC + 4
             cuif.JumpSel = 2'b00; // PC + 4
+            cuif.jumpFlush = 0; // Don't flush
           end
           SRL: begin
             cuif.RegDst = 2'b01; // Rd
@@ -55,6 +56,7 @@ module control_unit (
             cuif.BNE = 0; // Don't care 
             cuif.PCsrc = 0; // PC + 4
             cuif.JumpSel = 2'b00; // PC + 4
+            cuif.jumpFlush = 0; // Don't flush
           end
           JR: begin
             cuif.RegDst = 2'b00; // Don't care
@@ -66,6 +68,7 @@ module control_unit (
             cuif.BNE = 0; // Don't care 
             cuif.PCsrc = 0; // Don't care
             cuif.JumpSel = 2'b11; // rdat1 for JR
+            cuif.jumpFlush = 1; // Flush
           end
           ADD: begin
             cuif.RegDst = 2'b01; // Rd
@@ -77,6 +80,7 @@ module control_unit (
             cuif.BNE = 0; // Don't care 
             cuif.PCsrc = 0; // PC + 4
             cuif.JumpSel = 2'b00; // PC + 4
+            cuif.jumpFlush = 0; // Don't flush
           end
           ADDU: begin
             cuif.RegDst = 2'b01; // Rd
@@ -88,6 +92,7 @@ module control_unit (
             cuif.BNE = 0; // Don't care 
             cuif.PCsrc = 0; // PC + 4
             cuif.JumpSel = 2'b00; // PC + 4
+            cuif.jumpFlush = 0; // Don't flush
           end
           SUB: begin
             cuif.RegDst = 2'b01; // Rd
@@ -99,6 +104,7 @@ module control_unit (
             cuif.BNE = 0; // Don't care 
             cuif.PCsrc = 0; // PC + 4
             cuif.JumpSel = 2'b00; // PC + 4
+            cuif.jumpFlush = 0; // Don't flush
           end
           SUBU: begin
             cuif.RegDst = 2'b01; // Rd
@@ -110,6 +116,7 @@ module control_unit (
             cuif.BNE = 0; // Don't care 
             cuif.PCsrc = 0; // PC + 4
             cuif.JumpSel = 2'b00; // PC + 4
+            cuif.jumpFlush = 0; // Don't flush
           end
           AND: begin
             cuif.RegDst = 2'b01; // Rd
@@ -121,6 +128,7 @@ module control_unit (
             cuif.BNE = 0; // Don't care 
             cuif.PCsrc = 0; // PC + 4
             cuif.JumpSel = 2'b00; // PC + 4
+            cuif.jumpFlush = 0; // Don't flush
           end
           OR: begin
             cuif.RegDst = 2'b01; // Rd
@@ -132,6 +140,7 @@ module control_unit (
             cuif.BNE = 0; // Don't care 
             cuif.PCsrc = 0; // PC + 4
             cuif.JumpSel = 2'b00; // PC + 4
+            cuif.jumpFlush = 0; // Don't flush
           end
           XOR: begin
             cuif.RegDst = 2'b01; // Rd
@@ -143,6 +152,7 @@ module control_unit (
             cuif.BNE = 0; // Don't care 
             cuif.PCsrc = 0; // PC + 4
             cuif.JumpSel = 2'b00; // PC + 4
+            cuif.jumpFlush = 0; // Don't flush
           end
           NOR: begin
             cuif.RegDst = 2'b01; // Rd
@@ -154,6 +164,7 @@ module control_unit (
             cuif.BNE = 0; // Don't care 
             cuif.PCsrc = 0; // PC + 4
             cuif.JumpSel = 2'b00; // PC + 4
+            cuif.jumpFlush = 0; // Don't flush
           end
           SLT: begin
             cuif.RegDst = 2'b01; // Rd
@@ -165,6 +176,7 @@ module control_unit (
             cuif.BNE = 0; // Don't care 
             cuif.PCsrc = 0; // PC + 4
             cuif.JumpSel = 2'b00; // PC + 4
+            cuif.jumpFlush = 0; // Don't flush
           end
           SLTU: begin
             cuif.RegDst = 2'b01; // Rd
@@ -176,6 +188,7 @@ module control_unit (
             cuif.BNE = 0; // Don't care 
             cuif.PCsrc = 0; // PC + 4
             cuif.JumpSel = 2'b00; // PC + 4
+            cuif.jumpFlush = 0; // Don't flush
           end
         endcase
         // Former Request Unit
@@ -193,6 +206,7 @@ module control_unit (
         cuif.BNE = 0; // Don't care 
         cuif.PCsrc = 0; // Don't care
         cuif.JumpSel = 2'b01; // Jump
+        cuif.jumpFlush = 1; // Flush
         // Former Request Unit
         cuif.halt = 0;
         cuif.dWEN = 0;
@@ -208,6 +222,7 @@ module control_unit (
         cuif.BNE = 0; // Don't care 
         cuif.PCsrc = 0; // Don't care
         cuif.JumpSel = 2'b01; // Jump
+        cuif.jumpFlush = 1; // Flush
         // Former Request Unit
         cuif.halt = 0;
         cuif.dWEN = 0;
@@ -223,6 +238,7 @@ module control_unit (
         cuif.BNE = 0; // Choose Zero flag
         cuif.PCsrc = 1; // Branch
         cuif.JumpSel = 2'b10; // Branchaddr
+        cuif.jumpFlush = 0; // Don't flush
         // Former Request Unit
         cuif.halt = 0;
         cuif.dWEN = 0;
@@ -238,6 +254,7 @@ module control_unit (
         cuif.BNE = 1; // Not Zero flag
         cuif.PCsrc = 1; // Branch
         cuif.JumpSel = 2'b10; // Branchaddr
+        cuif.jumpFlush = 0; // Don't flush
         // Former Request Unit
         cuif.halt = 0;
         cuif.dWEN = 0;
@@ -253,6 +270,7 @@ module control_unit (
         cuif.BNE = 0; // Don't care 
         cuif.PCsrc = 0; // PC + 4
         cuif.JumpSel = 2'b00; // PC + 4
+        cuif.jumpFlush = 0; // Don't flush
         // Former Request Unit
         cuif.halt = 0;
         cuif.dWEN = 0;
@@ -268,6 +286,7 @@ module control_unit (
         cuif.BNE = 0; // Don't care 
         cuif.PCsrc = 0; // PC + 4
         cuif.JumpSel = 2'b00; // PC + 4
+        cuif.jumpFlush = 0; // Don't flush
         // Former Request Unit
         cuif.halt = 0;
         cuif.dWEN = 0;
@@ -283,6 +302,7 @@ module control_unit (
         cuif.BNE = 0; // Don't care 
         cuif.PCsrc = 0; // PC + 4
         cuif.JumpSel = 2'b00; // PC + 4
+        cuif.jumpFlush = 0; // Don't flush
         // Former Request Unit
         cuif.halt = 0;
         cuif.dWEN = 0;
@@ -298,6 +318,7 @@ module control_unit (
         cuif.BNE = 0; // Don't care 
         cuif.PCsrc = 0; // PC + 4
         cuif.JumpSel = 2'b00; // PC + 4
+        cuif.jumpFlush = 0; // Don't flush
         // Former Request Unit
         cuif.halt = 0;
         cuif.dWEN = 0;
@@ -313,6 +334,7 @@ module control_unit (
         cuif.BNE = 0; // Don't care 
         cuif.PCsrc = 0; // PC + 4
         cuif.JumpSel = 2'b00; // PC + 4
+        cuif.jumpFlush = 0; // Don't flush
         // Former Request Unit
         cuif.halt = 0;
         cuif.dWEN = 0;
@@ -328,6 +350,7 @@ module control_unit (
         cuif.BNE = 0; // Don't care 
         cuif.PCsrc = 0; // PC + 4
         cuif.JumpSel = 2'b00; // PC + 4
+        cuif.jumpFlush = 0; // Don't flush
         // Former Request Unit
         cuif.halt = 0;
         cuif.dWEN = 0;
@@ -343,6 +366,7 @@ module control_unit (
         cuif.BNE = 0; // Don't care 
         cuif.PCsrc = 0; // PC + 4
         cuif.JumpSel = 2'b00; // PC + 4
+        cuif.jumpFlush = 0; // Don't flush
         // Former Request Unit
         cuif.halt = 0;
         cuif.dWEN = 0;
@@ -358,6 +382,7 @@ module control_unit (
         cuif.BNE = 0; // Don't care 
         cuif.PCsrc = 0; // PC + 4
         cuif.JumpSel = 2'b00; // PC + 4
+        cuif.jumpFlush = 0; // Don't flush
         // Former Request Unit
         cuif.halt = 0;
         cuif.dWEN = 0;
@@ -373,6 +398,7 @@ module control_unit (
         cuif.BNE = 0; // Don't care 
         cuif.PCsrc = 0; // PC + 4
         cuif.JumpSel = 2'b00; // PC + 4
+        cuif.jumpFlush = 0; // Don't flush
         // Former Request Unit
         cuif.halt = 0;
         cuif.dWEN = 0;
@@ -388,6 +414,7 @@ module control_unit (
         cuif.BNE = 0; // Don't care 
         cuif.PCsrc = 0; // PC + 4
         cuif.JumpSel = 2'b00; // PC + 4
+        cuif.jumpFlush = 0; // Don't flush
         // Former Request Unit
         cuif.halt = 0;
         cuif.dWEN = 1;
@@ -403,6 +430,7 @@ module control_unit (
         cuif.BNE = 0; // Don't care 
         cuif.PCsrc = 0; // PC + 4
         cuif.JumpSel = 2'b00; // PC + 4
+        cuif.jumpFlush = 0; // Don't flush
         // Former Request Unit
         cuif.halt = 0;
         cuif.dWEN = 0;
@@ -418,6 +446,7 @@ module control_unit (
         cuif.BNE = 0; // Don't care 
         cuif.PCsrc = 0; // PC + 4
         cuif.JumpSel = 2'b00; // PC + 4
+        cuif.jumpFlush = 0; // Don't flush
         // Former Request Unit
         cuif.halt = 0;
         cuif.dWEN = 1;
@@ -433,6 +462,7 @@ module control_unit (
         cuif.BNE = 0; // Don't care 
         cuif.PCsrc = 0; // PC + 4
         cuif.JumpSel = 2'b00; // PC + 4
+        cuif.jumpFlush = 0; // Don't flush
         // Former Request Unit
         cuif.halt = 1;
         cuif.dWEN = 0;
@@ -448,6 +478,7 @@ module control_unit (
         cuif.BNE = 0; // Don't care 
         cuif.PCsrc = 0; // PC + 4
         cuif.JumpSel = 2'b00; // PC + 4
+        cuif.jumpFlush = 0; // Don't flush
         // Former Request Unit
         cuif.halt = 0;
         cuif.dWEN = 0;
