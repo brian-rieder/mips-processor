@@ -59,7 +59,7 @@ module datapath (
 
   // Datapath input assignment
   //assign dpif.halt      = cuif.halt;
-  assign dpif.imemREN   = cuif.imemREN;
+  assign dpif.imemREN   = 1; // always tied high
   assign dpif.imemaddr  = pcif.pc_out;
   assign dpif.dmemREN   = ruif.dmemREN;
   assign dpif.dmemWEN   = ruif.dmemWEN;
