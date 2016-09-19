@@ -15,40 +15,42 @@ interface control_unit_if;
 
   word_t      imemload, shamt;
   aluop_t     alu_op;
-  logic [1:0] ALUsrc, RegDst, JumpSel;
-  logic       MemToReg, halt, dWEN, dREN, RegWr,
+  logic [1:0] ALUsrc, RegDst, JumpSel, MemToReg;
+  logic       halt, dWEN, dREN, RegWr, jumpFlush,
               BNE, JAL, LUI, PCsrc, ExtOp, imemREN;
   regbits_t   Rs, Rt, Rd;
   logic [IMM_W-1:0] imm16;
+  logic [ADDR_W-1:0] j25;
 
   // control unit ports
   modport cu (
+            // Instruction
     input   imemload,
             // ALU logic outputs
     output  alu_op, ALUsrc, MemToReg, imm16,
-            // Request Unit logic outputs
+            // Memory interaction outputs
             halt, dWEN, dREN,
             // Register File logic outputs
-            Rs, Rt, Rd, RegDst, RegWr, JAL, LUI, shamt,
+            Rs, Rt, Rd, RegDst, RegWr, shamt,
             // PC logic outputs
-            JumpSel, PCsrc, BNE,
+            JumpSel, PCsrc, BNE, j25,
             // Datapath logic outputs
-            ExtOp, imemREN
+            ExtOp, jumpFlush
   );
   // control unit tb
   modport tb (
             // ALU logic outputs
-    input   alu_op, ALUsrc, MemToReg, imm16,
-            // Request Unit logic outputs
+    inputs  alu_op, ALUsrc, MemToReg, imm16,
+            // Memory interaction outputs
             halt, dWEN, dREN,
             // Register File logic outputs
-            Rs, Rt, Rd, RegDst, RegWr, JAL, LUI, shamt,
+            Rs, Rt, Rd, RegDst, RegWr, shamt,
             // PC logic outputs
-            JumpSel, PCsrc, BNE,
+            JumpSel, PCsrc, BNE, j25,
             // Datapath logic outputs
-            ExtOp, imemREN,
+            ExtOp, jumpFlush,
             // Instruction
-    output  imemload
+    output   imemload
   );
 endinterface
 
