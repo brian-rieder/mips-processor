@@ -34,13 +34,14 @@ interface ID_EX_if;
 
   // control unit ports
   modport id_ex (
-    input  pcp4_in,       // PC+4 from Control Unit
+    input  ihit,
+           pcp4_in,       // PC+4 from Control Unit
            rdat1_in,      // rdat1 from Register File
            rdat2_in,      // rdat2 from Register File
            extImm_in,     // Extended Immediate from Extender/Control Unit
            shamt_in,      // shamt from Control Unit
            op_id,         // Operation in the Instruction Decode stage
-           alu_op_in,     // ALU operation from Control Unit
+           ALUop_in,     // ALU operation from Control Unit
            ALUsrc_in,     // ALU source (rdat2/shamt/extImm) from Control Unit
            RegDst_in,     // Register Destination from Control Unit
            JumpSel_in,    // Jump Select (PC+4/jumpAddr/branchaddr/rdat1) from Control Unit
@@ -49,23 +50,24 @@ interface ID_EX_if;
            dWEN_in,       // dWEN from Control Unit
            halt_in,       // halt from Control Unit
            jumpFlush_in,  // Jump Flush Enable from Control Unit
-           PCsrc_in,      // PCsrc (PC+4/branchaddr) from Control Unit
+           // PCsrc_in,      // PCsrc (PC+4/branchaddr) from Control Unit
            RegWr_in,      // Reg Write Enable from Control Unit
            BNE_in,        // BNE from Control Unit
            wsel_in,       // wsel (Rd/Rt/31) from Control Unit
            j25_in,        // j-inst address from Control Unit
+           flush,
     output pcp4_out,      // PC+4 to EX/MEM and jumpAddr computation
            rdat1_out,     // rdat1 to ALU port A and jumpSel mux
            rdat2_out,     // rdat2 to ALUsrc mux
            extImm_out,    // Extended Imm to ALUsrc mux and LUIval
            shamt_out,     // shamt to ALUsrc mux
            op_ex,         // Operation in the Execute Stage
-           alu_op_out,    // ALU operation to ALU
+           ALUop_out,     // ALU operation to ALU
            ALUsrc_out,    // ALU source (rdat2/shamt/extImm) to ALUsrc mux
            RegDst_out,    // Register Destination to EX/MEM
            JumpSel_out,   // Jump Select (PC+4/jumpAddr/branchaddr/rdat1) to jumpSel mux
            MemToReg_out,  // MemToReg (dmemload/portO/LUIval/pcp4) to EX/MEM
-           PCsrc_out,     // PCsrc (PC+4/branchaddr) to branch/PC+4 AND gate
+           // PCsrc_out,     // PCsrc (PC+4/branchaddr) to branch/PC+4 AND gate
            dREN_out,      // dREN to EX/MEM
            dWEN_out,      // dWEN to EX/MEM
            halt_out,      // halt to EX/MEM
