@@ -74,10 +74,22 @@ module datapath (
     // assign dpif.halt      = memwbif.halt_out;
     assign dpif.imemREN   = 1; // always tied high
     assign dpif.imemaddr  = pcif.pc_out;
-    assign dpif.dmemREN   = exmemif.dREN_out;
-    assign dpif.dmemWEN   = exmemif.dWEN_out;
     assign dpif.dmemstore = exmemif.dmemstore_out;
     assign dpif.dmemaddr  = exmemif.portO_out;
+    always_ff @ (posedge CLK, negedge nRST) begin
+        if (!nRST) begin
+            dpif.dmemREN <= 0;
+            dpif.dmemWEN <= 0;
+        end else begin
+            if (dpif.ihit) begin
+                dpif.dmemREN <= exmemif.dREN_out;
+                dpif.dmemWEN <= exmemif.dWEN_out;
+            end else if (dpif.dhit) begin
+                dpif.dmemREN <= 0;
+                dpif.dmemWEN <= 0;
+            end
+        end
+    end 
     
     always_ff @ (posedge CLK, negedge nRST) begin
         if (!nRST) begin
