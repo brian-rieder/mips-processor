@@ -41,7 +41,7 @@ interface control_unit_if;
   // control unit tb
   modport tb (
             // ALU logic outputs
-    inputs  alu_op, ALUsrc, MemToReg, imm16,
+    input   alu_op, ALUsrc, MemToReg, imm16,
             // Memory interaction outputs
             halt, dWEN, dREN,
             // Register File logic outputs
