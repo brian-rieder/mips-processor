@@ -16,15 +16,16 @@ interface MEM_WB_if;
 	
 
 	logic [1:0]	regDest_in, regDest_out; 
-	logic [31:0]	dmemload_in_in, dmemload_out, 
-	logic 		regWr_in, regWr_out, 
-	logic 		wsel_in, wsel_out,
-	logic [1:0]	memToReg_in, memToReg_out, 
-	logic 		halt_in, halt_out, 
-	logic [31:0]	portO_in, portO_out, 
-	logic [31:0]	luiValue_in, luiValue_out,
-	logic		ihit,dhit 
-  	logic [31:0]	pc4_in, pc4_out	
+	logic [31:0]	dmemload_in_in, dmemload_out;
+	logic 		regWr_in, regWr_out;
+	logic 		wsel_in, wsel_out;
+	logic [1:0]	memToReg_in, memToReg_out;
+	logic 		halt_in, halt_out;
+	logic [31:0]	portO_in, portO_out;
+	logic [31:0]	luiValue_in, luiValue_out;
+	logic		ihit,dhit;
+  	logic [31:0]	pc4_in, pc4_out;
+    opcode_t op_mem, op_wb;
 
 
   // control unit ports
@@ -40,6 +41,7 @@ interface MEM_WB_if;
 		ihit, 
 		dhit, 
 		pc4_in,	
+        op_mem,
 		
     output  	regDest_out, 
 		dmemload_out, 
@@ -49,7 +51,8 @@ interface MEM_WB_if;
 		halt_out, 
 		portO_out, 
 		luiValue_out, 
-		pc4_out
+		pc4_out,
+        op_wb
   );
   // MEM WB tb
   modport tb (
