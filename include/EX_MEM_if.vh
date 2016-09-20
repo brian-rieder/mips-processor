@@ -29,7 +29,8 @@ interface EX_MEM_if;
 
   // control unit ports
   modport ex_mem (
-    input   	regDest_in, 
+    input   	
+        regDest_in, 
 		dREN_in, 
 		dWEN_in, 
 		dmemstore_in, 
@@ -42,7 +43,8 @@ interface EX_MEM_if;
 		dhit, 
 		pc4_in,	
 		
-    output  	regDest_out, 
+    output  	
+        regDest_out, 
 		dREN_out, 
 		dWEN_out, 
 		dmemstore_out, 
@@ -55,7 +57,8 @@ interface EX_MEM_if;
   );
   // control unit tb
   modport tb (
-    output   	regDest_in, 
+    output   	
+        regDest_in, 
 		dREN_in, 
 		dWEN_in, 
 		dmemstore_in, 
@@ -68,7 +71,8 @@ interface EX_MEM_if;
 		dhit, 
 		pc4_in,	
 		
-    input  	regDest_out, 
+    input  	
+        regDest_out, 
 		dREN_out, 
 		dWEN_out, 
 		dmemstore_out, 
@@ -79,6 +83,7 @@ interface EX_MEM_if;
 		luiValue_out, 
 		pc4_out
   );
+
 endinterface
 
 `endif //MEMORY_WRITEBACK_IF_VH
