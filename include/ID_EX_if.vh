@@ -51,7 +51,7 @@ interface ID_EX_if;
            dWEN_in,       // dWEN from Control Unit
            halt_in,       // halt from Control Unit
            jumpFlush_in,  // Jump Flush Enable from Control Unit
-           // PCsrc_in,      // PCsrc (PC+4/branchaddr) from Control Unit
+           PCsrc_in,      // PCsrc (PC+4/branchaddr) from Control Unit
            RegWr_in,      // Reg Write Enable from Control Unit
            BNE_in,        // BNE from Control Unit
            wsel_in,       // wsel (Rd/Rt/31) from Control Unit
@@ -68,7 +68,7 @@ interface ID_EX_if;
            RegDst_out,    // Register Destination to EX/MEM
            JumpSel_out,   // Jump Select (PC+4/jumpAddr/branchaddr/rdat1) to jumpSel mux
            MemToReg_out,  // MemToReg (dmemload/portO/LUIval/pcp4) to EX/MEM
-           // PCsrc_out,     // PCsrc (PC+4/branchaddr) to branch/PC+4 AND gate
+           PCsrc_out,     // PCsrc (PC+4/branchaddr) to branch/PC+4 AND gate
            dREN_out,      // dREN to EX/MEM
            dWEN_out,      // dWEN to EX/MEM
            halt_out,      // halt to EX/MEM
