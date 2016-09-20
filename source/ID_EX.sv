@@ -69,7 +69,7 @@ always_ff @(posedge CLK, negedge nRST) begin
 				idexif.extImm_out    <= idexif.extImm_in;
 				idexif.shamt_out     <= idexif.shamt_in;
 				idexif.op_ex         <= idexif.op_id;
-				idexif.ALUop_out     <= idexif.alu_op_in;
+				idexif.ALUop_out     <= idexif.ALUop_in;
 				idexif.ALUsrc_out    <= idexif.ALUsrc_in; 
 				idexif.RegDst_out    <= idexif.RegDst_in;
 				idexif.JumpSel_out   <= idexif.JumpSel_in;
