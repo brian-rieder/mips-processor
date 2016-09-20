@@ -15,8 +15,8 @@ interface EX_MEM_if;
   import cpu_types_pkg::*;
 	
 
-	logic [1:0]	 RegDst_in,   RegDst_out; 
-	logic 		 dREN_in,      dREN_out, dWEN_in, dWEN_out;
+	logic [1:0]	 RegDst_in,    RegDst_out; 
+	logic 		 dREN_in,      dmemREN_out,  dWEN_in, dmemWEN_out;
 	logic [31:0] dmemstore_in, dmemstore_out;
 	logic 		 RegWr_in,     RegWr_out;
 	logic [1:0]	 MemToReg_in,  MemToReg_out;
@@ -24,9 +24,10 @@ interface EX_MEM_if;
 	logic [31:0] portO_in,     portO_out;
 	logic [31:0] luiValue_in,  luiValue_out;
 	logic        ihit,         dhit;
-  	logic [31:0] pcp4_in,       pcp4_out;
+  	logic [31:0] pcp4_in,      pcp4_out;
     regbits_t    wsel_in,      wsel_out;
     opcode_t     op_ex,        op_mem;
+    logic        flush;
 
 
   // control unit ports
@@ -49,8 +50,8 @@ interface EX_MEM_if;
 		
     output  	
         RegDst_out, 
-		dREN_out, 
-		dWEN_out, 
+		dmemREN_out, 
+		dmemWEN_out, 
 		dmemstore_out, 
 		RegWr_out, 
 		MemToReg_out, 
@@ -80,8 +81,8 @@ interface EX_MEM_if;
 		
     input  	
         RegDst_out, 
-		dREN_out, 
-		dWEN_out, 
+		dmemREN_out, 
+		dmemWEN_out, 
 		dmemstore_out, 
 		RegWr_out, 
 		MemToReg_out, 
