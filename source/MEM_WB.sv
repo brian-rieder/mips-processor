@@ -14,7 +14,7 @@ always_ff @(posedge CLK, negedge nRST) begin
 	if (!nRST) begin  
 		memwbif.RegDst_out  <= '0; 
 		memwbif.dmemload_out <= '0;  
-		memwbif.regWr_out    <= '0;
+		memwbif.RegWr_out    <= '0;
         memwbif.wsel_out     <= '0; 
 		memwbif.MemToReg_out <= '0; 
 		memwbif.halt_out     <= '0;
@@ -27,7 +27,7 @@ always_ff @(posedge CLK, negedge nRST) begin
 		if (memwbif.ihit || memwbif.dhit)  begin 
 			memwbif.RegDst_out  <= memwbif.RegDst_in; 
 			memwbif.dmemload_out <= memwbif.dmemload_in;  
-			memwbif.regWr_out    <= memwbif.regWr_in;
+			memwbif.RegWr_out    <= memwbif.RegWr_in;
 	        memwbif.wsel_out     <= memwbif.wsel_in; 
 			memwbif.MemToReg_out <= memwbif.MemToReg_in; 
 			memwbif.halt_out     <= memwbif.halt_in;

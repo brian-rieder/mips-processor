@@ -17,7 +17,7 @@ interface MEM_WB_if;
 
 	logic [1:0]	 RegDst_in,  RegDst_out; 
 	logic [31:0] dmemload_in, dmemload_out;
-	logic 		 regWr_in,    regWr_out;
+	logic 		 RegWr_in,    RegWr_out;
 	regbits_t    wsel_in,     wsel_out;
 	logic [1:0]	 MemToReg_in, MemToReg_out;
 	logic 		 halt_in,     halt_out;
@@ -32,7 +32,7 @@ interface MEM_WB_if;
   modport mem_wb (
     input  RegDst_in, 
 		   dmemload_in,
-		   regWr_in, 
+		   RegWr_in, 
 		   wsel_in,
 		   MemToReg_in, 
 		   halt_in, 
@@ -45,7 +45,7 @@ interface MEM_WB_if;
 		
     output RegDst_out, 
 		   dmemload_out, 
-		   regWr_out, 	
+		   RegWr_out, 	
 		   wsel_out,
 		   MemToReg_out, 
 		   halt_out, 
@@ -58,7 +58,7 @@ interface MEM_WB_if;
   modport tb (
     input  RegDst_in, 
 		   dmemload_in,
-		   regWr_in, 
+		   RegWr_in, 
 		   wsel_in,
 		   MemToReg_in, 
 		   halt_in, 
@@ -70,7 +70,7 @@ interface MEM_WB_if;
 		
     output RegDst_out, 
 		   dmemload_out, 
-		   regWr_out, 	
+		   RegWr_out, 	
 		   wsel_out,
 		   MemToReg_out, 
 		   halt_out, 

@@ -125,7 +125,7 @@ module datapath (
             rfif.wdat = memwbif.pcp4_out;
         end 
     end
-    assign rfif.WEN = memwbif.regWr_out; // AND with dhit | ihit because of latch?
+    assign rfif.WEN = memwbif.RegWr_out; // AND with dhit | ihit because of latch?
 
     // Program Counter input assignment
     assign pcif.pcWEN     = dpif.ihit;
@@ -214,7 +214,7 @@ module datapath (
     assign exmemif.dREN_in      = idexif.dREN_out;
     assign exmemif.dWEN_in      = idexif.dWEN_out;
     assign exmemif.dmemstore_in = idexif.rdat2_out;
-    assign exmemif.regWr_in     = idexif.regWr_out;
+    assign exmemif.RegWr_in     = idexif.RegWr_out;
     assign exmemif.MemToReg_in  = idexif.MemToReg_out;
     assign exmemif.halt_in      = idexif.halt_out;
     assign exmemif.wsel_in      = idexif.wsel_out;
@@ -228,7 +228,7 @@ module datapath (
     // MEM/WB Latch input assignment
     assign memwbif.RegDst_in   = exmemif.RegDst_out;
     assign memwbif.dmemload_in  = dpif.dmemload;
-    assign memwbif.regWr_in     = exmemif.regWr_out;
+    assign memwbif.RegWr_in     = exmemif.RegWr_out;
     assign memwbif.wsel_in      = exmemif.wsel_out;
     assign memwbif.MemToReg_in  = exmemif.MemToReg_out;
     assign memwbif.halt_in      = exmemif.halt_out;

@@ -18,7 +18,7 @@ interface EX_MEM_if;
 	logic [1:0]	 RegDst_in,   RegDst_out; 
 	logic 		 dREN_in,      dREN_out, dWEN_in, dWEN_out;
 	logic [31:0] dmemstore_in, dmemstore_out;
-	logic 		 regWr_in,     regWr_out;
+	logic 		 RegWr_in,     RegWr_out;
 	logic [1:0]	 MemToReg_in,  MemToReg_out;
 	logic        halt_in,      halt_out;
 	logic [31:0] portO_in,     portO_out;
@@ -36,7 +36,7 @@ interface EX_MEM_if;
 		dREN_in, 
 		dWEN_in, 
 		dmemstore_in, 
-		regWr_in, 
+		RegWr_in, 
 		MemToReg_in, 
 		halt_in, 
 		portO_in, 
@@ -52,7 +52,7 @@ interface EX_MEM_if;
 		dREN_out, 
 		dWEN_out, 
 		dmemstore_out, 
-		regWr_out, 
+		RegWr_out, 
 		MemToReg_out, 
 		halt_out, 
 		portO_out, 
@@ -68,7 +68,7 @@ interface EX_MEM_if;
 		dREN_in, 
 		dWEN_in, 
 		dmemstore_in, 
-		regWr_in, 
+		RegWr_in, 
 		MemToReg_in, 
 		halt_in, 
 		portO_in, 
@@ -83,7 +83,7 @@ interface EX_MEM_if;
 		dREN_out, 
 		dWEN_out, 
 		dmemstore_out, 
-		regWr_out, 
+		RegWr_out, 
 		MemToReg_out, 
 		halt_out, 
 		portO_out, 
