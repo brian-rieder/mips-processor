@@ -4,13 +4,13 @@
 
   register file interface
 */
-`ifndef EXECUTE_MEMORY_IF_VH
-`define EXECUTE_MEMORY_IF_VH
+`ifndef EX_MEM_IF_VH
+`define EX_MEM_IF_VH
 
 // all types
 `include "cpu_types_pkg.vh"
 
-interface execute_memory_if;
+interface EX_MEM_if;
   // import types
   import cpu_types_pkg::*;
 	
@@ -28,7 +28,7 @@ interface execute_memory_if;
 
 
   // control unit ports
-  modport exmem (
+  modport ex_mem (
     input   	regDest_in, 
 		dREN_in, 
 		dWEN_in, 

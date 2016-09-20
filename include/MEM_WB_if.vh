@@ -4,13 +4,13 @@
 
   register file interface
 */
-`ifndef MEMORY_WRITEBACK_IF_VH
-`define MEMORY_WRITEBACK_IF_VH
+`ifndef MEM_WB_IF_VH
+`define MEM_WB_IF_VH
 
 // all types
 `include "cpu_types_pkg.vh"
 
-interface memory_writeback_if;
+interface MEM_WB_if;
   // import types
   import cpu_types_pkg::*;
 	
@@ -28,7 +28,7 @@ interface memory_writeback_if;
 
 
   // control unit ports
-  modport memwb (
+  modport mem_wb (
     input   	regDest_in, 
 		dmemload_in,
 		regWr_in, 
@@ -51,7 +51,7 @@ interface memory_writeback_if;
 		luiValue_out, 
 		pc4_out
   );
-  // control unit tb
+  // MEM WB tb
   modport tb (
     input   	regDest_in, 
 		dmemload_in,
@@ -77,5 +77,5 @@ interface memory_writeback_if;
   );
 endinterface
 
-`endif //EXECUTE_MEMORY_IF_VH
+`endif //MEM_WB_IF_VH
 
