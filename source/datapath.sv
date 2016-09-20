@@ -130,7 +130,7 @@ module datapath (
     // Program Counter input assignment
     assign pcif.pcWEN     = dpif.ihit;
     // JumpSel 
-    always_comb
+    always_comb begin
         // PC + 4
         if (idexif.JumpSel_out == 2'b00) begin 
             pcif.pc_next = pcplus4; 
