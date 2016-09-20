@@ -76,21 +76,16 @@ module datapath (
     assign dpif.imemaddr  = pcif.pc_out;
     assign dpif.dmemstore = exmemif.dmemstore_out;
     assign dpif.dmemaddr  = exmemif.portO_out;
-    always_ff @ (posedge CLK, negedge nRST) begin
-        if (!nRST) begin
-            dpif.dmemREN <= 0;
-            dpif.dmemWEN <= 0;
-        end else begin
-            if (dpif.ihit) begin
-                dpif.dmemREN <= exmemif.dREN_out;
-                dpif.dmemWEN <= exmemif.dWEN_out;
-            end else if (dpif.dhit) begin
-                dpif.dmemREN <= 0;
-                dpif.dmemWEN <= 0;
-            end
-        end
-    end 
-    
+    assign dpif.dmemREN   = exmemif.dmemREN_out;
+    assign dpif.dmemWEN   = exmemif.dmemWEN_out;
+    // always_ff @ (posedge CLK, negedge nRST) begin
+    //     if (!nRST) begin
+    //         dpif.dmemREN <= 0;
+    //         dpif.dmemWEN <= 0;
+    //     end else begin
+    //     end
+    // end 
+
     always_ff @ (posedge CLK, negedge nRST) begin
         if (!nRST) begin
             dpif.halt <= 0;
@@ -107,13 +102,13 @@ module datapath (
     assign aluif.alu_op   = idexif.ALUop_out;
     always_comb begin
         aluif.port_b = '0;
-        if (cuif.ALUsrc == 2'b00) begin
+        if (idexif.ALUsrc_out == 2'b00) begin
             aluif.port_b = idexif.rdat2_out;
         end
-        else if (cuif.ALUsrc == 2'b01) begin
+        else if (idexif.ALUsrc_out == 2'b01) begin
             aluif.port_b = idexif.shamt_out;
         end
-        else if (cuif.ALUsrc == 2'b10) begin
+        else if (idexif.ALUsrc_out == 2'b10) begin
             aluif.port_b = idexif.extImm_out;
         end
     end
@@ -216,7 +211,6 @@ module datapath (
         else
             idexif.wsel_in = cuif.Rt;
     end
-    assign idexif.flush         = flush;
     assign idexif.ihit          = dpif.ihit;
     assign idexif.op_id         = cuif.opcode;
 
@@ -229,8 +223,9 @@ module datapath (
     assign exmemif.halt_in      = idexif.halt_out;
     assign exmemif.wsel_in      = idexif.wsel_out;
     assign exmemif.portO_in     = aluif.port_o;
-    assign exmemif.luiValue_in  = {idexif.extImm_out, 16'h0000};
-    assign exmemif.pcp4_in       = idexif.pcp4_out;
+    // assign exmemif.luiValue_in  = {idexif.extImm_out, 16'h0000};
+    assign exmemif.luiValue_in  = (idexif.extImm_out << 16);
+    assign exmemif.pcp4_in      = idexif.pcp4_out;
     assign exmemif.ihit         = dpif.ihit;
     assign exmemif.dhit         = dpif.dhit;
     assign exmemif.op_ex        = idexif.op_ex;
@@ -244,7 +239,7 @@ module datapath (
     assign memwbif.portO_in     = exmemif.portO_out;
     assign memwbif.luiValue_in  = exmemif.luiValue_out;
     assign memwbif.ihit         = dpif.ihit;
-    assign memwbif.dhit         = dpif.ihit;
+    assign memwbif.dhit         = dpif.dhit;
     assign memwbif.pcp4_in       = exmemif.pcp4_out;
     assign memwbif.op_mem       = exmemif.op_mem;
 
