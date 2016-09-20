@@ -1,6 +1,7 @@
 // File name:   ID_EX_if.vh
 // Updated:     19 September 2016
-// Author:      Brian Rieder 
+// Authors:     Brian Rieder 
+//              Pooja Kale
 // Description: Interface file for Instruction Decode/Execute Latch
 
 `ifndef ID_EX_IF_VH
