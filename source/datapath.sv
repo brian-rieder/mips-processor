@@ -74,8 +74,8 @@ module datapath (
     // assign dpif.halt      = memwbif.halt_out;
     assign dpif.imemREN   = 1; // always tied high
     assign dpif.imemaddr  = pcif.pc_out;
-    assign dpif.dmemREN   = exmemif.dREN;
-    assign dpif.dmemWEN   = exmemif.dWEN;
+    assign dpif.dmemREN   = exmemif.dREN_out;
+    assign dpif.dmemWEN   = exmemif.dWEN_out;
     assign dpif.dmemstore = exmemif.dmemstore_out;
     assign dpif.dmemaddr  = exmemif.portO_out;
     
@@ -112,17 +112,17 @@ module datapath (
     assign rfif.wsel      = memwbif.wsel_out;
     // wdat mux
     always_comb begin
-        if (memwbif.memToReg_out == 2'b00) begin 
+        if (memwbif.MemToReg_out == 2'b00) begin 
             rfif.wdat = memwbif.dmemload_out;  
         end 
-        else if(memwbif.memToReg_out == 2'b01) begin 
+        else if(memwbif.MemToReg_out == 2'b01) begin 
             rfif.wdat = memwbif.portO_out;   
         end 
-        else if (memwbif.memToReg_out == 2'b10) begin 
+        else if (memwbif.MemToReg_out == 2'b10) begin 
             rfif.wdat = memwbif.LUIval;
         end 
         else begin 
-            rfif.wdat = memwbif.pc4_out;
+            rfif.wdat = memwbif.pcp4_out;
         end 
     end
     assign rfif.WEN = memwbif.regWr_out; // AND with dhit | ihit because of latch?
@@ -143,7 +143,7 @@ module datapath (
         end 
         // BNE and BEQ
         else if(idexif.JumpSel_out == 2'b10) begin 
-            if (cuif.BNE == 1'b0) begin //BEQ 
+            if (idexif.BNE_out == 1'b0) begin //BEQ 
                 if(aluif.z_flag) begin
                     pcif.pc_next = (idexif.extImm_out << 2) + idexif.pcp4_out; // PC+4 confusion again
                     flush = 1;
@@ -170,9 +170,6 @@ module datapath (
         end 
     end
 
-
-    // **************** GOOD TO HERE ****************
-
     // IF/ID Latch input assignment
     assign ifidif.imemload_in  = dpif.imemload;
     assign ifidif.pcp4_in      = pcplus4;
@@ -186,7 +183,7 @@ module datapath (
     assign idexif.dREN_in      = cuif.dREN;
     assign idexif.dWEN_in      = cuif.dWEN;
     assign idexif.j25_in       = cuif.j25;
-    assign idexif.BNE          = cuif.BNE;
+    assign idexif.BNE_in       = cuif.BNE;
     assign idexif.RegWr_in     = cuif.RegWr;
     assign idexif.MemToReg_in  = cuif.MemToReg;
     assign idexif.ALUsrc_in    = cuif.ALUsrc;
@@ -199,11 +196,11 @@ module datapath (
     assign idexif.pcp4_in      = ifidif.pcp4_out;
     // wsel
     always_comb begin
-        if(memwbif.regDest_out == 2'b00)  
+        if(memwbif.RegDst_out == 2'b00)  
             idexif.wsel_in = cuif.Rt; 
-        else if (memwbif.regDest_out == 2'b01)  
+        else if (memwbif.RegDst_out == 2'b01)  
             idexif.wsel_in = cuif.Rd;    
-        else if (memwbif.regDest_out == 2'b10) 
+        else if (memwbif.RegDst_out == 2'b10) 
             idexif.wsel_in = 5'd31;
         else
             idexif.wsel_in = cuif.Rt;
@@ -213,32 +210,33 @@ module datapath (
     assign idexif.op_id         = cuif.opcode;
 
     // EX/MEM Latch input assignment
-    assign exmemif.regDest_in   = idexif.regDest_out;
+    assign exmemif.RegDst_in   = idexif.RegDst_out;
     assign exmemif.dREN_in      = idexif.dREN_out;
     assign exmemif.dWEN_in      = idexif.dWEN_out;
     assign exmemif.dmemstore_in = idexif.rdat2_out;
     assign exmemif.regWr_in     = idexif.regWr_out;
-    assign exmemif.memToReg_in  = idexif.memToReg_out;
+    assign exmemif.MemToReg_in  = idexif.MemToReg_out;
     assign exmemif.halt_in      = idexif.halt_out;
+    assign exmemif.wsel_in      = idexif.wsel_out;
     assign exmemif.portO_in     = aluif.port_o;
     assign exmemif.luiValue_in  = {idexif.extImm_out, 16'h0000};
-    assign exmemif.pc4_in       = idexif.pcp4_out;
+    assign exmemif.pcp4_in       = idexif.pcp4_out;
     assign exmemif.ihit         = dpif.ihit;
     assign exmemif.dhit         = dpif.dhit;
     assign exmemif.op_ex        = idexif.op_ex;
 
     // MEM/WB Latch input assignment
-    assign memwbif.regDest_in   = exmemif.regDest_out;
+    assign memwbif.RegDst_in   = exmemif.RegDst_out;
     assign memwbif.dmemload_in  = dpif.dmemload;
     assign memwbif.regWr_in     = exmemif.regWr_out;
     assign memwbif.wsel_in      = exmemif.wsel_out;
-    assign memwbif.memToReg_in  = exmemif.memToReg_out;
+    assign memwbif.MemToReg_in  = exmemif.MemToReg_out;
     assign memwbif.halt_in      = exmemif.halt_out;
-    assign memwbif.portO_in     = exmemif.portO_out
+    assign memwbif.portO_in     = exmemif.portO_out;
     assign memwbif.luiValue_in  = exmemif.luiValue_out;
     assign memwbif.ihit         = dpif.ihit;
     assign memwbif.dhit         = dpif.ihit;
-    assign memwbif.pc4_in       = exmemif.pc4_out;
+    assign memwbif.pcp4_in       = exmemif.pcp4_out;
     assign memwbif.op_mem       = exmemif.op_mem;
 
 
