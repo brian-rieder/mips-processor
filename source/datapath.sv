@@ -11,10 +11,10 @@
 `include "register_file_if.vh"
 `include "control_unit_if.vh"
 `include "program_counter_if.vh"
-`include "if_id_if.vh"
-`include "id_ex_if.vh"
-`include "ex_mem_if.vh"
-`include "mem_wb_if.vh"
+`include "IF_ID_if.vh"
+`include "ID_EX_if.vh"
+`include "EX_MEM_if.vh"
+`include "MEM_WB_if.vh"
 
 // alu op, mips op, and instruction type
 `include "cpu_types_pkg.vh"
