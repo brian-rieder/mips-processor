@@ -15,20 +15,21 @@ interface ID_EX_if;
   import cpu_types_pkg::*;
 
   // Inputs
-  word_t      pcp4_in, rdat1_in, rdat2_in, extImm_in, shamt_in;
   opcode_t    op_id;
-  aluop_t     alu_op_in;
+  aluop_t     ALUop_in;
+  word_t      pcp4_in,   rdat1_in,  rdat2_in,   extImm_in,    shamt_in;
   logic [1:0] ALUsrc_in, RegDst_in, JumpSel_in, MemToReg_in;
-  logic       dREN_in, dWEN_in, halt_in, jumpFlush_in, PCsrc_in, RegWr_in, BNE_in;
+  logic       dREN_in,   dWEN_in,   halt_in,    jumpFlush_in, PCsrc_in, 
+              RegWr_in,  BNE_in,    ihit,       flush;
   regbits_t   wsel_in;
   logic [ADDR_W-1:0] j25_in;
 
   // Outputs
-  word_t      pcp4_out, rdat1_out, rdat2_out, extImm_out, shamt_out;
   opcode_t    op_ex;
-  aluop_t     alu_op_out;
-  logic [1:0] ALUsrc_out, RegDst_out, JumpSel_out, MemToReg_out, PCsrc_out;
-  logic       dREN_out, dWEN_out, halt_out, jumpFlush_out, RegWr_out, BNE_out;
+  aluop_t     ALUop_out;
+  word_t      pcp4_out,   rdat1_out,  rdat2_out,   extImm_out,    shamt_out;
+  logic [1:0] ALUsrc_out, RegDst_out, JumpSel_out, MemToReg_out,  PCsrc_out;
+  logic       dREN_out,   dWEN_out,   halt_out,    jumpFlush_out, RegWr_out, BNE_out;
   regbits_t   wsel_out;
   logic [ADDR_W-1:0] j25_out;
 
