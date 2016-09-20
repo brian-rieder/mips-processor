@@ -15,17 +15,18 @@ interface EX_MEM_if;
   import cpu_types_pkg::*;
 	
 
-	logic [1:0]	regDest_in, regDest_out; 
-	logic 		dREN_in, dREN_out, dWEN_in, dWEN_out;
-	logic [31:0]	dmemstore_in, dmemstore_out;
-	logic 		regWr_in, regWr_out;
-	logic [1:0]	memToReg_in, memToReg_out;
-	logic 		halt_in, halt_out;
-	logic [31:0]	portO_in, portO_out;
-	logic [31:0]	luiValue_in, luiValue_out;
-	logic		ihit,dhit;
-  	logic [31:0]	pc4_in, pc4_out;
-    opcode_t op_ex, op_mem;
+	logic [1:0]	 regDest_in,   regDest_out; 
+	logic 		 dREN_in,      dREN_out, dWEN_in, dWEN_out;
+	logic [31:0] dmemstore_in, dmemstore_out;
+	logic 		 regWr_in,     regWr_out;
+	logic [1:0]	 MemToReg_in,  MemToReg_out;
+	logic        halt_in,      halt_out;
+	logic [31:0] portO_in,     portO_out;
+	logic [31:0] luiValue_in,  luiValue_out;
+	logic        ihit,         dhit;
+  	logic [31:0] pcp4_in,       pcp4_out;
+    regbits_t    wsel_in,      wsel_out;
+    opcode_t     op_ex,        op_mem;
 
 
   // control unit ports
@@ -36,13 +37,14 @@ interface EX_MEM_if;
 		dWEN_in, 
 		dmemstore_in, 
 		regWr_in, 
-		memToReg_in, 
+		MemToReg_in, 
 		halt_in, 
 		portO_in, 
 		luiValue_in, 
 		ihit, 
 		dhit, 
-		pc4_in,	
+		pcp4_in,	
+        wsel_in,
         op_ex,
 		
     output  	
@@ -51,11 +53,12 @@ interface EX_MEM_if;
 		dWEN_out, 
 		dmemstore_out, 
 		regWr_out, 
-		memToReg_out, 
+		MemToReg_out, 
 		halt_out, 
 		portO_out, 
 		luiValue_out, 
-		pc4_out,
+		pcp4_out,
+        wsel_out,
         op_mem
   );
   // control unit tb
@@ -66,13 +69,14 @@ interface EX_MEM_if;
 		dWEN_in, 
 		dmemstore_in, 
 		regWr_in, 
-		memToReg_in, 
+		MemToReg_in, 
 		halt_in, 
 		portO_in, 
 		luiValue_in, 
 		ihit, 
 		dhit, 
-		pc4_in,	
+        wsel_in,
+		pcp4_in,	
 		
     input  	
         regDest_out, 
@@ -80,11 +84,12 @@ interface EX_MEM_if;
 		dWEN_out, 
 		dmemstore_out, 
 		regWr_out, 
-		memToReg_out, 
+		MemToReg_out, 
 		halt_out, 
 		portO_out, 
 		luiValue_out, 
-		pc4_out
+        wsel_out,
+		pcp4_out
   );
 
 endinterface
