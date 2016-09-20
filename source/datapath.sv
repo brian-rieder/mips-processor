@@ -52,7 +52,7 @@ module datapath (
 
     // Misc. Datapath Internal Signals
     // logic branch_mode;
-    word_t extImm, pcplus4, jumpdest, LUIval;
+    word_t extImm, pcplus4, jumpdest, luiValue;
     assign pcplus4 = pcif.pc_out + 4;
     logic flush;
 
@@ -119,7 +119,7 @@ module datapath (
             rfif.wdat = memwbif.portO_out;   
         end 
         else if (memwbif.MemToReg_out == 2'b10) begin 
-            rfif.wdat = memwbif.LUIval;
+            rfif.wdat = memwbif.luiValue_out;
         end 
         else begin 
             rfif.wdat = memwbif.pcp4_out;
@@ -144,7 +144,7 @@ module datapath (
         // BNE and BEQ
         else if(idexif.JumpSel_out == 2'b10) begin 
             if (idexif.BNE_out == 1'b0) begin //BEQ 
-                if(aluif.z_flag) begin
+                if(aluif.z_flag && idexif.PCsrc_out) begin
                     pcif.pc_next = (idexif.extImm_out << 2) + idexif.pcp4_out; // PC+4 confusion again
                     flush = 1;
                 end
@@ -154,7 +154,7 @@ module datapath (
                 end
             end  
             else begin 
-                if(!aluif.z_flag) begin
+                if(!aluif.z_flag && idexif.PCsrc_out) begin
                     pcif.pc_next = (idexif.extImm_out << 2) + idexif.pcp4_out;      
                     flush = 1;
                 end
