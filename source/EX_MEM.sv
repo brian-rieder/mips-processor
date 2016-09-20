@@ -12,8 +12,8 @@ module EX_MEM (
 
 always_ff @(posedge CLK, negedge nRST) begin 
 	if (!nRST) begin  
-		exmemif.dREN_out      <= '0;
-		exmemif.dWEN_out      <= '0;
+		exmemif.dmemREN_out      <= '0;
+		exmemif.dmemWEN_out      <= '0;
 		exmemif.dmemstore_out <= '0;  
 		exmemif.RegWr_out     <= '0;
 		exmemif.MemToReg_out  <= '0; 
@@ -25,10 +25,7 @@ always_ff @(posedge CLK, negedge nRST) begin
 		exmemif.op_mem        <= RTYPE;
 	end 
 	else begin 
-	
-		if(exmemif.ihit || exmemif.dhit )  begin 
-			exmemif.dREN_out      <= exmemif.dREN_in; 
-			exmemif.dWEN_out      <= exmemif.dWEN_in;
+		if(exmemif.ihit || exmemif.dhit)  begin
 			exmemif.dmemstore_out <= exmemif.dmemstore_in;  
 			exmemif.RegWr_out     <= exmemif.RegWr_in;
 			exmemif.MemToReg_out  <= exmemif.MemToReg_in; 
@@ -38,6 +35,15 @@ always_ff @(posedge CLK, negedge nRST) begin
 			exmemif.pcp4_out      <= exmemif.pcp4_in; 
 			exmemif.wsel_out      <= exmemif.wsel_in;
 			exmemif.op_mem        <= exmemif.op_ex;
+
+			// Request Unit
+            if (exmemif.dhit) begin
+                exmemif.dmemREN_out <= 0;
+                exmemif.dmemWEN_out <= 0;
+            end else if (exmemif.ihit) begin
+                exmemif.dmemREN_out <= exmemif.dREN_in;
+                exmemif.dmemWEN_out <= exmemif.dWEN_in;
+            end
 		end   
 	end
 	
