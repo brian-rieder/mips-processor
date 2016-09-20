@@ -23,7 +23,7 @@ always_ff @(posedge CLK, negedge nRST) begin
 		idexif.rdat2_out     <= '0;
 		idexif.extImm_out    <= '0;
 		idexif.shamt_out     <= '0;
-		idexif.op_ex         <= '0;
+		idexif.op_ex         <= RTYPE;
 		idexif.ALUop_out     <= ALU_SLL;
 		idexif.ALUsrc_out    <= 2'b00; // Don't care (rdat2)
 		idexif.RegDst_out    <= 2'b00; // Don't care (Rt)
@@ -47,7 +47,7 @@ always_ff @(posedge CLK, negedge nRST) begin
 				idexif.rdat2_out     <= '0;
 				idexif.extImm_out    <= '0;
 				idexif.shamt_out     <= '0;
-				idexif.op_ex         <= '0;
+				idexif.op_ex         <= RTYPE;
 				idexif.ALUop_out     <= ALU_SLL;
 				idexif.ALUsrc_out    <= 2'b00; // Don't care (rdat2)
 				idexif.RegDst_out    <= 2'b00; // Don't care (Rt)

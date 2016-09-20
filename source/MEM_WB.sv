@@ -21,7 +21,7 @@ always_ff @(posedge CLK, negedge nRST) begin
 		memwbif.portO_out    <= '0;
 		memwbif.luiValue_out <= '0; 
 		memwbif.pcp4_out     <= '0; 
-		memwbif.op_wb        <= '0;
+		memwbif.op_wb        <= RTYPE;
 	end 
 	else begin 
 		if (memwbif.ihit || memwbif.dhit)  begin 

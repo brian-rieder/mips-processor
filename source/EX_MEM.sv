@@ -22,7 +22,7 @@ always_ff @(posedge CLK, negedge nRST) begin
 		exmemif.portO_out     <= '0;
 		exmemif.luiValue_out  <= '0; 
 		exmemif.pcp4_out      <= '0; 
-		exmemif.op_mem        <= '0;
+		exmemif.op_mem        <= RTYPE;
 	end 
 	else begin 
 	
