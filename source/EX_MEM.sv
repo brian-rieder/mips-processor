@@ -12,7 +12,6 @@ module EX_MEM (
 
 always_ff @(posedge CLK, negedge nRST) begin 
 	if (!nRST) begin  
-		exmemif.RegDst_out   <= '0; 
 		exmemif.dREN_out      <= '0;
 		exmemif.dWEN_out      <= '0;
 		exmemif.dmemstore_out <= '0;  
@@ -22,12 +21,12 @@ always_ff @(posedge CLK, negedge nRST) begin
 		exmemif.portO_out     <= '0;
 		exmemif.luiValue_out  <= '0; 
 		exmemif.pcp4_out      <= '0; 
+		exmemif.wsel_out      <= '0;
 		exmemif.op_mem        <= RTYPE;
 	end 
 	else begin 
 	
 		if(exmemif.ihit || exmemif.dhit )  begin 
-			exmemif.RegDst_out   <= exmemif.RegDst_in; 
 			exmemif.dREN_out      <= exmemif.dREN_in; 
 			exmemif.dWEN_out      <= exmemif.dWEN_in;
 			exmemif.dmemstore_out <= exmemif.dmemstore_in;  
@@ -37,6 +36,7 @@ always_ff @(posedge CLK, negedge nRST) begin
 			exmemif.portO_out     <= exmemif.portO_in;
 			exmemif.luiValue_out  <= exmemif.luiValue_in;  
 			exmemif.pcp4_out      <= exmemif.pcp4_in; 
+			exmemif.wsel_out      <= exmemif.wsel_in;
 			exmemif.op_mem        <= exmemif.op_ex;
 		end   
 	end

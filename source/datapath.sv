@@ -178,7 +178,6 @@ module datapath (
 
     // ID/EX Latch input assignment
     assign idexif.jumpFlush_in = cuif.jumpFlush;
-    assign idexif.RegDst_in    = cuif.RegDst;
     assign idexif.JumpSel_in   = cuif.JumpSel;
     assign idexif.dREN_in      = cuif.dREN;
     assign idexif.dWEN_in      = cuif.dWEN;
@@ -196,11 +195,11 @@ module datapath (
     assign idexif.pcp4_in      = ifidif.pcp4_out;
     // wsel
     always_comb begin
-        if(memwbif.RegDst_out == 2'b00)  
+        if(cuif.RegDst == 2'b00)  
             idexif.wsel_in = cuif.Rt; 
-        else if (memwbif.RegDst_out == 2'b01)  
+        else if (cuif.RegDst == 2'b01)  
             idexif.wsel_in = cuif.Rd;    
-        else if (memwbif.RegDst_out == 2'b10) 
+        else if (cuif.RegDst == 2'b10) 
             idexif.wsel_in = 5'd31;
         else
             idexif.wsel_in = cuif.Rt;
@@ -210,7 +209,6 @@ module datapath (
     assign idexif.op_id         = cuif.opcode;
 
     // EX/MEM Latch input assignment
-    assign exmemif.RegDst_in   = idexif.RegDst_out;
     assign exmemif.dREN_in      = idexif.dREN_out;
     assign exmemif.dWEN_in      = idexif.dWEN_out;
     assign exmemif.dmemstore_in = idexif.rdat2_out;
@@ -226,7 +224,6 @@ module datapath (
     assign exmemif.op_ex        = idexif.op_ex;
 
     // MEM/WB Latch input assignment
-    assign memwbif.RegDst_in   = exmemif.RegDst_out;
     assign memwbif.dmemload_in  = dpif.dmemload;
     assign memwbif.RegWr_in     = exmemif.RegWr_out;
     assign memwbif.wsel_in      = exmemif.wsel_out;

@@ -26,7 +26,6 @@ always_ff @(posedge CLK, negedge nRST) begin
 		idexif.op_ex         <= RTYPE;
 		idexif.ALUop_out     <= ALU_SLL;
 		idexif.ALUsrc_out    <= 2'b00; // Don't care (rdat2)
-		idexif.RegDst_out    <= 2'b00; // Don't care (Rt)
 		idexif.JumpSel_out   <= 2'b00; // Don't care (PC+4)
 		idexif.MemToReg_out  <= 2'b00; // Don't care (dmemload)
 		idexif.PCsrc_out     <= 0;
@@ -50,7 +49,6 @@ always_ff @(posedge CLK, negedge nRST) begin
 				idexif.op_ex         <= RTYPE;
 				idexif.ALUop_out     <= ALU_SLL;
 				idexif.ALUsrc_out    <= 2'b00; // Don't care (rdat2)
-				idexif.RegDst_out    <= 2'b00; // Don't care (Rt)
 				idexif.JumpSel_out   <= 2'b00; // Don't care (PC+4)
 				idexif.MemToReg_out  <= 2'b00; // Don't care (dmemload)
 				idexif.PCsrc_out     <= 0;
@@ -71,7 +69,6 @@ always_ff @(posedge CLK, negedge nRST) begin
 				idexif.op_ex         <= idexif.op_id;
 				idexif.ALUop_out     <= idexif.ALUop_in;
 				idexif.ALUsrc_out    <= idexif.ALUsrc_in; 
-				idexif.RegDst_out    <= idexif.RegDst_in;
 				idexif.JumpSel_out   <= idexif.JumpSel_in;
 				idexif.MemToReg_out  <= idexif.MemToReg_in; 
 				idexif.PCsrc_out     <= idexif.PCsrc_in;

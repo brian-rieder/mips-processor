@@ -12,7 +12,6 @@ module MEM_WB (
 
 always_ff @(posedge CLK, negedge nRST) begin 
 	if (!nRST) begin  
-		memwbif.RegDst_out  <= '0; 
 		memwbif.dmemload_out <= '0;  
 		memwbif.RegWr_out    <= '0;
         memwbif.wsel_out     <= '0; 
@@ -25,7 +24,6 @@ always_ff @(posedge CLK, negedge nRST) begin
 	end 
 	else begin 
 		if (memwbif.ihit || memwbif.dhit)  begin 
-			memwbif.RegDst_out  <= memwbif.RegDst_in; 
 			memwbif.dmemload_out <= memwbif.dmemload_in;  
 			memwbif.RegWr_out    <= memwbif.RegWr_in;
 	        memwbif.wsel_out     <= memwbif.wsel_in; 
