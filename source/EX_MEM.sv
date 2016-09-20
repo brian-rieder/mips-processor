@@ -12,7 +12,7 @@ module EX_MEM (
 
 always_ff @(posedge CLK, negedge nRST) begin 
 	if (!nRST) begin  
-		exmemif.regDest_out   <= '0; 
+		exmemif.RegDst_out   <= '0; 
 		exmemif.dREN_out      <= '0;
 		exmemif.dWEN_out      <= '0;
 		exmemif.dmemstore_out <= '0;  
@@ -27,7 +27,7 @@ always_ff @(posedge CLK, negedge nRST) begin
 	else begin 
 	
 		if(exmemif.ihit || exmemif.dhit )  begin 
-			exmemif.regDest_out   <= exmemif.regDest_in; 
+			exmemif.RegDst_out   <= exmemif.RegDst_in; 
 			exmemif.dREN_out      <= exmemif.dREN_in; 
 			exmemif.dWEN_out      <= exmemif.dWEN_in;
 			exmemif.dmemstore_out <= exmemif.dmemstore_in;  

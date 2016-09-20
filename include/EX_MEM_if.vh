@@ -15,7 +15,7 @@ interface EX_MEM_if;
   import cpu_types_pkg::*;
 	
 
-	logic [1:0]	 regDest_in,   regDest_out; 
+	logic [1:0]	 RegDst_in,   RegDst_out; 
 	logic 		 dREN_in,      dREN_out, dWEN_in, dWEN_out;
 	logic [31:0] dmemstore_in, dmemstore_out;
 	logic 		 regWr_in,     regWr_out;
@@ -32,7 +32,7 @@ interface EX_MEM_if;
   // control unit ports
   modport ex_mem (
     input   	
-        regDest_in, 
+        RegDst_in, 
 		dREN_in, 
 		dWEN_in, 
 		dmemstore_in, 
@@ -48,7 +48,7 @@ interface EX_MEM_if;
         op_ex,
 		
     output  	
-        regDest_out, 
+        RegDst_out, 
 		dREN_out, 
 		dWEN_out, 
 		dmemstore_out, 
@@ -64,7 +64,7 @@ interface EX_MEM_if;
   // control unit tb
   modport tb (
     output   	
-        regDest_in, 
+        RegDst_in, 
 		dREN_in, 
 		dWEN_in, 
 		dmemstore_in, 
@@ -79,7 +79,7 @@ interface EX_MEM_if;
 		pcp4_in,	
 		
     input  	
-        regDest_out, 
+        RegDst_out, 
 		dREN_out, 
 		dWEN_out, 
 		dmemstore_out, 

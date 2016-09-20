@@ -15,7 +15,7 @@ interface MEM_WB_if;
   import cpu_types_pkg::*;
 	
 
-	logic [1:0]	 regDest_in,  regDest_out; 
+	logic [1:0]	 RegDst_in,  RegDst_out; 
 	logic [31:0] dmemload_in, dmemload_out;
 	logic 		 regWr_in,    regWr_out;
 	regbits_t    wsel_in,     wsel_out;
@@ -30,7 +30,7 @@ interface MEM_WB_if;
 
   // control unit ports
   modport mem_wb (
-    input  regDest_in, 
+    input  RegDst_in, 
 		   dmemload_in,
 		   regWr_in, 
 		   wsel_in,
@@ -43,7 +43,7 @@ interface MEM_WB_if;
 		   pcp4_in,	
            op_mem,
 		
-    output regDest_out, 
+    output RegDst_out, 
 		   dmemload_out, 
 		   regWr_out, 	
 		   wsel_out,
@@ -56,7 +56,7 @@ interface MEM_WB_if;
   );
   // MEM WB tb
   modport tb (
-    input  regDest_in, 
+    input  RegDst_in, 
 		   dmemload_in,
 		   regWr_in, 
 		   wsel_in,
@@ -68,7 +68,7 @@ interface MEM_WB_if;
 		   dhit, 
 		   pcp4_in,	
 		
-    output regDest_out, 
+    output RegDst_out, 
 		   dmemload_out, 
 		   regWr_out, 	
 		   wsel_out,
