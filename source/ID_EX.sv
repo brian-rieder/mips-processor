@@ -24,7 +24,7 @@ always_ff @(posedge CLK, negedge nRST) begin
 		idexif.extImm_out    <= '0;
 		idexif.shamt_out     <= '0;
 		idexif.op_ex         <= '0;
-		idexif.ALUop_out    <= ALU_SLL;
+		idexif.ALUop_out     <= ALU_SLL;
 		idexif.ALUsrc_out    <= 2'b00; // Don't care (rdat2)
 		idexif.RegDst_out    <= 2'b00; // Don't care (Rt)
 		idexif.JumpSel_out   <= 2'b00; // Don't care (PC+4)
@@ -48,7 +48,7 @@ always_ff @(posedge CLK, negedge nRST) begin
 				idexif.extImm_out    <= '0;
 				idexif.shamt_out     <= '0;
 				idexif.op_ex         <= '0;
-				idexif.ALUop_out    <= ALU_SLL;
+				idexif.ALUop_out     <= ALU_SLL;
 				idexif.ALUsrc_out    <= 2'b00; // Don't care (rdat2)
 				idexif.RegDst_out    <= 2'b00; // Don't care (Rt)
 				idexif.JumpSel_out   <= 2'b00; // Don't care (PC+4)
@@ -69,7 +69,7 @@ always_ff @(posedge CLK, negedge nRST) begin
 				idexif.extImm_out    <= idexif.extImm_in;
 				idexif.shamt_out     <= idexif.shamt_in;
 				idexif.op_ex         <= idexif.op_id;
-				idexif.ALUop_out    <= idexif.alu_op_in;
+				idexif.ALUop_out     <= idexif.alu_op_in;
 				idexif.ALUsrc_out    <= idexif.ALUsrc_in; 
 				idexif.RegDst_out    <= idexif.RegDst_in;
 				idexif.JumpSel_out   <= idexif.JumpSel_in;

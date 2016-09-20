@@ -20,7 +20,7 @@ always_ff @(posedge CLK, negedge nRST) begin
 		memwbif.halt_out     <= '0;
 		memwbif.portO_out    <= '0;
 		memwbif.luiValue_out <= '0; 
-		memwbif.pcp4_out      <= '0; 
+		memwbif.pcp4_out     <= '0; 
 		memwbif.op_wb        <= '0;
 	end 
 	else begin 
@@ -33,7 +33,7 @@ always_ff @(posedge CLK, negedge nRST) begin
 			memwbif.halt_out     <= memwbif.halt_in;
 			memwbif.portO_out    <= memwbif.portO_in;
 			memwbif.luiValue_out <= memwbif.luiValue_in; 
-			memwbif.pcp4_out      <= memwbif.pcp4_in; 
+			memwbif.pcp4_out     <= memwbif.pcp4_in; 
 			memwbif.op_wb        <= memwbif.op_mem;
 		end   
 	end
