@@ -17,7 +17,8 @@ interface IF_ID_if;
 
   // latch ports
   modport if_id (
-    input   imemload_in,  // Instruction - From Datapath (Caches)
+    input   ihit,
+            imemload_in,  // Instruction - From Datapath (Caches)
             pcp4_in,      // PC+4 for RS - From Program Counter
             flush,        // From Datapath
     output  imemload_out, // Instruction - To Control Unit
