@@ -44,7 +44,7 @@ interface MEM_WB_if;
     output  	regDest_out, 
 		dmemload_out, 
 		regWr_out, 	
-		wsel_in,
+		wsel_out,
 		memToReg_out, 
 		halt_out, 
 		portO_out, 
