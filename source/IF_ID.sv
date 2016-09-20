@@ -19,7 +19,7 @@ module IF_ID (
 always_ff @(posedge CLK, negedge nRST) begin 
 	if (!nRST) begin  
 		ifidif.imemload_out <= 32'h0000;
-		pcp4_out <= 32'h0000; 
+		ifidif.pcp4_out <= 32'h0000; 
 	end 
 	else begin 
 		if (ifidif.ihit)  begin 
