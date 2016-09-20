@@ -238,7 +238,7 @@ module control_unit (
         cuif.BNE = 0; // Choose Zero flag
         cuif.PCsrc = 1; // Branch
         cuif.JumpSel = 2'b10; // Branchaddr
-        cuif.jumpFlush = 0; // Don't flush
+        cuif.jumpFlush = 0; // Will flush by branch condition
         // Former Request Unit
         cuif.halt = 0;
         cuif.dWEN = 0;
@@ -254,7 +254,7 @@ module control_unit (
         cuif.BNE = 1; // Not Zero flag
         cuif.PCsrc = 1; // Branch
         cuif.JumpSel = 2'b10; // Branchaddr
-        cuif.jumpFlush = 0; // Don't flush
+        cuif.jumpFlush = 0; // Will flush by branch condition
         // Former Request Unit
         cuif.halt = 0;
         cuif.dWEN = 0;
