@@ -4,37 +4,37 @@
 
 module MEM_WB ( 
 	input logic CLK, nRST, 
-	MEM_WB_if.ex_mem exmemif
+	MEM_WB_if.mem_wb memwbif
 ); 
 
 	import cpu_types_pkg::*; 
 	
 
 always_ff @(posedge CLK, negedge nRST) begin 
-	if (nRST == 1'b0) begin  
-		regDest_out <= '0; 
-		dmemload_out <= '0;  
-		regWr_out <= '0;
-        wsel_out <= '0; 
-		memToReg_out <= '0; 
-		halt_out <= '0;
-		portO_out <= '0;
-		luiValue_out <= '0; 
-		pc4_out <= '0; 
+	if (!nRST) begin  
+		memwbif.regDest_out <= '0; 
+		memwbif.dmemload_out <= '0;  
+		memwbif.regWr_out <= '0;
+        memwbif.wsel_out <= '0; 
+		memwbif.memToReg_out <= '0; 
+		memwbif.halt_out <= '0;
+		memwbif.portO_out <= '0;
+		memwbif.luiValue_out <= '0; 
+		memwbif.pc4_out <= '0; 
+		memwbif.op_wb <= '0;
 	end 
 	else begin 
-	
-	if(exmemif.ihit == 1'b1 || exmemif.dhit == 1'b1 )  begin 
-		regDest_out <= regDest_in; 
-		dmemload_out <= dmemload_in;  
-		regWr_out <= regWr_in;
-        wsel_out <= wsel_in; 
-		memToReg_out <= memToReg_in; 
-		halt_out <= halt_in;
-		portO_out <= portO_in;
-		luiValue_out <= luiValue_in; 
-		pc4_out <= pc4_in; 
-			 			
+		if (memwbif.ihit || memwbif.dhit)  begin 
+			memwbif.regDest_out <= memwbif.regDest_in; 
+			memwbif.dmemload_out <= memwbif.dmemload_in;  
+			memwbif.regWr_out <= memwbif.regWr_in;
+	        memwbif.wsel_out <= memwbif.wsel_in; 
+			memwbif.memToReg_out <= memwbif.memToReg_in; 
+			memwbif.halt_out <= memwbif.halt_in;
+			memwbif.portO_out <= memwbif.portO_in;
+			memwbif.luiValue_out <= memwbif.luiValue_in; 
+			memwbif.pc4_out <= memwbif.pc4_in; 
+			memwbif.op_wb <= memwbif.op_mem;
 		end   
 	end
 	
