@@ -15,8 +15,7 @@ interface ID_EX_if;
   import cpu_types_pkg::*;
 
   // Inputs
-  word_t      pcp4_in,
-  rdat1_in, rdat2_in, extImm_in, shamt_in;
+  word_t      pcp4_in, rdat1_in, rdat2_in, extImm_in, shamt_in;
   opcode_t    op_id;
   aluop_t     alu_op_in;
   logic [1:0] ALUsrc_in, RegDst_in, JumpSel_in, MemToReg_in;
