@@ -14,6 +14,7 @@ interface IF_ID_if;
   import cpu_types_pkg::*;
 
   word_t      imemload_in, imemload_out, pcp4_in, pcp4_out;
+  logic       ihit,        flush;
 
   // latch ports
   modport if_id (
