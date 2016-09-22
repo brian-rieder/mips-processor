@@ -37,14 +37,14 @@ always_ff @(posedge CLK, negedge nRST) begin
 			exmemif.op_mem        <= exmemif.op_ex;
 
 			// Request Unit
-            if (exmemif.dhit) begin
-                exmemif.dmemREN_out <= 0;
-                exmemif.dmemWEN_out <= 0;
-            end else if (exmemif.ihit) begin
-                exmemif.dmemREN_out <= exmemif.dREN_in;
-                exmemif.dmemWEN_out <= exmemif.dWEN_in;
-            end
-		end   
+	        if (exmemif.dhit) begin
+	            exmemif.dmemREN_out <= 0;
+	            exmemif.dmemWEN_out <= 0;
+	        end else if (exmemif.ihit) begin
+	            exmemif.dmemREN_out <= exmemif.dREN_in;
+	            exmemif.dmemWEN_out <= exmemif.dWEN_in;
+	        end
+		end
 	end
 	
 end
