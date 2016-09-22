@@ -20,7 +20,7 @@ interface ID_EX_if;
   word_t      pcp4_in,   rdat1_in,  rdat2_in,   extImm_in,    shamt_in;
   logic [1:0] ALUsrc_in, RegDst_in, JumpSel_in, MemToReg_in;
   logic       dREN_in,   dWEN_in,   halt_in,    jumpFlush_in, PCsrc_in, 
-              RegWr_in,  BNE_in,    ihit,       flush;
+              RegWr_in,  BNE_in,    enable,     flush;
   regbits_t   wsel_in;
   logic [ADDR_W-1:0] j25_in;
 
@@ -35,7 +35,7 @@ interface ID_EX_if;
 
   // control unit ports
   modport id_ex (
-    input  ihit,
+    input  enable,
            pcp4_in,       // PC+4 from Control Unit
            rdat1_in,      // rdat1 from Register File
            rdat2_in,      // rdat2 from Register File
