@@ -23,7 +23,7 @@ always_ff @(posedge CLK, negedge nRST) begin
 		memwbif.op_wb        <= RTYPE;
 	end 
 	else begin 
-		if (memwbif.ihit || memwbif.dhit)  begin 
+		if (memwbif.enable)  begin 
 			memwbif.dmemload_out <= memwbif.dmemload_in;  
 			memwbif.RegWr_out    <= memwbif.RegWr_in;
 	        memwbif.wsel_out     <= memwbif.wsel_in; 

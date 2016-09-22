@@ -23,7 +23,7 @@ interface MEM_WB_if;
 	logic 		 halt_in,     halt_out;
 	logic [31:0] portO_in,    portO_out;
 	logic [31:0] luiValue_in, luiValue_out;
-	logic		 ihit,        dhit;
+	logic		 enable;
   	logic [31:0] pcp4_in,      pcp4_out;
     opcode_t     op_mem,      op_wb;
 
@@ -38,8 +38,7 @@ interface MEM_WB_if;
 		   halt_in, 
 		   portO_in, 
 		   luiValue_in, 
-		   ihit, 
-		   dhit, 
+           enable,
 		   pcp4_in,	
            op_mem,
 		
@@ -64,8 +63,7 @@ interface MEM_WB_if;
 		   halt_in, 
 		   portO_in, 
 		   luiValue_in, 
-		   ihit, 
-		   dhit, 
+           enable,
 		   pcp4_in,	
 		
     output RegDst_out, 
