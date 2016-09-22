@@ -200,6 +200,7 @@ module datapath (
     assign idexif.rdat1_in     = rfif.rdat1;
     assign idexif.rdat2_in     = rfif.rdat2;
     assign idexif.pcp4_in      = ifidif.pcp4_out;
+    assign idexif.PCsrc_in     = cuif.PCsrc;
     // wsel
     always_comb begin
         if(cuif.RegDst == 2'b00)  
@@ -240,7 +241,7 @@ module datapath (
     assign memwbif.luiValue_in  = exmemif.luiValue_out;
     assign memwbif.ihit         = dpif.ihit;
     assign memwbif.dhit         = dpif.dhit;
-    assign memwbif.pcp4_in       = exmemif.pcp4_out;
+    assign memwbif.pcp4_in      = exmemif.pcp4_out;
     assign memwbif.op_mem       = exmemif.op_mem;
 
 
