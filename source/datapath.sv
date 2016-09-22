@@ -38,6 +38,7 @@ module datapath (
     ID_EX_if idexif ();
     EX_MEM_if exmemif ();
     MEM_WB_if memwbif ();
+    hazard_unit_if huif ();
 
     // Component instantiation
     alu ALU (aluif.alu);
@@ -48,6 +49,7 @@ module datapath (
     ID_EX IDEX (CLK, nRST, idexif.id_ex);
     EX_MEM EXMEM (CLK, nRST, exmemif.ex_mem);
     MEM_WB MEMWB (CLK, nRST, memwbif.mem_wb);
+    hazard_unit HU (huif.hu);
 
 
     // Misc. Datapath Internal Signals
@@ -135,7 +137,7 @@ module datapath (
     assign rfif.WEN = memwbif.RegWr_out; // AND with dhit | ihit because of latch?
 
     // Program Counter input assignment
-    assign pcif.pcWEN     = dpif.ihit;
+    assign pcif.pcWEN = huif.pcWEN;
     // JumpSel 
     always_comb begin
         // PC + 4
@@ -177,11 +179,18 @@ module datapath (
         end 
     end
 
+    // Hazard Unit
+    assign huif.ihit           = dpif.ihit;
+    assign huif.dhit           = dpif.dhit;
+    assign huif.BranchFlush    = flush;
+    assign huif.JumpFlush      = idexif.jumpFlush_out;
+    assign huif.mem_op         = memwbif.op_mem;
+
     // IF/ID Latch input assignment
     assign ifidif.imemload_in  = dpif.imemload;
     assign ifidif.pcp4_in      = pcplus4;
-    assign ifidif.flush        = flush;
-    assign ifidif.ihit         = dpif.ihit;
+    assign ifidif.flush        = huif.IFID_flush;
+    assign ifidif.enable       = huif.IFID_enable;
 
     // ID/EX Latch input assignment
     assign idexif.jumpFlush_in = cuif.jumpFlush;
@@ -212,7 +221,8 @@ module datapath (
         else
             idexif.wsel_in = cuif.Rt;
     end
-    assign idexif.ihit          = dpif.ihit;
+    assign idexif.enable        = huif.IDEX_enable;
+    assign idexif.flush         = huif.IDEX_flush;
     assign idexif.op_id         = cuif.opcode;
 
     // EX/MEM Latch input assignment
@@ -227,8 +237,8 @@ module datapath (
     // assign exmemif.luiValue_in  = {idexif.extImm_out, 16'h0000};
     assign exmemif.luiValue_in  = (idexif.extImm_out << 16);
     assign exmemif.pcp4_in      = idexif.pcp4_out;
-    assign exmemif.ihit         = dpif.ihit;
-    assign exmemif.dhit         = dpif.dhit;
+    assign exmemif.enable       = huif.EXMEM_enable;
+    assign exmemif.flush        = huif.EXMEM_flush;
     assign exmemif.op_ex        = idexif.op_ex;
 
     // MEM/WB Latch input assignment
@@ -239,8 +249,7 @@ module datapath (
     assign memwbif.halt_in      = exmemif.halt_out;
     assign memwbif.portO_in     = exmemif.portO_out;
     assign memwbif.luiValue_in  = exmemif.luiValue_out;
-    assign memwbif.ihit         = dpif.ihit;
-    assign memwbif.dhit         = dpif.dhit;
+    assign memwbif.enable       = huif.MEMWB_enable;
     assign memwbif.pcp4_in      = exmemif.pcp4_out;
     assign memwbif.op_mem       = exmemif.op_mem;
 
