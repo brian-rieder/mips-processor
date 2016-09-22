@@ -23,7 +23,7 @@ interface EX_MEM_if;
 	logic        halt_in,      halt_out;
 	logic [31:0] portO_in,     portO_out;
 	logic [31:0] luiValue_in,  luiValue_out;
-	logic        ihit,         dhit;
+	logic        enable;
   	logic [31:0] pcp4_in,      pcp4_out;
     regbits_t    wsel_in,      wsel_out;
     opcode_t     op_ex,        op_mem;
@@ -42,10 +42,10 @@ interface EX_MEM_if;
 		halt_in, 
 		portO_in, 
 		luiValue_in, 
-		ihit, 
-		dhit, 
 		pcp4_in,	
         wsel_in,
+        enable,
+        flush,
         op_ex,
 		
     output  	
@@ -74,9 +74,9 @@ interface EX_MEM_if;
 		halt_in, 
 		portO_in, 
 		luiValue_in, 
-		ihit, 
-		dhit, 
         wsel_in,
+        enable,
+        flush,
 		pcp4_in,	
 		
     input  	
