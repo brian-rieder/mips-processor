@@ -39,8 +39,8 @@ always_ff @(posedge CLK, negedge nRST) begin
 		idexif.j25_out       <= '0;
 	end 
 	else begin 
-		if (ifidif.ihit)  begin 
-			if(ifidif.flush) begin
+		if (idexif.enable)  begin 
+			if(idexif.flush) begin
 				idexif.pcp4_out      <= '0;
 				idexif.rdat1_out     <= '0;
 				idexif.rdat2_out     <= '0;
