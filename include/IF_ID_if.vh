@@ -14,11 +14,11 @@ interface IF_ID_if;
   import cpu_types_pkg::*;
 
   word_t      imemload_in, imemload_out, pcp4_in, pcp4_out;
-  logic       ihit,        flush;
+  logic       enable,      flush;
 
   // latch ports
   modport if_id (
-    input   ihit,
+    input   enable,
             imemload_in,  // Instruction - From Datapath (Caches)
             pcp4_in,      // PC+4 for RS - From Program Counter
             flush,        // From Datapath
