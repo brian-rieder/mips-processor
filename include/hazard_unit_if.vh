@@ -18,6 +18,7 @@ interface hazard_unit_if;
   logic ihit, dhit; // from datapath
   logic BranchFlush; // from datapath
   logic JumpFlush; // from ID/EX latch
+  logic idex_regWr, exmem_regWr; // from latches
   regbits_t Rs, Rt; // from control unit
   regbits_t idex_wsel, exmem_wsel; // from latches
   opcode_t id_op; // from control unit for optimization
@@ -32,9 +33,11 @@ interface hazard_unit_if;
 
   // control unit ports
   modport hu (
-    input  ihit,      dhit,
-           Rs,        Rt,
-           idex_wsel, exmem_wsel,
+    input  ihit,       dhit,
+           Rs,         Rt,
+           idex_regWr, exmem_regWr,
+           idex_wsel,  exmem_wsel,
+           JumpFlush,  BranchFlush,
            id_op,
            mem_op,
     output pcWEN,
