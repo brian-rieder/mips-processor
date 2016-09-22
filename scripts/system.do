@@ -45,7 +45,6 @@ add wave -noupdate -expand -group {IF/ID Latch} /system_tb/DUT/CPU/DP/IFID/ifidi
 add wave -noupdate -expand -group {IF/ID Latch} /system_tb/DUT/CPU/DP/IFID/ifidif/imemload_out
 add wave -noupdate -expand -group {IF/ID Latch} /system_tb/DUT/CPU/DP/IFID/ifidif/pcp4_in
 add wave -noupdate -expand -group {IF/ID Latch} /system_tb/DUT/CPU/DP/IFID/ifidif/pcp4_out
-add wave -noupdate -expand -group {IF/ID Latch} /system_tb/DUT/CPU/DP/IFID/ifidif/ihit
 add wave -noupdate -expand -group {IF/ID Latch} /system_tb/DUT/CPU/DP/IFID/ifidif/flush
 add wave -noupdate -expand -group {ID/EX Latch} /system_tb/DUT/CPU/DP/IDEX/idexif/op_id
 add wave -noupdate -expand -group {ID/EX Latch} /system_tb/DUT/CPU/DP/IDEX/idexif/ALUop_in
@@ -64,7 +63,6 @@ add wave -noupdate -expand -group {ID/EX Latch} /system_tb/DUT/CPU/DP/IDEX/idexi
 add wave -noupdate -expand -group {ID/EX Latch} /system_tb/DUT/CPU/DP/IDEX/idexif/PCsrc_in
 add wave -noupdate -expand -group {ID/EX Latch} /system_tb/DUT/CPU/DP/IDEX/idexif/RegWr_in
 add wave -noupdate -expand -group {ID/EX Latch} /system_tb/DUT/CPU/DP/IDEX/idexif/BNE_in
-add wave -noupdate -expand -group {ID/EX Latch} /system_tb/DUT/CPU/DP/IDEX/idexif/ihit
 add wave -noupdate -expand -group {ID/EX Latch} /system_tb/DUT/CPU/DP/IDEX/idexif/flush
 add wave -noupdate -expand -group {ID/EX Latch} /system_tb/DUT/CPU/DP/IDEX/idexif/wsel_in
 add wave -noupdate -expand -group {ID/EX Latch} /system_tb/DUT/CPU/DP/IDEX/idexif/j25_in
@@ -103,8 +101,6 @@ add wave -noupdate -expand -group {EX/MEM Latch} /system_tb/DUT/CPU/DP/EXMEM/exm
 add wave -noupdate -expand -group {EX/MEM Latch} /system_tb/DUT/CPU/DP/EXMEM/exmemif/portO_out
 add wave -noupdate -expand -group {EX/MEM Latch} /system_tb/DUT/CPU/DP/EXMEM/exmemif/luiValue_in
 add wave -noupdate -expand -group {EX/MEM Latch} /system_tb/DUT/CPU/DP/EXMEM/exmemif/luiValue_out
-add wave -noupdate -expand -group {EX/MEM Latch} /system_tb/DUT/CPU/DP/EXMEM/exmemif/ihit
-add wave -noupdate -expand -group {EX/MEM Latch} /system_tb/DUT/CPU/DP/EXMEM/exmemif/dhit
 add wave -noupdate -expand -group {EX/MEM Latch} /system_tb/DUT/CPU/DP/EXMEM/exmemif/pcp4_in
 add wave -noupdate -expand -group {EX/MEM Latch} /system_tb/DUT/CPU/DP/EXMEM/exmemif/pcp4_out
 add wave -noupdate -expand -group {EX/MEM Latch} /system_tb/DUT/CPU/DP/EXMEM/exmemif/wsel_in
@@ -125,12 +121,30 @@ add wave -noupdate -expand -group {MEM/WB Latch} /system_tb/DUT/CPU/DP/MEMWB/mem
 add wave -noupdate -expand -group {MEM/WB Latch} /system_tb/DUT/CPU/DP/MEMWB/memwbif/portO_out
 add wave -noupdate -expand -group {MEM/WB Latch} /system_tb/DUT/CPU/DP/MEMWB/memwbif/luiValue_in
 add wave -noupdate -expand -group {MEM/WB Latch} /system_tb/DUT/CPU/DP/MEMWB/memwbif/luiValue_out
-add wave -noupdate -expand -group {MEM/WB Latch} /system_tb/DUT/CPU/DP/MEMWB/memwbif/ihit
-add wave -noupdate -expand -group {MEM/WB Latch} /system_tb/DUT/CPU/DP/MEMWB/memwbif/dhit
 add wave -noupdate -expand -group {MEM/WB Latch} /system_tb/DUT/CPU/DP/MEMWB/memwbif/pcp4_in
 add wave -noupdate -expand -group {MEM/WB Latch} /system_tb/DUT/CPU/DP/MEMWB/memwbif/pcp4_out
 add wave -noupdate -expand -group {MEM/WB Latch} /system_tb/DUT/CPU/DP/MEMWB/memwbif/op_mem
 add wave -noupdate -expand -group {MEM/WB Latch} /system_tb/DUT/CPU/DP/MEMWB/memwbif/op_wb
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/ihit
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/dhit
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/BranchFlush
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/JumpFlush
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/idex_regWr
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/exmem_regWr
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/Rs
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/Rt
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/idex_wsel
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/exmem_wsel
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/id_op
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/mem_op
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/pcWEN
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/IFID_enable
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/IFID_flush
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/IDEX_enable
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/IDEX_flush
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/EXMEM_enable
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/EXMEM_flush
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/MEMWB_enable
 add wave -noupdate -expand -group Datapath /system_tb/DUT/CPU/DP/dpif/imemREN
 add wave -noupdate -expand -group Datapath /system_tb/DUT/CPU/DP/dpif/dmemREN
 add wave -noupdate -expand -group Datapath /system_tb/DUT/CPU/DP/dpif/dmemWEN
@@ -140,7 +154,7 @@ add wave -noupdate -expand -group Datapath /system_tb/DUT/CPU/DP/dpif/dmemload
 add wave -noupdate -expand -group Datapath /system_tb/DUT/CPU/DP/dpif/dmemstore
 add wave -noupdate -expand -group Datapath /system_tb/DUT/CPU/DP/dpif/dmemaddr
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {1966037 ps} 0}
+WaveRestoreCursors {{Cursor 1} {19954 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 150
 configure wave -valuecolwidth 100
@@ -156,4 +170,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {1675460 ps} {2420597 ps}
+WaveRestoreZoom {0 ps} {1604018 ps}
