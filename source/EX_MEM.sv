@@ -25,7 +25,7 @@ always_ff @(posedge CLK, negedge nRST) begin
 		exmemif.op_mem        <= RTYPE;
 	end 
 	else begin 
-		if(exmemif.ihit || exmemif.dhit)  begin
+		if(exmemif.enable)  begin
 			exmemif.dmemstore_out <= exmemif.dmemstore_in;  
 			exmemif.RegWr_out     <= exmemif.RegWr_in;
 			exmemif.MemToReg_out  <= exmemif.MemToReg_in; 
@@ -37,10 +37,10 @@ always_ff @(posedge CLK, negedge nRST) begin
 			exmemif.op_mem        <= exmemif.op_ex;
 
 			// Request Unit
-	        if (exmemif.dhit) begin
+	        if (exmemif.flush) begin
 	            exmemif.dmemREN_out <= 0;
 	            exmemif.dmemWEN_out <= 0;
-	        end else if (exmemif.ihit) begin
+	        end else begin
 	            exmemif.dmemREN_out <= exmemif.dREN_in;
 	            exmemif.dmemWEN_out <= exmemif.dWEN_in;
 	        end
