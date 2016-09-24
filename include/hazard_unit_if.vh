@@ -18,11 +18,18 @@ interface hazard_unit_if;
   logic ihit, dhit; // from datapath
   logic BranchFlush; // from datapath
   logic JumpFlush; // from ID/EX latch
-  logic idex_regWr, exmem_regWr; // from latches
-  regbits_t Rs, Rt; // from control unit
-  regbits_t idex_wsel, exmem_wsel; // from latches
-  opcode_t id_op; // from control unit for optimization
+  logic MEMWB_RegWr, EXMEM_RegWr; // from latches
+  regbits_t IDEX_Rs, IDEX_Rt; // from rs and rt from idex
+  opcode_t ex_op;
   opcode_t mem_op; // from control unit for optimization
+
+  //forwarding logic 
+  logic [1:0] forwardA; 
+  logic [1:0] forwardB; 
+  regbits_t EXMEM_wsel; 
+  regbits_t MEMWB_wsel; 
+
+
 
   // Outputs
   logic pcWEN; // to program counter
@@ -31,20 +38,22 @@ interface hazard_unit_if;
   logic EXMEM_enable, EXMEM_flush;
   logic MEMWB_enable;
 
+
   // control unit ports
   modport hu (
-    input  ihit,       dhit,
-           Rs,         Rt,
-           idex_regWr, exmem_regWr,
-           idex_wsel,  exmem_wsel,
-           JumpFlush,  BranchFlush,
-           id_op,
-           mem_op,
+    input  ihit,  dhit,
+           JumpFlush,    BranchFlush,
+           EXMEM_RegWr,  MEMWB_RegWr,
+           IDEX_Rs,      IDEX_Rt,
+           EXMEM_wsel,   MEMWB_wsel,
+           mem_op,       ex_op,
     output pcWEN,
            IFID_enable,  IFID_flush,
            IDEX_enable,  IDEX_flush,
            EXMEM_enable, EXMEM_flush,
-           MEMWB_enable
+           MEMWB_enable, 
+           forwardA,     forwardB
+
   );
 
 endinterface
