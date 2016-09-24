@@ -33,12 +33,12 @@ module hazard_unit (
 	// 	end
 	// end
 	// assign huif.IFID_enable  = (huif.ihit & !memstall);
-	assign huif.IFID_enable  = huif.ihit;
+	assign huif.IFID_enable  = huif.ihit;// & (huif.ex_op != LW);
 	assign huif.IFID_flush   = (huif.BranchFlush | huif.JumpFlush);
 
 	// assign huif.IDEX_enable  = (huif.ihit & !memstall);
 	assign huif.IDEX_enable  = huif.ihit;
-	assign huif.IDEX_flush   = (huif.BranchFlush | huif.JumpFlush);
+	assign huif.IDEX_flush   = (huif.BranchFlush | huif.JumpFlush);// | (huif.ex_op == LW));
 
 	// assign huif.EXMEM_enable = (huif.ihit & !memstall);
 	assign huif.EXMEM_enable = (huif.ihit | huif.dhit);
@@ -46,9 +46,33 @@ module hazard_unit (
 
 	assign huif.MEMWB_enable = (huif.ihit | huif.dhit);
 	// assign huif.pcWEN        = (huif.ihit & !memstall);
-	assign huif.pcWEN        = huif.ihit;
+	assign huif.pcWEN        = huif.ihit;// & (huif.ex_op != LW);
 
-	// RAW Hazards
+	always_comb begin 
+		
+		if (huif.EXMEM_RegWr & huif.EXMEM_wsel != 0 & huif.EXMEM_wsel == huif.IDEX_Rs) begin 
+			huif.forwardA = 2'b10; 
+		end  
+		else if (huif.MEMWB_RegWr & huif.MEMWB_wsel != 0 & huif.MEMWB_wsel == huif.IDEX_Rs) begin 
+			huif.forwardA = 2'b01; 
+		end  
+		else begin 
+			huif.forwardA = 2'b00; 
+		end
+		
+		if (huif.EXMEM_RegWr & huif.EXMEM_wsel != 0 & huif.EXMEM_wsel == huif.IDEX_Rt) begin 
+			huif.forwardB = 2'b10; 
+		end   
+		else if (huif.MEMWB_RegWr & huif.MEMWB_wsel != 0 & huif.MEMWB_wsel == huif.IDEX_Rt) begin 
+			huif.forwardB = 2'b01; 
+		end   
+		else begin 
+			huif.forwardB = 2'b00; 
+		end 
+
+	end 
+
+		// RAW Hazards
 	// always_comb begin
 	// 	if (huif.id_op == RTYPE) begin
 	// 		// RTYPE in ID hazard
