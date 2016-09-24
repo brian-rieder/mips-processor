@@ -57,6 +57,7 @@ module datapath (
     word_t extImm, pcplus4, jumpdest, luiValue;
     assign pcplus4 = pcif.pc_out + 4;
     logic flush;
+    word_t fwd_portB, mem_wdat, wb_wdat;
 
     // Immediate Extension
     always_comb begin
@@ -100,12 +101,40 @@ module datapath (
     assign cuif.imemload  = ifidif.imemload_out;
 
     // ALU input assignment
-    assign aluif.port_a   = idexif.rdat1_out;
     assign aluif.alu_op   = idexif.ALUop_out;
+    // Port A inputs
+    always_comb begin 
+        if(huif.forwardA == 2'b00) begin 
+            aluif.port_a = idexif.rdat1_out; 
+        end 
+        else if (huif.forwardA == 2'b01) begin 
+            aluif.port_a = wb_wdat;
+        end 
+        else if (huif.forwardA == 2'b10) begin 
+            aluif.port_a = mem_wdat; 
+        end else begin
+            aluif.port_a = '0;
+        end
+    end
+    // Port B inputs
+    always_comb begin 
+        if(huif.forwardB == 2'b00) begin 
+            fwd_portB = idexif.rdat2_out;
+        end 
+        else if (huif.forwardB == 2'b01) begin 
+            fwd_portB = wb_wdat;
+        end 
+        else if (huif.forwardB == 2'b10) begin 
+            fwd_portB = mem_wdat; 
+        end else begin
+            fwd_portB = '0;
+        end
+    end
+    // Non-forwarded Port B input
     always_comb begin
         aluif.port_b = '0;
         if (idexif.ALUsrc_out == 2'b00) begin
-            aluif.port_b = idexif.rdat2_out;
+            aluif.port_b = fwd_portB;
         end
         else if (idexif.ALUsrc_out == 2'b01) begin
             aluif.port_b = idexif.shamt_out;
@@ -119,22 +148,8 @@ module datapath (
     assign rfif.rsel1     = cuif.Rs;
     assign rfif.rsel2     = cuif.Rt;
     assign rfif.wsel      = memwbif.wsel_out;
-    // wdat mux
-    always_comb begin
-        if (memwbif.MemToReg_out == 2'b00) begin 
-            rfif.wdat = memwbif.dmemload_out;  
-        end 
-        else if(memwbif.MemToReg_out == 2'b01) begin 
-            rfif.wdat = memwbif.portO_out;   
-        end 
-        else if (memwbif.MemToReg_out == 2'b10) begin 
-            rfif.wdat = memwbif.luiValue_out;
-        end 
-        else begin 
-            rfif.wdat = memwbif.pcp4_out;
-        end 
-    end
-    assign rfif.WEN = memwbif.RegWr_out; // AND with dhit | ihit because of latch?
+    assign rfif.wdat      = wb_wdat;
+    assign rfif.WEN       = memwbif.RegWr_out; // AND with dhit | ihit because of latch?
 
     // Program Counter input assignment
     assign pcif.pcWEN = huif.pcWEN;
@@ -179,12 +194,55 @@ module datapath (
         end 
     end
 
+    // Write Data
+    always_comb begin
+        if (exmemif.MemToReg_out == 2'b00) begin
+            mem_wdat = dpif.dmemload;
+        end 
+        else if (exmemif.MemToReg_out == 2'b01) begin
+            mem_wdat = exmemif.portO_out;
+        end
+        else if (exmemif.MemToReg_out == 2'b10) begin
+            mem_wdat = exmemif.luiValue_out;
+        end
+        else if (exmemif.MemToReg_out == 2'b11) begin
+            mem_wdat = exmemif.pcp4_out;
+        end
+        else begin
+            mem_wdat = '0;
+        end
+    end
+    always_comb begin
+        if (memwbif.MemToReg_out == 2'b00) begin
+            wb_wdat = memwbif.dmemload_out;
+        end 
+        else if (memwbif.MemToReg_out == 2'b01) begin
+            wb_wdat = memwbif.portO_out;
+        end
+        else if (memwbif.MemToReg_out == 2'b10) begin
+            wb_wdat = memwbif.luiValue_out;
+        end
+        else if (memwbif.MemToReg_out == 2'b11) begin
+            wb_wdat = memwbif.pcp4_out;
+        end
+        else begin
+            wb_wdat = '0;
+        end
+    end
+
     // Hazard Unit
     assign huif.ihit           = dpif.ihit;
     assign huif.dhit           = dpif.dhit;
+    assign huif.IDEX_Rs        = idexif.Rs_out;
+    assign huif.IDEX_Rt        = idexif.Rt_out;
     assign huif.BranchFlush    = flush;
     assign huif.JumpFlush      = idexif.jumpFlush_out;
+    assign huif.ex_op          = exmemif.op_ex;
     assign huif.mem_op         = memwbif.op_mem;
+    assign huif.MEMWB_RegWr    = memwbif.RegWr_out;
+    assign huif.EXMEM_RegWr    = exmemif.RegWr_out; 
+    assign huif.EXMEM_wsel     = exmemif.wsel_out; 
+    assign huif.MEMWB_wsel     = memwbif.wsel_out;
 
     // IF/ID Latch input assignment
     assign ifidif.imemload_in  = dpif.imemload;
@@ -210,6 +268,8 @@ module datapath (
     assign idexif.rdat2_in     = rfif.rdat2;
     assign idexif.pcp4_in      = ifidif.pcp4_out;
     assign idexif.PCsrc_in     = cuif.PCsrc;
+    assign idexif.Rs_in        = cuif.Rs; 
+    assign idexif.Rt_in        = cuif.Rt; 
     // wsel
     always_comb begin
         if(cuif.RegDst == 2'b00)  
@@ -228,7 +288,7 @@ module datapath (
     // EX/MEM Latch input assignment
     assign exmemif.dREN_in      = idexif.dREN_out;
     assign exmemif.dWEN_in      = idexif.dWEN_out;
-    assign exmemif.dmemstore_in = idexif.rdat2_out;
+    assign exmemif.dmemstore_in = fwd_portB;
     assign exmemif.RegWr_in     = idexif.RegWr_out;
     assign exmemif.MemToReg_in  = idexif.MemToReg_out;
     assign exmemif.halt_in      = idexif.halt_out;
