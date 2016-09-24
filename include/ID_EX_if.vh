@@ -23,6 +23,7 @@ interface ID_EX_if;
               RegWr_in,  BNE_in,    enable,     flush;
   regbits_t   wsel_in;
   logic [ADDR_W-1:0] j25_in;
+  regbits_t   Rs_in, Rt_in; 
 
   // Outputs
   opcode_t    op_ex;
@@ -32,6 +33,7 @@ interface ID_EX_if;
   logic       dREN_out,   dWEN_out,   halt_out,    jumpFlush_out, RegWr_out, BNE_out;
   regbits_t   wsel_out;
   logic [ADDR_W-1:0] j25_out;
+  regbits_t   Rs_out, Rt_out; 
 
   // control unit ports
   modport id_ex (
@@ -57,6 +59,8 @@ interface ID_EX_if;
            wsel_in,       // wsel (Rd/Rt/31) from Control Unit
            j25_in,        // j-inst address from Control Unit
            flush,
+           Rs_in, 
+           Rt_in,
     output pcp4_out,      // PC+4 to EX/MEM and jumpAddr computation
            rdat1_out,     // rdat1 to ALU port A and jumpSel mux
            rdat2_out,     // rdat2 to ALUsrc mux
@@ -76,7 +80,9 @@ interface ID_EX_if;
            RegWr_out,     // Reg Write Enable to EX/MEM
            BNE_out,       // BNE to BNE mux
            wsel_out,      // wsel to EX/MEM
-           j25_out        // j25 to jumpAddr computation
+           j25_out,        // j25 to jumpAddr computation
+           Rs_out,
+           Rt_out
   );
 
 endinterface
