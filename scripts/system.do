@@ -85,6 +85,10 @@ add wave -noupdate -expand -group {ID/EX Latch} /system_tb/DUT/CPU/DP/IDEX/idexi
 add wave -noupdate -expand -group {ID/EX Latch} /system_tb/DUT/CPU/DP/IDEX/idexif/BNE_out
 add wave -noupdate -expand -group {ID/EX Latch} /system_tb/DUT/CPU/DP/IDEX/idexif/wsel_out
 add wave -noupdate -expand -group {ID/EX Latch} /system_tb/DUT/CPU/DP/IDEX/idexif/j25_out
+add wave -noupdate -expand -group {ID/EX Latch} /system_tb/DUT/CPU/DP/idexif/Rs_in
+add wave -noupdate -expand -group {ID/EX Latch} /system_tb/DUT/CPU/DP/idexif/Rt_in
+add wave -noupdate -expand -group {ID/EX Latch} /system_tb/DUT/CPU/DP/idexif/Rs_out
+add wave -noupdate -expand -group {ID/EX Latch} /system_tb/DUT/CPU/DP/idexif/Rt_out
 add wave -noupdate -expand -group {EX/MEM Latch} /system_tb/DUT/CPU/DP/EXMEM/exmemif/dREN_in
 add wave -noupdate -expand -group {EX/MEM Latch} /system_tb/DUT/CPU/DP/EXMEM/exmemif/dWEN_in
 add wave -noupdate -expand -group {EX/MEM Latch} /system_tb/DUT/CPU/DP/EXMEM/exmemif/dmemREN_out
@@ -129,14 +133,16 @@ add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/ihit
 add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/dhit
 add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/BranchFlush
 add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/JumpFlush
-add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/idex_regWr
-add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/exmem_regWr
-add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/Rs
-add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/Rt
-add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/idex_wsel
-add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/exmem_wsel
-add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/id_op
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/MEMWB_RegWr
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/EXMEM_RegWr
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/IDEX_Rs
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/IDEX_Rt
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/ex_op
 add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/mem_op
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/forwardA
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/forwardB
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/EXMEM_wsel
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/MEMWB_wsel
 add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/pcWEN
 add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/IFID_enable
 add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/huif/IFID_flush
@@ -154,7 +160,7 @@ add wave -noupdate -expand -group Datapath /system_tb/DUT/CPU/DP/dpif/dmemload
 add wave -noupdate -expand -group Datapath /system_tb/DUT/CPU/DP/dpif/dmemstore
 add wave -noupdate -expand -group Datapath /system_tb/DUT/CPU/DP/dpif/dmemaddr
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {19954 ps} 0}
+WaveRestoreCursors {{Cursor 1} {1425504 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 150
 configure wave -valuecolwidth 100
@@ -170,4 +176,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {0 ps} {1604018 ps}
+WaveRestoreZoom {1135772 ps} {2081060 ps}
