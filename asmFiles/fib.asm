@@ -3,7 +3,7 @@
 #--------------------------------------
   org 0x0000
 
-  ori   $2, $2, start
+  ori   $2, $2, start # change ori's to $0s
   ori   $1, $1, 1
   ori   $8, $8, 4
   ori   $6, $6, 0x0F00
@@ -30,5 +30,5 @@ start:
 # comment to use mmio
 
   org 0x0F00
-  # cfw 22
-  cfw 5
+  cfw 22
+  #cfw 5
