@@ -173,7 +173,7 @@ module datapath (
                     flush = 1;
                 end
                 else begin
-                    pcif.pc_next = idexif.pcp4_out;
+                    pcif.pc_next = pcplus4;//idexif.pcp4_out;
                     flush = 0;
                 end
             end  
@@ -183,7 +183,7 @@ module datapath (
                     flush = 1;
                 end
                 else begin
-                    pcif.pc_next = idexif.pcp4_out;
+                    pcif.pc_next = pcplus4;//idexif.pcp4_out;
                     flush = 0;
                 end
             end
