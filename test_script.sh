@@ -77,7 +77,7 @@ then
 
   for i in asmFiles/$FILES*
   do
-    textOutput="procesing file $i ($index of $count)"
+    textOutput="processing file $i ($index of $count)"
     echo -n $textOutput
 
     size=$(resize | grep COLUMN - | cut -f2 -d"'")
