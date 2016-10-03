@@ -132,6 +132,7 @@ package cpu_types_pkg;
     logic [IIDX_W-1:0]  idx;
     logic [IBYT_W-1:0]  bytoff;
   } icachef_t;
+  // missing valid and dirty bits
 
   // dcache format type
   typedef struct packed {
