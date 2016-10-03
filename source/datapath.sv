@@ -90,11 +90,10 @@ module datapath (
     // end 
 
     always_ff @ (posedge CLK, negedge nRST) begin
-        if (!nRST) begin
+        if (!nRST)
             dpif.halt <= 0;
-        end else begin
-            dpif.halt <= memwbif.halt_out;
-        end
+        else
+            dpif.halt <= memwbif.halt_out | dpif.halt;
     end
 
     // Control Unit input assignment
