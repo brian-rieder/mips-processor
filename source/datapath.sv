@@ -232,6 +232,8 @@ module datapath (
     // Hazard Unit
     assign huif.ihit           = dpif.ihit;
     assign huif.dhit           = dpif.dhit;
+    assign huif.CU_Rs          = cuif.Rs;
+    assign huif.CU_Rt          = cuif.Rt;
     assign huif.IDEX_Rs        = idexif.Rs_out;
     assign huif.IDEX_Rt        = idexif.Rt_out;
     assign huif.BranchFlush    = flush;
