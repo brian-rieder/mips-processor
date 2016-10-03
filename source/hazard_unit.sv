@@ -15,7 +15,9 @@ module hazard_unit (
 	import cpu_types_pkg::*; 
 
 	logic memstall, hazard;
-	assign memstall = (!huif.dhit & (huif.mem_op == LW | huif.mem_op == SW));
+	assign memstall = (huif.EXMEM_RegWr & huif.EXMEM_wsel != 0) 
+	                & (huif.CU_Rs == huif.EXMEM_wsel | huif.CU_Rt == huif.EXMEM_wsel) 
+		            & (huif.ex_op == LW | huif.ex_op == SW);
 
 	// always_comb begin
 	// 	if (huif.BranchFlush || huif.JumpFlush) begin
@@ -32,23 +34,20 @@ module hazard_unit (
 	// 		huif.IFID_flush  = 0;
 	// 	end
 	// end
-	// assign huif.IFID_enable  = (huif.ihit & !memstall);
-	assign huif.IFID_enable  = huif.ihit & (huif.ex_op != LW && huif.ex_op != SW);
+
+	assign huif.IFID_enable  = huif.ihit & !memstall;
 	assign huif.IFID_flush   = (huif.BranchFlush | huif.JumpFlush);
 
 	// assign huif.IDEX_enable  = (huif.ihit & !memstall);
 	assign huif.IDEX_enable  = huif.ihit;
 	assign huif.IDEX_flush   = (huif.BranchFlush | huif.JumpFlush) 
-							 | (huif.ex_op == LW || huif.ex_op == SW);
+							 | memstall;
 
-	// assign huif.EXMEM_enable = (huif.ihit & !memstall);
 	assign huif.EXMEM_enable = (huif.ihit | huif.dhit);
-	// assign huif.EXMEM_enable = huif.ihit;
 	assign huif.EXMEM_flush  = huif.dhit;
 
 	assign huif.MEMWB_enable = (huif.ihit | huif.dhit);
-	// assign huif.pcWEN        = (huif.ihit & !memstall);
-	assign huif.pcWEN        = huif.ihit & (huif.ex_op != LW && huif.ex_op != SW);
+	assign huif.pcWEN        = (huif.ihit & !memstall);
 
 	always_comb begin 
 		
