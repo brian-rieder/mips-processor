@@ -90,11 +90,10 @@ module datapath (
     // end 
 
     always_ff @ (posedge CLK, negedge nRST) begin
-        if (!nRST) begin
+        if (!nRST)
             dpif.halt <= 0;
-        end else begin
-            dpif.halt <= memwbif.halt_out;
-        end
+        else
+            dpif.halt <= exmemif.halt_out | dpif.halt;
     end
 
     // Control Unit input assignment
@@ -173,7 +172,7 @@ module datapath (
                     flush = 1;
                 end
                 else begin
-                    pcif.pc_next = idexif.pcp4_out;
+                    pcif.pc_next = pcplus4;//idexif.pcp4_out;
                     flush = 0;
                 end
             end  
@@ -183,7 +182,7 @@ module datapath (
                     flush = 1;
                 end
                 else begin
-                    pcif.pc_next = idexif.pcp4_out;
+                    pcif.pc_next = pcplus4;//idexif.pcp4_out;
                     flush = 0;
                 end
             end

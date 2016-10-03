@@ -2,7 +2,7 @@
 # Test a search algorithm
 #--------------------------------------
   org   0x0000
-  ori   $sp, $zero, 0x80
+  ori   $sp, $zero, 0x80 # 4FFC
 start:
   ori   $1, $zero, 0x01
   ori   $2, $zero, 0x04
@@ -33,6 +33,7 @@ search_item:
   cfw 0x5c6f
 list_length:
   cfw 100
+  # cfw 10
 search_list:
   cfw 0x087d
   cfw 0x5fcb

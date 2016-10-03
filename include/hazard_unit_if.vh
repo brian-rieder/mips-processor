@@ -55,6 +55,21 @@ interface hazard_unit_if;
            forwardA,     forwardB
 
   );
+    modport tb (
+    output ihit,  dhit,
+           JumpFlush,    BranchFlush,
+           EXMEM_RegWr,  MEMWB_RegWr,
+           IDEX_Rs,      IDEX_Rt,
+           EXMEM_wsel,   MEMWB_wsel,
+           mem_op,       ex_op,
+    input  pcWEN,
+           IFID_enable,  IFID_flush,
+           IDEX_enable,  IDEX_flush,
+           EXMEM_enable, EXMEM_flush,
+           MEMWB_enable, 
+           forwardA,     forwardB
+
+  );
 
 endinterface
 
