@@ -93,7 +93,7 @@ module datapath (
         if (!nRST)
             dpif.halt <= 0;
         else
-            dpif.halt <= memwbif.halt_out | dpif.halt;
+            dpif.halt <= exmemif.halt_out | dpif.halt;
     end
 
     // Control Unit input assignment
