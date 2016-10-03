@@ -19,7 +19,8 @@ interface hazard_unit_if;
   logic BranchFlush; // from datapath
   logic JumpFlush; // from ID/EX latch
   logic MEMWB_RegWr, EXMEM_RegWr; // from latches
-  regbits_t IDEX_Rs, IDEX_Rt; // from rs and rt from idex
+  regbits_t CU_Rs, CU_Rt; // rs and rt from CU
+  regbits_t IDEX_Rs, IDEX_Rt; // rs and rt from idex
   opcode_t ex_op;
   opcode_t mem_op; // from control unit for optimization
 
@@ -44,6 +45,7 @@ interface hazard_unit_if;
     input  ihit,  dhit,
            JumpFlush,    BranchFlush,
            EXMEM_RegWr,  MEMWB_RegWr,
+           CU_Rs,        CU_Rt,
            IDEX_Rs,      IDEX_Rt,
            EXMEM_wsel,   MEMWB_wsel,
            mem_op,       ex_op,
@@ -59,6 +61,7 @@ interface hazard_unit_if;
     output ihit,  dhit,
            JumpFlush,    BranchFlush,
            EXMEM_RegWr,  MEMWB_RegWr,
+           CU_Rs,        CU_Rt,
            IDEX_Rs,      IDEX_Rt,
            EXMEM_wsel,   MEMWB_wsel,
            mem_op,       ex_op,
