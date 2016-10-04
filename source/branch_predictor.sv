@@ -20,13 +20,18 @@ module branch_predictor (
 	logic [27:0] curr_tag;
 	branchentry_t branch_table [3:0];
 
-	assign curr_idx = bpif.curr_pc[3:2];
-	assign curr_tag = bpif.curr_pc[31:4];
+	assign curr_idx     = bpif.curr_pc[3:2];
+	assign curr_tag     = bpif.curr_pc[31:4];
+	assign bpif.bp_pc   = branch_table[curr_idx].value;
+	assign bpif.btb_hit = branch_table[curr_idx].valid & (branch_table[curr_idx].tag == curr_tag);
 
 	always_comb begin
-		if(branch_table[curr_idx].valid) begin
-
+		if(!bpif.btb_hit) begin
+			branch_table[curr_idx].valid = 1;
+			branch_table[curr_idx].value = bpif.update_pc;
 		end
 	end
+
+	// no resets
 
 endmodule
