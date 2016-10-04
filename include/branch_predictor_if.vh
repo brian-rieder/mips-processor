@@ -25,15 +25,15 @@ interface branch_predictor_if;
   // Inputs
   word_t curr_pc;    // PC from PC block
   word_t update_pc;  // PC from EX stage (only relevant with branches in EX)
-  logic  invalidate; // asserted when flushing on a branch
 
   // Outputs
   word_t bp_pc;
+  logic  btb_hit;
 
   // control unit ports
   modport bp (
     input  curr_pc, update_pc,
-    output bp_pc
+    output bp_pc, btb_hit
   );
     // modport tb (
   // );
