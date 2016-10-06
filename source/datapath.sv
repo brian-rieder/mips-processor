@@ -15,6 +15,7 @@
 `include "ID_EX_if.vh"
 `include "EX_MEM_if.vh"
 `include "MEM_WB_if.vh"
+`include "branch_predictor_if.vh"
 
 // alu op, mips op, and instruction type
 `include "cpu_types_pkg.vh"
@@ -39,6 +40,7 @@ module datapath (
     EX_MEM_if exmemif ();
     MEM_WB_if memwbif ();
     hazard_unit_if huif ();
+    branch_predictor_if bpif ();
 
     // Component instantiation
     alu ALU (aluif.alu);
@@ -50,6 +52,7 @@ module datapath (
     EX_MEM EXMEM (CLK, nRST, exmemif.ex_mem);
     MEM_WB MEMWB (CLK, nRST, memwbif.mem_wb);
     hazard_unit HU (huif.hu);
+    branch_predictor BP (CLK, nRST, bpif.bp);
 
 
     // Misc. Datapath Internal Signals
@@ -58,6 +61,7 @@ module datapath (
     assign pcplus4 = pcif.pc_out + 4;
     logic flush;
     word_t fwd_portB, mem_wdat, wb_wdat;
+    word_t bp_imemaddr;
 
     // Immediate Extension
     always_comb begin
@@ -76,7 +80,7 @@ module datapath (
     // Datapath input assignment
     // assign dpif.halt      = memwbif.halt_out;
     assign dpif.imemREN   = 1; // always tied high
-    assign dpif.imemaddr  = pcif.pc_out;
+    assign dpif.imemaddr  = bp_imemaddr;
     assign dpif.dmemstore = exmemif.dmemstore_out;
     assign dpif.dmemaddr  = exmemif.portO_out;
     assign dpif.dmemREN   = exmemif.dmemREN_out;
@@ -144,16 +148,25 @@ module datapath (
     end
 
     // Register File input assignment
-    assign rfif.rsel1     = cuif.Rs;
-    assign rfif.rsel2     = cuif.Rt;
-    assign rfif.wsel      = memwbif.wsel_out;
-    assign rfif.wdat      = wb_wdat;
-    assign rfif.WEN       = memwbif.RegWr_out; // AND with dhit | ihit because of latch?
+    assign rfif.rsel1        = cuif.Rs;
+    assign rfif.rsel2        = cuif.Rt;
+    assign rfif.wsel         = memwbif.wsel_out;
+    assign rfif.wdat         = wb_wdat;
+    assign rfif.WEN          = memwbif.RegWr_out; // AND with dhit | ihit because of latch?
+
+    // Branch Predictor
+    assign bpif.curr_pc      = pcif.pc_out; // PC of the current instruction
+    assign bpif.update_pc    = idexif.inst_pc_ex; // PC from EX stage
+    assign bpif.branch_flush = flush;
+
+    // Branch Prediction Mux
+    assign bp_imemaddr       = (bpif.btb_hit) ? bpif.bp_pc: pcif.pc_out;
 
     // Program Counter input assignment
-    assign pcif.pcWEN = huif.pcWEN;
+    assign pcif.pcWEN        = huif.pcWEN;
     // JumpSel 
     always_comb begin
+        bpif.branch_target = 0;
         // PC + 4
         if (idexif.JumpSel_out == 2'b00) begin 
             pcif.pc_next = pcplus4; 
@@ -169,21 +182,41 @@ module datapath (
             if (idexif.BNE_out == 1'b0) begin //BEQ 
                 if(aluif.z_flag && idexif.PCsrc_out) begin
                     pcif.pc_next = (idexif.extImm_out << 2) + idexif.pcp4_out; // PC+4 confusion again
-                    flush = 1;
+                    if (idexif.predicted_pc_out != pcif.pc_next) begin
+                        flush = 1;
+                        bpif.branch_target = pcif.pc_next;
+                    end else begin
+                        flush = 0;
+                    end
                 end
                 else begin
                     pcif.pc_next = pcplus4;//idexif.pcp4_out;
-                    flush = 0;
+                    if (idexif.predicted_pc_out != pcif.pc_next) begin
+                        flush = 1;
+                        bpif.branch_target = pcif.pc_next;
+                    end else begin
+                        flush = 0;
+                    end
                 end
             end  
             else begin 
                 if(!aluif.z_flag && idexif.PCsrc_out) begin
                     pcif.pc_next = (idexif.extImm_out << 2) + idexif.pcp4_out;      
-                    flush = 1;
+                    if (idexif.predicted_pc_out != pcif.pc_next) begin
+                        flush = 1;
+                        bpif.branch_target = pcif.pc_next;
+                    end else begin
+                        flush = 0;
+                    end
                 end
                 else begin
                     pcif.pc_next = pcplus4;//idexif.pcp4_out;
-                    flush = 0;
+                    if (idexif.predicted_pc_out != pcif.pc_next) begin
+                        flush = 1;
+                        bpif.branch_target = pcif.pc_next;
+                    end else begin
+                        flush = 0;
+                    end
                 end
             end
         end  
@@ -230,47 +263,51 @@ module datapath (
     end
 
     // Hazard Unit
-    assign huif.ihit           = dpif.ihit;
-    assign huif.dhit           = dpif.dhit;
-    assign huif.CU_Rs          = cuif.Rs;
-    assign huif.CU_Rt          = cuif.Rt;
-    assign huif.IDEX_Rs        = idexif.Rs_out;
-    assign huif.IDEX_Rt        = idexif.Rt_out;
-    assign huif.BranchFlush    = flush;
-    assign huif.JumpFlush      = idexif.jumpFlush_out;
-    assign huif.ex_op          = exmemif.op_ex;
-    assign huif.mem_op         = memwbif.op_mem;
-    assign huif.MEMWB_RegWr    = memwbif.RegWr_out;
-    assign huif.EXMEM_RegWr    = exmemif.RegWr_out; 
-    assign huif.EXMEM_wsel     = exmemif.wsel_out; 
-    assign huif.MEMWB_wsel     = memwbif.wsel_out;
+    assign huif.ihit              = dpif.ihit;
+    assign huif.dhit              = dpif.dhit;
+    assign huif.CU_Rs             = cuif.Rs;
+    assign huif.CU_Rt             = cuif.Rt;
+    assign huif.IDEX_Rs           = idexif.Rs_out;
+    assign huif.IDEX_Rt           = idexif.Rt_out;
+    assign huif.BranchFlush       = flush;
+    assign huif.JumpFlush         = idexif.jumpFlush_out;
+    assign huif.ex_op             = exmemif.op_ex;
+    assign huif.mem_op            = memwbif.op_mem;
+    assign huif.MEMWB_RegWr       = memwbif.RegWr_out;
+    assign huif.EXMEM_RegWr       = exmemif.RegWr_out; 
+    assign huif.EXMEM_wsel        = exmemif.wsel_out; 
+    assign huif.MEMWB_wsel        = memwbif.wsel_out;
 
     // IF/ID Latch input assignment
-    assign ifidif.imemload_in  = dpif.imemload;
-    assign ifidif.pcp4_in      = pcplus4;
-    assign ifidif.flush        = huif.IFID_flush;
-    assign ifidif.enable       = huif.IFID_enable;
+    assign ifidif.imemload_in     = dpif.imemload;
+    assign ifidif.pcp4_in         = pcplus4;
+    assign ifidif.flush           = huif.IFID_flush;
+    assign ifidif.enable          = huif.IFID_enable;
+    assign ifidif.inst_pc_if      = pcif.pc_out;
+    assign ifidif.predicted_pc_in = pcif.pc_next;
 
     // ID/EX Latch input assignment
-    assign idexif.jumpFlush_in = cuif.jumpFlush;
-    assign idexif.JumpSel_in   = cuif.JumpSel;
-    assign idexif.dREN_in      = cuif.dREN;
-    assign idexif.dWEN_in      = cuif.dWEN;
-    assign idexif.j25_in       = cuif.j25;
-    assign idexif.BNE_in       = cuif.BNE;
-    assign idexif.RegWr_in     = cuif.RegWr;
-    assign idexif.MemToReg_in  = cuif.MemToReg;
-    assign idexif.ALUsrc_in    = cuif.ALUsrc;
-    assign idexif.ALUop_in     = cuif.alu_op;
-    assign idexif.halt_in      = cuif.halt;
-    assign idexif.shamt_in     = cuif.shamt;
-    assign idexif.extImm_in    = extImm;
-    assign idexif.rdat1_in     = rfif.rdat1;
-    assign idexif.rdat2_in     = rfif.rdat2;
-    assign idexif.pcp4_in      = ifidif.pcp4_out;
-    assign idexif.PCsrc_in     = cuif.PCsrc;
-    assign idexif.Rs_in        = cuif.Rs; 
-    assign idexif.Rt_in        = cuif.Rt; 
+    assign idexif.jumpFlush_in    = cuif.jumpFlush;
+    assign idexif.JumpSel_in      = cuif.JumpSel;
+    assign idexif.dREN_in         = cuif.dREN;
+    assign idexif.dWEN_in         = cuif.dWEN;
+    assign idexif.j25_in          = cuif.j25;
+    assign idexif.BNE_in          = cuif.BNE;
+    assign idexif.RegWr_in        = cuif.RegWr;
+    assign idexif.MemToReg_in     = cuif.MemToReg;
+    assign idexif.ALUsrc_in       = cuif.ALUsrc;
+    assign idexif.ALUop_in        = cuif.alu_op;
+    assign idexif.halt_in         = cuif.halt;
+    assign idexif.shamt_in        = cuif.shamt;
+    assign idexif.extImm_in       = extImm;
+    assign idexif.rdat1_in        = rfif.rdat1;
+    assign idexif.rdat2_in        = rfif.rdat2;
+    assign idexif.pcp4_in         = ifidif.pcp4_out;
+    assign idexif.PCsrc_in        = cuif.PCsrc;
+    assign idexif.Rs_in           = cuif.Rs; 
+    assign idexif.Rt_in           = cuif.Rt; 
+    assign idexif.inst_pc_id      = ifidif.inst_pc_id;
+    assign idexif.predicted_pc_in = ifidif.predicted_pc_out;
     // wsel
     always_comb begin
         if(cuif.RegDst == 2'b00)  

@@ -13,7 +13,6 @@
 // Struct for each branch table entry
 typedef struct packed {
    logic valid;        // T/F - will need to be two bits (state indicator) with two bit saturating
-   logic [1:0] idx;    // Lower order two bits of WORD value of instruction
    logic [27:0] tag;   // bits {31:4} of the PC
    logic [31:0] value; // Predicted PC
 } branchentry_t;
@@ -25,6 +24,8 @@ interface branch_predictor_if;
   // Inputs
   word_t curr_pc;    // PC from PC block
   word_t update_pc;  // PC from EX stage (only relevant with branches in EX)
+  word_t branch_target;
+  logic  branch_flush;
 
   // Outputs
   word_t bp_pc;
@@ -32,7 +33,7 @@ interface branch_predictor_if;
 
   // control unit ports
   modport bp (
-    input  curr_pc, update_pc,
+    input  curr_pc, update_pc, branch_target, branch_flush,
     output bp_pc, btb_hit
   );
     // modport tb (
