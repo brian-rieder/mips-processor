@@ -36,6 +36,15 @@ add wave -noupdate -expand -group {Control Unit} /system_tb/DUT/CPU/DP/CU/cuif/j
 add wave -noupdate -expand -group {Program Counter} /system_tb/DUT/CPU/DP/PC/pcif/pc_next
 add wave -noupdate -expand -group {Program Counter} /system_tb/DUT/CPU/DP/PC/pcif/pc_out
 add wave -noupdate -expand -group {Program Counter} /system_tb/DUT/CPU/DP/PC/pcif/pcWEN
+add wave -noupdate -expand -group {Branch Predictor} /system_tb/DUT/CPU/DP/bpif/curr_pc
+add wave -noupdate -expand -group {Branch Predictor} /system_tb/DUT/CPU/DP/bpif/update_pc
+add wave -noupdate -expand -group {Branch Predictor} /system_tb/DUT/CPU/DP/bpif/bp_pc
+add wave -noupdate -expand -group {Branch Predictor} /system_tb/DUT/CPU/DP/bpif/btb_hit
+add wave -noupdate -expand -group {Branch Predictor} /system_tb/DUT/CPU/DP/bpif/branch_target
+add wave -noupdate -expand -group {Branch Predictor} /system_tb/DUT/CPU/DP/bpif/branch_flush
+add wave -noupdate -expand -group {Branch Predictor} /system_tb/DUT/CPU/DP/BP/curr_idx
+add wave -noupdate -expand -group {Branch Predictor} /system_tb/DUT/CPU/DP/BP/curr_tag
+add wave -noupdate -expand -group {Branch Predictor} /system_tb/DUT/CPU/DP/BP/branch_table
 add wave -noupdate -expand -group ALU /system_tb/DUT/CPU/DP/ALU/aluif/port_a
 add wave -noupdate -expand -group ALU /system_tb/DUT/CPU/DP/ALU/aluif/port_b
 add wave -noupdate -expand -group ALU /system_tb/DUT/CPU/DP/ALU/aluif/port_o
@@ -160,7 +169,7 @@ add wave -noupdate -expand -group Datapath /system_tb/DUT/CPU/DP/dpif/dmemload
 add wave -noupdate -expand -group Datapath /system_tb/DUT/CPU/DP/dpif/dmemstore
 add wave -noupdate -expand -group Datapath /system_tb/DUT/CPU/DP/dpif/dmemaddr
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {1425504 ps} 0}
+WaveRestoreCursors {{Cursor 1} {208455 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 150
 configure wave -valuecolwidth 100
@@ -176,4 +185,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {1135772 ps} {2081060 ps}
+WaveRestoreZoom {0 ps} {7217034 ps}
