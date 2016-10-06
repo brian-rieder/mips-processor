@@ -26,9 +26,13 @@ always_ff @(posedge CLK, negedge nRST) begin
 			if(ifidif.flush) begin
 				ifidif.imemload_out <= 32'h0000;
 				ifidif.pcp4_out <= 32'h0000;
+				ifidif.inst_pc_id <= '0;
+				ifidif.predicted_pc_out <= '0;
 			end else begin
 				ifidif.imemload_out <= ifidif.imemload_in;
 				ifidif.pcp4_out <= ifidif.pcp4_in;
+				ifidif.inst_pc_id <= ifidif.inst_pc_if;
+				ifidif.predicted_pc_out <= ifidif.predicted_pc_in;
 			end
 		end
 	end

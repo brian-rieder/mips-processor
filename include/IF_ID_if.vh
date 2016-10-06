@@ -13,7 +13,8 @@ interface IF_ID_if;
   // import types
   import cpu_types_pkg::*;
 
-  word_t      imemload_in, imemload_out, pcp4_in, pcp4_out;
+  word_t      imemload_in, imemload_out, pcp4_in, pcp4_out, 
+              inst_pc_if, inst_pc_id, predicted_pc_in, predicted_pc_out;
   logic       enable,      flush;
 
   // latch ports
@@ -21,9 +22,13 @@ interface IF_ID_if;
     input   enable,
             imemload_in,  // Instruction - From Datapath (Caches)
             pcp4_in,      // PC+4 for RS - From Program Counter
+            inst_pc_if,
             flush,        // From Datapath
+            predicted_pc_in,
     output  imemload_out, // Instruction - To Control Unit
-            pcp4_out      // PC+4 for RS - To ID/EX Latch
+            inst_pc_id,
+            pcp4_out,     // PC+4 for RS - To ID/EX Latch
+            predicted_pc_out
   );
 
 endinterface
