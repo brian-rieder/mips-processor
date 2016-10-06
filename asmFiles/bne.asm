@@ -1,5 +1,5 @@
 org   0x0000
-ori $1, $zero, 666
+ori $1, $zero, 6969
 ori $2, $zero, 6969
 nop
 nop
