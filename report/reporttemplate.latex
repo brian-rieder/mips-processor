@@ -18,11 +18,12 @@
 % set title
 \title{ECE 437L Midterm Report}
 % fill in the blanks
-\author{FirstName LastName \\
-        TA's Name}
+\author{Pooja Kale (mg273) \\
+        Brian Rieder (mg267) \\
+        TA: Nick Pfister}
 % \today will put todays date
 % or you can manually put the date in
-\date{Due Date}
+\date{October 14, 2016}
 % cover page is a page by itself
 
 \begin{document}
@@ -32,20 +33,36 @@
 % this should be on a page by itself
   \section{Executive Overview}
   
-  Text for your executive overview
+   This report compares the performance of a single cycle processor and a pipeline processor on a merge-sort assembly (asm) file, and analyzes the results. The comparisons of the two processor designs will be based on the maximum clock frequencies, average instructions per clock cycle, the performance of the designs in MIPS and the FPGA resources required for each design. The comparisons will be further tested using variable latency RAM in order to ensure independence from memory timing. The single cycle processor is a simple design that takes in one instruction at a time to decode it and produce a result. This design does not have any instruction dependencies eliminating the possibility of instruction or data hazards. The pipeline processor is a more intricate design with five stages: instruction fetch, instruction decode, execute, memory, and write-back. This allows the design to process five instructions simultaneously within different stages of their execution.  
+\\ 
+\\
+  The two designs will be tested using the merge-sort assembly file. The benefit of using the mergersort assembly program, is it includes all possible assembly instructions that both processors can decode. The merge-sort file also includes multiple branches to test branch logic in both designs. The order of instructions in the program will test if the pipeline handles data hazards, and structural hazards with inserting stalls or bubbles in the correct places and flushing data at the right time. The execution results show that the pipeline processor is the favorable design because it increases the throughput (or decreases the execution time) as compared to the single cycle. While the single cycle handles one instruction at a time the pipeline processor design processes 5 instructions in different stages in one cycle. 
 
   \section{Processor Design}
 
 % Uncomment after you create the block diagram graphic.
-%  \begin{figure}[hp]
-%    \begin{center}
-%      \includegraphics[width=\textwidth]{blockDiagram.png}
-%    % You can change the type of figure to a .png, .pdf, .jpg, .mps
-%    \end{center}
-%
-%    \caption{Single Cycle Block Diagram}
-%		\label{fig:processor}
-%  \end{figure}
+  \begin{figure}[hp]
+    \begin{center}
+      \includegraphics[width=\textwidth]{SingleCycleProcessor.jpg}
+    % You can change the type of figure to a .png, .pdf, .jpg, .mps
+    \end{center}
+
+    \caption{Single Cycle Block Diagram}
+		\label{fig:processor}
+  \end{figure}
+
+
+  Text for discussing your designs %in Figure \ref{fig:processor}
+
+  \begin{figure}[hp]
+    \begin{center}
+      \includegraphics[width=\textwidth]{PipelineProcessor1.jpg}
+    % You can change the type of figure to a .png, .pdf, .jpg, .mps
+    \end{center}
+
+    \caption{Single Cycle Block Diagram}
+    \label{fig:processor}
+  \end{figure}
 
 
   Text for discussing your designs %in Figure \ref{fig:processor}
