@@ -1,0 +1,81 @@
+% This is a template to create your midterm report as a pdf.
+% Just fill in the areas and run pdflatex
+% For more information on LaTeX documents consult The (Not So
+% Short Introduction to LateX2e
+%
+% to compile your report use the command
+% pdflatex reportdocument.tex
+%
+% if you have \ref useage or other cross links
+% you will have to run the above command again
+
+% set 12pt font
+\documentclass[12pt]{article}
+% some useful packages
+\usepackage[pdftex]{graphicx,color}
+\usepackage{fullpage}
+\def\baselinestretch{1.5} % line spaceing
+% set title
+\title{ECE 437L Midterm Report}
+% fill in the blanks
+\author{FirstName LastName \\
+        TA's Name}
+% \today will put todays date
+% or you can manually put the date in
+\date{Due Date}
+% cover page is a page by itself
+
+\begin{document}
+  \maketitle
+
+% executive overview remember
+% this should be on a page by itself
+  \section{Executive Overview}
+  
+  Text for your executive overview
+
+  \section{Processor Design}
+
+% Uncomment after you create the block diagram graphic.
+%  \begin{figure}[hp]
+%    \begin{center}
+%      \includegraphics[width=\textwidth]{blockDiagram.png}
+%    % You can change the type of figure to a .png, .pdf, .jpg, .mps
+%    \end{center}
+%
+%    \caption{Single Cycle Block Diagram}
+%		\label{fig:processor}
+%  \end{figure}
+
+
+  Text for discussing your designs %in Figure \ref{fig:processor}
+
+	\section{Processor Debug}
+
+	Fix the processor!!!
+
+  \section{Results}
+
+  \begin{table}[!hbp]
+
+    \begin{tabular}{|p{.25\textwidth}|p{.75\textwidth}|}
+      \hline
+      Throughput & ??/??=??instructions/ns \\ \hline
+      Latency & ??*??=??ns/instruction \\ \hline
+    \end{tabular}
+
+    \caption{Processor Specs}
+		\label{tb:procspec}
+  \end{table}
+
+  Text for your results
+
+  \section{Conclusion}
+
+  Text for your conclusion
+
+  \section{Contributions}
+
+  Text for individual contributions
+
+\end{document}
