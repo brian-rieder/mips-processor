@@ -1,0 +1,11 @@
+,Single Cycle,Pipeline
+Maximum Possible Frequency (MHz),37.24 (CLK/2),48.88 (CPUCLK)
+Highest Achieved Frequency (MHz),55.56,100
+Average Instructions per Clock Cycle (CPI),2.17,3.216
+Critical Path Length (ns),26.939,20.774
+Instruction Latency (ns),26.85,102.29
+Mergesort Number of Instructions,5399,5399
+Mergesort Number of Cycles,13791,17365
+MIPS,17.164,15.197
+Total Utilized Combinational Functions,2844,3265
+Utilized Dedicated Logic Registers,1278,1716
