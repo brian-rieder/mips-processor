@@ -1,4 +1,6 @@
 *.vh~
 *.sv~
 *.asm~
+*.aux
+*.log
 ram.sv.bak
