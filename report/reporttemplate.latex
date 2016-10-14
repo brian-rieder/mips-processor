@@ -53,18 +53,18 @@
     % You can change the type of figure to a .png, .pdf, .jpg, .mps
     \end{center}
 
-    \caption{Single Cycle Block Diagram}
+    \caption{Single Cycle Processor Block Diagram}
 		\label{fig:processor}
   \end{figure}
 
 
   \begin{figure}[hp]
     \begin{center}
-      \includegraphics[height=0.93\textheight,keepaspectratio] {PipelineProcessor1.jpg}
+      \includegraphics[height=0.93\textheight,keepaspectratio] {PipelineProcessor.jpg}
     % You can change the type of figure to a .png, .pdf, .jpg, .mps
     \end{center}
 
-    \caption{Single Cycle Block Diagram}
+    \caption{Pipelined Processor Block Diagram}
     \label{fig:processor}
   \end{figure}
 
@@ -110,7 +110,7 @@
 
   \section{Conclusion}
 
-  Text for your conclusion
+  Text for conclusion
 
   \section{Contributions}
 
