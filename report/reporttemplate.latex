@@ -80,12 +80,12 @@
       & \bf{Single Cycle} & \bf{Pipeline} \\ \hline
       Maximum Possible Frequency (MHz) & 37.24 (CLK/2) & 48.88 (CPUCLK) \\ \hline
       Highest Achieved Frequency (MHz) & 55.56 & 100 \\ \hline
-      Average Instructions per Clock Cycle (CPI) & 2.17 & 3.216 \\ \hline
+      Average Instructions per Clock Cycle (CPI) & 1.277 & 1.608 \\ \hline
       Critical Path Length (ns) & 26.939 & 20.774 \\ \hline
       Instruction Latency (ns) & 26.85 & 102.29 \\ \hline
       Mergesort Number of Instructions & 5,399 & 5,399 \\ \hline
       Mergesort Number of Cycles & 13,791 & 17,365 \\ \hline
-      MIPS & 17.164 & 15.197 \\ \hline
+      MIPS & 29.158 & 30.395 \\ \hline
       Total Utilized Combinational Functions & 2,844 & 3,265 \\ \hline
       Utilized Dedicated Logic Registers & 1,278 & 1,716 \\ \hline
     \end{tabular}
@@ -98,7 +98,7 @@
   \begin{itemize}
     \item \textbf{Maximum Possible Frequency (MHz)} - Calculated by synthesis tools and retrieved from system.log
     \item \textbf{Highest Achieved Frequency (MHz)} - Determined through variation of PERIOD parameter within testbench/system\_tb.sv
-    \item \textbf{Average Instructions per Clock Cycle (CPI)} - Calculated using the total number of instructions retrieved from ``sim -t" divided by the total number of cycles shown by ``make system.sim"
+    \item \textbf{Average Instructions per Clock Cycle (CPI)} - Calculated using the total number of instructions retrieved from ``sim -t" divided by half of the total number of cycles (displayed cycles are for the CLK instead of the CPUCLK) shown by ``make system.sim"
     \item \textbf{Critical Path Length (ns)} - Calculated by synthesis tools and retrieved by system.log
     \item \textbf{Instruction Latency (ns)} - Calculated by multiplying period by a multiplier based on processor design - single cycle processors have a latency multiplier of 1 and a five-stage pipelined processor has a latency multiplier of 5 times
     \item \textbf{Mergesort Number of Instructions} - Determined using the total number of instructions output by ``sim -t" when executing asmFiles/mergesort.asm
@@ -110,10 +110,10 @@
 
   \section{Conclusion}
 
-  Text for conclusion
+
 
   \section{Contributions}
 
-  Text for individual contributions
+  The entirety of the pipeline design was done in tandem between Pooja and Brian. Early on in the process, the design was formulated together with all principles of the design being taken into mutual consideration - 
 
 \end{document}
