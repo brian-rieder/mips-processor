@@ -3,4 +3,7 @@
 *.asm~
 *.aux
 *.log
+*.fdb_latexmk
+*.fls
+*.synctex.gz
 ram.sv.bak
