@@ -110,7 +110,8 @@
 
   \section{Conclusion}
 
-  The performance results of running the single cycle processor and the pipeline processor on the merge sort algorithm show that the pipeline processor is the more powerful processor. The single cycle processor takes 1.2 million more instructions per second to produce the same result as the pipeline processor. The pipeline design also has a much shorter critical path of 20.77 nanoseconds as compared to single cycle processor which has a critical path of 26.939. 
+  The performance results of running the single cycle processor and the pipeline processor on the merge sort algorithm show that the pipeline processor is the more powerful processor. The single cycle processor takes 1.2 million more instructions per second to produce the same result as the pipeline processor. The pipeline has a smaller critical path as a result of the five stage breakup in processing instructions. The pipeline design also has a much shorter critical path of 20.77 nanoseconds as compared to single cycle processor which has a critical path of 26.939. 
+
 
   \section{Contributions and Collaboration Strategies}
 
@@ -123,5 +124,6 @@
   Account information was shared between team members at the beginning of the collaboration stages, but each team member did their development within their respective accounts and contributed to GitHub using their own account. Because of this Git usage and presence on GitHub, all contributions are documented in a quantitative manner within the repository.
   \subsubsection{Git VCS Usage}
   In order to compartmentalize development of features and to keep both contributors on the same page, an industry strategy of progressive-stability branching was employed and all development was done within respective branches and ``work silos" - a master branch was maintained with the most recent functioning design, ``singlecycle" and ``pipeline" branches were maintained, and each feature were developed on an independent branch for that feature (some examples being ``branchpredict" and ``forwarding"). While this required more overhead in terms of planning and maintenance, the preservation of states and releases within the development process enabled ease of rollbacks, identification of changes, and the ability to develop without worrying about destruction of a prior working state. 
+
 
 \end{document}
