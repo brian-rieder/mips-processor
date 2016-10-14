@@ -1,3 +1,4 @@
+%!TEX program = pdflatex
 % This is a template to create your midterm report as a pdf.
 % Just fill in the areas and run pdflatex
 % For more information on LaTeX documents consult The (Not So
@@ -14,9 +15,10 @@
 % some useful packages
 \usepackage[pdftex]{graphicx,color}
 \usepackage{fullpage}
-\def\baselinestretch{1.5} % line spaceing
+\usepackage[margin=1in,footskip=.25in]{geometry}
+\def\baselinestretch{1.5} % line spacing
 % set title
-\title{ECE 437L Midterm Report}
+\title{\vspace{50mm}ECE 437L Midterm Report}
 % fill in the blanks
 \author{Pooja Kale (mg273) \\
         Brian Rieder (mg267) \\
@@ -26,18 +28,22 @@
 \date{October 14, 2016}
 % cover page is a page by itself
 
+
 \begin{document}
+
   \maketitle
 
 % executive overview remember
 % this should be on a page by itself
+  \pagebreak
   \section{Executive Overview}
   
    This report compares the performance of a single cycle processor and a pipeline processor on a merge-sort assembly (asm) file, and analyzes the results. The comparisons of the two processor designs will be based on the maximum clock frequencies, average instructions per clock cycle, the performance of the designs in MIPS and the FPGA resources required for each design. The comparisons will be further tested using variable latency RAM in order to ensure independence from memory timing. The single cycle processor is a simple design that takes in one instruction at a time to decode it and produce a result. This design does not have any instruction dependencies eliminating the possibility of instruction or data hazards. The pipeline processor is a more intricate design with five stages: instruction fetch, instruction decode, execute, memory, and write-back. This allows the design to process five instructions simultaneously within different stages of their execution.  
 \\ 
 \\
-  The two designs will be tested using the merge-sort assembly file. The benefit of using the mergersort assembly program, is it includes all possible assembly instructions that both processors can decode. The merge-sort file also includes multiple branches to test branch logic in both designs. The order of instructions in the program will test if the pipeline handles data hazards, and structural hazards with inserting stalls or bubbles in the correct places and flushing data at the right time. The execution results show that the pipeline processor is the favorable design because it increases the throughput (or decreases the execution time) as compared to the single cycle. While the single cycle handles one instruction at a time the pipeline processor design processes 5 instructions in different stages in one cycle. 
+  The two designs will be tested using the merge-sort assembly file. The benefit of using the merge-sort assembly program, is it includes all possible assembly instructions that both processors can decode. The merge-sort file also includes multiple branches to test branch logic in both designs. The order of instructions in the program will test if the pipeline handles data hazards, and structural hazards with inserting stalls or bubbles in the correct places and flushing data at the right time. The execution results show that the pipeline processor is the favorable design because it increases the throughput (or decreases the execution time) as compared to the single cycle. While the single cycle handles one instruction at a time the pipeline processor design processes 5 instructions in different stages in one cycle. 
 
+  \pagebreak
   \section{Processor Design}
 
 % Uncomment after you create the block diagram graphic.
@@ -52,11 +58,9 @@
   \end{figure}
 
 
-  Text for discussing your designs %in Figure \ref{fig:processor}
-
   \begin{figure}[hp]
     \begin{center}
-      \includegraphics[width=\textwidth]{PipelineProcessor1.jpg}
+      \includegraphics[height=0.93\textheight,keepaspectratio] {PipelineProcessor1.jpg}
     % You can change the type of figure to a .png, .pdf, .jpg, .mps
     \end{center}
 
@@ -65,27 +69,44 @@
   \end{figure}
 
 
-  Text for discussing your designs %in Figure \ref{fig:processor}
-
-	\section{Processor Debug}
-
-	Fix the processor!!!
+  \pagebreak
 
   \section{Results}
 
   \begin{table}[!hbp]
 
-    \begin{tabular}{|p{.25\textwidth}|p{.75\textwidth}|}
+    \begin{tabular}{|p{.5\textwidth}|p{.25\textwidth}|p{.25\textwidth}|}
       \hline
-      Throughput & ??/??=??instructions/ns \\ \hline
-      Latency & ??*??=??ns/instruction \\ \hline
+      & \bf{Single Cycle} & \bf{Pipeline} \\ \hline
+      Maximum Possible Frequency (MHz) & 37.24 (CLK/2) & 48.88 (CPUCLK) \\ \hline
+      Highest Achieved Frequency (MHz) & 55.56 & 100 \\ \hline
+      Average Instructions per Clock Cycle (CPI) & 2.17 & 3.216 \\ \hline
+      Critical Path Length (ns) & 26.939 & 20.774 \\ \hline
+      Instruction Latency (ns) & 26.85 & 102.29 \\ \hline
+      Mergesort Number of Instructions & 5,399 & 5,399 \\ \hline
+      Mergesort Number of Cycles & 13,791 & 17,365 \\ \hline
+      MIPS & 17.164 & 15.197 \\ \hline
+      Total Utilized Combinational Functions & 2,844 & 3,265 \\ \hline
+      Utilized Dedicated Logic Registers & 1,278 & 1,716 \\ \hline
     \end{tabular}
 
     \caption{Processor Specs}
 		\label{tb:procspec}
   \end{table}
 
-  Text for your results
+  \subsection{Sources of Result Values}
+  \begin{itemize}
+    \item \textbf{Maximum Possible Frequency (MHz)} - Calculated by synthesis tools and retrieved from system.log
+    \item \textbf{Highest Achieved Frequency (MHz)} - Determined through variation of PERIOD parameter within testbench/system\_tb.sv
+    \item \textbf{Average Instructions per Clock Cycle (CPI)} - Calculated using the total number of instructions retrieved from ``sim -t" divided by the total number of cycles shown by ``make system.sim"
+    \item \textbf{Critical Path Length (ns)} - Calculated by synthesis tools and retrieved by system.log
+    \item \textbf{Instruction Latency (ns)} - Calculated by multiplying period by a multiplier based on processor design - single cycle processors have a latency multiplier of 1 and a five-stage pipelined processor has a latency multiplier of 5 times
+    \item \textbf{Mergesort Number of Instructions} - Determined using the total number of instructions output by ``sim -t" when executing asmFiles/mergesort.asm
+    \item \textbf{Mergesort Number of Cycles} - Determined using the total number of cycles output by ``make system.sim" when executing asmFiles/mergesort.asm
+    \item \textbf{MIPS} - Calculated using the inverse of CPI multiplied by the frequency of the processor
+    \item \textbf{Total Utilized Combinational Functions} - Determined by synthesis tools and retrieved from system.log
+    \item \textbf{Utilized Dedicated Logic Registers} - Determined by synthesis tools and retrieved from system.log
+  \end{itemize}
 
   \section{Conclusion}
 
