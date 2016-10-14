@@ -110,7 +110,7 @@
 
   \section{Conclusion}
 
-  Text for conclusion
+  The performance results of running the single cycle processor and the pipeline processor on the merge sort algorithm show that the pipeline processor is the more powerful processor. The single cycle processor takes 1.2 million more instructions per second to produce the same result as the pipeline processor. The pipeline design also has a much shorter critical path of 20.77 nanoseconds as compared to single cycle processor which has a critical path of 26.939. 
 
   \section{Contributions}
 
