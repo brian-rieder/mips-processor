@@ -50,6 +50,11 @@ interface datapath_cache_if;
     output  ihit, imemload
   );
 
+  modport icache_tb (
+    output   imemREN, imemaddr,
+    input  ihit, imemload
+  );
+
   // dcache ports
   modport dcache (
     input   halt, dmemREN, dmemWEN,
