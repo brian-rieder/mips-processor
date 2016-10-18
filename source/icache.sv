@@ -46,7 +46,7 @@ module icache (
             if(dcif.imemREN & !cif.iwait) begin
                 icachetable[icf_imemaddr.idx].valid <= 1;
                 icachetable[icf_imemaddr.idx].tag   <= icf_imemaddr.tag;
-                icachetable[icf_imemaddr.idx].value <= cif.iload;
+                icachetable[icf_imemaddr.idx].data <= cif.iload;
             end
         end
     end
@@ -55,7 +55,7 @@ module icache (
     assign dcif.ihit     = selected_block.valid
                          & (selected_block.tag == icf_imemaddr.tag) 
                          & dcif.imemREN;
-    assign dcif.imemload = selected_block.value;
+    assign dcif.imemload = selected_block.data;
     assign cif.iaddr     = dcif.imemaddr;
     assign cif.iREN      = !(selected_block.valid
                          &  (selected_block.tag == icf_imemaddr.tag))
