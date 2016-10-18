@@ -1,21 +1,21 @@
 // File name:   icache.sv
 // Updated:     15 October 2016
-// Authors:     Brian Rieder 
+// Authors:     Brian Rieder
 //              Pooja Kale
 // Description: Instruction Cache
 
-// interface 
+// interface
 `include "datapath_cache_if.vh"
 `include "cache_control_if.vh"
 `include "cpu_types_pkg.vh"
 
-module icache ( 
+module icache (
     input CLK, nRST,
     datapath_cache_if.icache dcif,
     caches_if.icache cif
-); 
+);
 
-    import cpu_types_pkg::*; 
+    import cpu_types_pkg::*;
 
     typedef struct packed {
         logic valid;
@@ -31,7 +31,7 @@ module icache (
     assign icf_imemaddr = icachef_t'(dcif.imemaddr);
 
     // simplicity's sake: block selected by imemaddr idx
-    icacheentry_t selected_block; 
+    icacheentry_t selected_block;
     assign selected_block = icachetable[icf_imemaddr.idx];
 
     // operate on the cache table
@@ -46,19 +46,19 @@ module icache (
             if(dcif.imemREN & !cif.iwait) begin
                 icachetable[icf_imemaddr.idx].valid <= 1;
                 icachetable[icf_imemaddr.idx].tag   <= icf_imemaddr.tag;
-                icachetable[icf_imemaddr.idx].data <= cif.iload;
+                icachetable[icf_imemaddr.idx].data  <= cif.iload;
             end
         end
     end
 
     // output from the cache table
     assign dcif.ihit     = selected_block.valid
-                         & (selected_block.tag == icf_imemaddr.tag) 
+                         & (selected_block.tag == icf_imemaddr.tag)
                          & dcif.imemREN;
     assign dcif.imemload = selected_block.data;
     assign cif.iaddr     = dcif.imemaddr;
     assign cif.iREN      = !(selected_block.valid
-                         &  (selected_block.tag == icf_imemaddr.tag))
+                             & (selected_block.tag == icf_imemaddr.tag))
                          & dcif.imemREN;
 
 endmodule
