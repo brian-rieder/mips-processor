@@ -9,7 +9,7 @@
 `include "cache_control_if.vh"
 `include "cpu_types_pkg.vh"
 
-module icache ( 
+module dcache ( 
     input CLK, nRST,
     datapath_cache_if.dcache dcif,
     caches_if.dcache cif
