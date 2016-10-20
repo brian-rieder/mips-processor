@@ -56,17 +56,27 @@ module dcache (
     assign ismatch1 = selected_set.dcacheframe[1].valid 
                     & (dcf_dmemaddr.tag == selected_set.dcacheframe[1].tag);
 
-    // other signals
-    logic [3:0] flushidx; // four bits: ABCD, A: which frame, BCD: which set
+    // assign dhit
+    assign dcif.dhit = (ismatch0 | ismatch1) & (dcif.dmemREN | dcif.dmemWEN);
+
+    // miscellaneous signals
+    logic [3:0] flushidx, next_flushidx; // four bits: ABCD, A: which frame, BCD: which set
     word_t dhit_counter, miss_counter;
+    logic cache_WEN;
+    logic next_valid, next_dirty, next_lru;
+    logic [DTAG_W-1:0] next_tag;
+    word_t next_data0, next_data1;
+    logic write_idx;
 
     // next state logic
     always_comb begin
         next_state = current_state;
+        next_flushidx = flushidx;
         casez(current_state) 
             IDLE: begin
-                flushidx = 0;
-                if (!(dcif.dmemREN || dcif.dmemWEN)) begin
+                if (dcif.halt) begin
+                    next_state = CHECK_DIRTY;
+                end else if (!(dcif.dmemREN || dcif.dmemWEN)) begin
                     next_state = IDLE;
                 end else if (!ismatch0 & !ismatch1) begin
                     if(selected_set.dcacheframe[selected_set.lru].dirty) begin
@@ -74,8 +84,6 @@ module dcache (
                     end else begin
                         next_state = CACHE_LOAD1;
                     end
-                end else if (dcif.halt) begin
-                    next_state = CHECK_DIRTY;
                 end else begin
                     next_state = IDLE;
                 end
@@ -85,12 +93,12 @@ module dcache (
             CACHE_LOAD1: next_state = cif.dwait ? CACHE_LOAD1 : CACHE_LOAD2;
             CACHE_LOAD2: next_state = cif.dwait ? CACHE_LOAD2 : IDLE;
             CHECK_DIRTY: begin
+                next_flushidx = flushidx + 1;
                 if (flushidx == 4'b1111) begin
                     next_state = WRITE_COUNT;
                 end else if (dcachetable[flushidx[2:0]].dcacheframe[flushidx[3]].dirty) begin
                     next_state = FLUSH_WB1;
                 end else begin
-                    flushidx = flushidx + 1;
                     next_state = CHECK_DIRTY;
                 end
             end
@@ -102,22 +110,62 @@ module dcache (
         endcase
     end
 
-    // output combinational logic
+    // cache output combinational logic
     always_comb begin
+        // Defaults for next values
+        next_valid =  selected_set.dcacheframe[write_idx].valid;
+        next_dirty =  selected_set.dcacheframe[write_idx].dirty; 
+        next_lru   =  selected_set.lru;
+        next_tag   =  selected_set.dcacheframe[write_idx].tag;
+        next_data0 =  selected_set.dcacheframe[write_idx].data[0];
+        next_data1 =  selected_set.dcacheframe[write_idx].data[1];
         // Default values to zero
         cif.dREN      =  0;
         cif.dWEN      =  0;
         cif.daddr     = '0;
         cif.dstore    = '0;
-        dcif.dhit     =  0;
         dcif.dmemload = '0;
         dcif.flushed  =  0;
+        cache_WEN     =  0;
         // Cache coherency signals
         cif.ccwrite   =  0;
         cif.cctrans   =  0;
-        casez(current_state) begin
+        casez(current_state) 
             IDLE: begin
-            
+                if(ismatch0 && dcif.dmemREN) begin
+                    cache_WEN     = 1;
+                    next_lru      = 1;
+                    dcif.dmemload = selected_set.dcacheframe[0].data[dcf_dmemaddr.blkoff];
+                    write_idx = 0;
+                end else if (ismatch1 && dcif.dmemREN) begin
+                    cache_WEN     = 1;
+                    next_lru      = 0;
+                    dcif.dmemload = selected_set.dcacheframe[1].data[dcf_dmemaddr.blkoff];
+                    write_idx = 1;
+                end else if (ismatch0 && dcif.dmemWEN) begin
+                    cache_WEN  = 1;
+                    next_lru   = 1;
+                    next_valid = 1;
+                    next_dirty = 1;
+                    if (dcf_dmemaddr.blkoff == 0)
+                        next_data0 = dcif.dmemstore;
+                    else
+                        next_data1 = dcif.dmemstore;
+                    write_idx = 0;
+                end else if (ismatch1 && dcif.dmemWEN) begin
+                    cache_WEN  = 1;
+                    next_lru   = 0;
+                    next_valid = 1;
+                    next_dirty = 1;
+                    if (dcf_dmemaddr.blkoff == 0)
+                        next_data0 = dcif.dmemstore;
+                    else
+                        next_data1 = dcif.dmemstore;
+                    write_idx = 1;
+                end else begin
+                    cache_WEN = 0;
+                    write_idx = 0;
+                end
             end
             WRITEBACK1: begin
                 cif.dWEN   = 1;
@@ -133,14 +181,30 @@ module dcache (
             end
             CACHE_LOAD1: begin
                 cif.dREN = 1;
-                cif.daddr = dcif.dmemaddr;
+                cif.daddr  = {dcf_dmemaddr.tag, dcf_dmemaddr.idx, 3'b000};
+                if(!cif.dwait) begin
+                    cache_WEN = 1;
+                    next_valid = 0;
+                    next_dirty = 0;
+                    next_tag   = dcf_dmemaddr.tag;
+                    next_data0 = cif.dload;
+                    write_idx = selected_set.lru;
+                end
             end
             CACHE_LOAD2: begin
                 cif.dREN = 1;
-                cif.daddr = dcif.dmemaddr + 4;
+                cif.daddr  = {dcf_dmemaddr.tag, dcf_dmemaddr.idx, 3'b100};
+                if(!cif.dwait) begin 
+                    cache_WEN = 1;
+                    next_valid = 1;
+                    next_dirty = 0;
+                    next_tag   = dcf_dmemaddr.tag;
+                    next_data1 = cif.dload;
+                    write_idx = selected_set.lru;
+                end
             end
             CHECK_DIRTY: begin
-            
+                // nuttin but state shiz
             end
             FLUSH_WB1: begin
                 cif.dWEN   = 1;
@@ -168,9 +232,19 @@ module dcache (
     always_ff @ (posedge CLK, negedge nRST) begin
         if(!nRST) begin
             current_state <= IDLE;
+            flushidx <= 0;
             dcachetable <= '{default: '0};
         end else begin
             current_state <= next_state;
+            flushidx <= next_flushidx;
+            if(cache_WEN) begin
+                dcachetable[dcf_dmemaddr.idx].dcacheframe[write_idx].valid   <= next_valid;
+                dcachetable[dcf_dmemaddr.idx].dcacheframe[write_idx].dirty   <= next_dirty;
+                dcachetable[dcf_dmemaddr.idx].dcacheframe[write_idx].tag     <= next_tag;
+                dcachetable[dcf_dmemaddr.idx].dcacheframe[write_idx].data[0] <= next_data0;
+                dcachetable[dcf_dmemaddr.idx].dcacheframe[write_idx].data[1] <= next_data1;
+                dcachetable[dcf_dmemaddr.idx].lru <= next_lru;
+            end
         end
     end
 
