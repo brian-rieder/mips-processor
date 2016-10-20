@@ -37,11 +37,7 @@ module icache (
     // operate on the cache table
     always_ff @ (posedge CLK, negedge nRST) begin
         if(!nRST) begin
-            for(integer i = 0; i < 16; i = i + 1) begin
-                icachetable[i].valid <= 0;
-                icachetable[i].tag   <= 0;
-                icachetable[i].data  <= 0;
-            end
+            icachetable = '{default: 0};
         end else begin
             if(dcif.imemREN & !cif.iwait) begin
                 icachetable[icf_imemaddr.idx].valid <= 1;

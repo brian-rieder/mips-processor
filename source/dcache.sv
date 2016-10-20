@@ -57,7 +57,9 @@ module dcache (
                     & (dcf_dmemaddr.tag == selected_set.dcacheframe[1].tag);
 
     // assign dhit
-    assign dcif.dhit = (ismatch0 | ismatch1) & (dcif.dmemREN | dcif.dmemWEN) & (current_state == IDLE);
+    assign dcif.dhit = (ismatch0 | ismatch1) 
+                     & (dcif.dmemREN | dcif.dmemWEN) 
+                     & (current_state == IDLE);
 
     // miscellaneous signals
     logic [3:0] flushidx, next_flushidx; // four bits: ABCD, A: which frame, BCD: which set
