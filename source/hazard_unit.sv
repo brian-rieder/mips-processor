@@ -18,8 +18,8 @@ module hazard_unit (
 	assign memstall = (huif.EXMEM_RegWr & huif.EXMEM_wsel != 0) 
 	                & (huif.CU_Rs == huif.EXMEM_wsel | huif.CU_Rt == huif.EXMEM_wsel) 
 		            & (huif.ex_op == LW | huif.ex_op == SW);
-    // assign ihit_pause = (huif.ex_op == LW | huif.ex_op == SW) 
-    // 				  & (huif.ihit & !huif.dhit);
+    // assign ihit_pause = (huif.mem_op == LW | huif.mem_op == SW) 
+    				  // & (huif.ihit & !huif.dhit);
 
 	// always_comb begin
 	// 	if (huif.BranchFlush || huif.JumpFlush) begin
@@ -37,18 +37,20 @@ module hazard_unit (
 	// 	end
 	// end
 
-	assign huif.IFID_enable  = huif.ihit & !memstall;// & !ihit_pause;
+	assign huif.IFID_enable  = huif.ihit & !memstall & !huif.halt;// & !ihit_pause;
+	// assign huif.IFID_enable  = huif.ihit & !memstall & !ihit_pause;
 	assign huif.IFID_flush   = (huif.BranchFlush | huif.JumpFlush);
 
-	// assign huif.IDEX_enable  = (huif.ihit & !memstall);
-	assign huif.IDEX_enable  = huif.ihit;// & !ihit_pause;
+	assign huif.IDEX_enable  = huif.ihit & !huif.halt;// & !ihit_pause;
+	// assign huif.IDEX_enable  = huif.ihit & !ihit_pause;
 	assign huif.IDEX_flush   = (huif.BranchFlush | huif.JumpFlush) 
 							 | memstall;
 
-	assign huif.EXMEM_enable = (huif.ihit | huif.dhit);// & !ihit_pause;
+	assign huif.EXMEM_enable = (huif.ihit | huif.dhit) & !huif.halt;// & !ihit_pause;
+	// assign huif.EXMEM_enable = (huif.ihit | huif.dhit) & !ihit_pause;
 	assign huif.EXMEM_flush  = huif.dhit;
 
-	assign huif.MEMWB_enable = (huif.ihit | huif.dhit);
+	assign huif.MEMWB_enable = (huif.ihit | huif.dhit) & !huif.halt;
 	assign huif.pcWEN        = (huif.ihit & !memstall);
 
 	always_comb begin 
