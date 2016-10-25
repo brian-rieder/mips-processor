@@ -25,13 +25,13 @@ then
   echo "Mapped (No Latency)"
   sed -i.bak 's/LAT = [0-9]*/LAT = 0/' source/ram.sv
   grep "LAT =" source/ram.sv | cut -d ',' -f 2
-  testasm -s $FILES
+  testasm -s -c $FILES
 
   # Mapped (Latency)
   echo "Mapped (Latency)"
   sed -i.bak 's/LAT = [0-9]*/LAT = 7/' source/ram.sv
   grep "LAT =" source/ram.sv | cut -d ',' -f 2
-  testasm -s $FILES
+  testasm -s -c $FILES
 
   # Revert ram.sv back to zero latency
   sed -i.bak 's/LAT = [0-9]*/LAT = 0/' source/ram.sv
