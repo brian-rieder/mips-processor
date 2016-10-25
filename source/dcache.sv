@@ -251,14 +251,12 @@ module dcache (
         endcase
     end
 
-    always_ff @ (posedge dcif.dhit, negedge nRST) begin
+    always_ff @ (posedge CLK, negedge nRST) begin
         if(!nRST)
             dhit_counter <= 0;
         else
-            dhit_counter <= dhit_counter + 1;
-            // if(    next_state != CHECK_DIRTY 
-            //     || next_state != FLUSH_WB1 
-            //     || next_state != FLUSH_WB2)
+            if(dcif.dhit)
+                dhit_counter <= dhit_counter + 1;
     end
 
     always_ff @ (posedge CLK, negedge nRST) begin
