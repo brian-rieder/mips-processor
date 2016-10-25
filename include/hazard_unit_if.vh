@@ -19,6 +19,7 @@ interface hazard_unit_if;
   logic BranchFlush; // from datapath
   logic JumpFlush; // from ID/EX latch
   logic MEMWB_RegWr, EXMEM_RegWr; // from latches
+  logic halt;
   regbits_t CU_Rs, CU_Rt; // rs and rt from CU
   regbits_t IDEX_Rs, IDEX_Rt; // rs and rt from idex
   opcode_t ex_op;
@@ -49,6 +50,7 @@ interface hazard_unit_if;
            IDEX_Rs,      IDEX_Rt,
            EXMEM_wsel,   MEMWB_wsel,
            mem_op,       ex_op,
+           halt,
     output pcWEN,
            IFID_enable,  IFID_flush,
            IDEX_enable,  IDEX_flush,
@@ -70,7 +72,8 @@ interface hazard_unit_if;
            IDEX_enable,  IDEX_flush,
            EXMEM_enable, EXMEM_flush,
            MEMWB_enable, 
-           forwardA,     forwardB
+           forwardA,     forwardB,
+           halt
 
   );
 
