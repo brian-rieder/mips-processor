@@ -1,7 +1,9 @@
 // File name:   memory_control.sv
-// Updated:     1 September 2016
+// Updated:     1 November 2016
 // Author:      Brian Rieder 
-// Description: Controller to interface between caches and RAM
+//              Pooja Kale
+// Description: Controller to interface between caches and RAM.
+//              As of November 1, also services as a coherence controller and arbiter
 
 // interface include
 `include "cache_control_if.vh"
@@ -21,15 +23,20 @@ module memory_control (
 
     // state enum
     typedef enum logic [3:0] {
-    IDLE, ARBITRATION, SNOOP,
-    WRITEBACK1, WRITEBACK2,
-    RAMREAD1, RAMREAD2,
-    RAMWRITE1, RAMWRITE2
+        IDLE, ARBITRATION, SNOOP,
+        WRITEBACK1, WRITEBACK2,
+        RAMREAD1, RAMREAD2,
+        RAMWRITE1, RAMWRITE2
     } cc_state;
     cc_state state, next_state;
 
+    logic service_cache;
+
+    assign ccif.dwait = !(ccif.ramstate == ACCESS);
+
     // next state logic
     always_comb begin
+        next_state = state;
         casez(state)
             IDLE: begin
                 if(ccif.cctrans[0] || ccif.cctrans[1])
@@ -46,9 +53,9 @@ module memory_control (
                     next_state = ARBITRATION;
             end
             SNOOP: begin
-                if(ccif.ccwrite) // WHICH CCWRITE??????
+                if(ccif.ccwrite[!service_cache]) 
                     next_state = RAMWRITE1;
-                else if(!ccif.ccwrite)
+                else if(!ccif.ccwrite[!service_cache])
                     next_state = RAMREAD1;
                 else
                     next_state = SNOOP;
@@ -92,14 +99,89 @@ module memory_control (
         endcase
     end
 
+    // output logic
+    always_comb begin
+        ccif.ccwait = 0;
+        ccif.ccsnoopaddr = 0;
+        ccif.ccinv = 0;
+        ccif.ramWEN = 0;
+        ccif.ramREN = 0;
+        ccif.ramaddr = 0;
+        ccif.ramstore = 0;
+        ccif.dload = 0;
+        casez(state)
+            IDLE: begin
+            end
+            ARBITRATION: begin
+            end
+            SNOOP: begin
+                ccif.ccwait[!service_cache] = 1;
+                ccif.ccsnoopaddr[!service_cache] = ccif.daddr[service_cache];
+                if(ccif.ccwrite[service_cache]) begin
+                    // ccwrite is high if service cache has a hit and dWEN 
+                    // or if there is a snoop hit (this logic is in dcache)
+                    ccif.ccinv[!service_cache] = 1;
+                end
+            end
+            RAMREAD1: begin 
+                ccif.ccwait[!service_cache] = 1;
+                // ccsnoopaddr[!service_cache] = ccif.daddr[service_cache];
+                ccif.ramREN = 1;
+                ccif.ramaddr = ccif.daddr[service_cache];
+                ccif.dload[service_cache] = ccif.ramload;
+            end
+            RAMREAD2: begin
+                ccif.ccwait[!service_cache] = 1;
+                // ccsnoopaddr[!service_cache] = ccif.daddr[service_cache];
+                ccif.ramREN = 1;
+                ccif.ramaddr = ccif.daddr[service_cache];
+                ccif.dload[service_cache] = ccif.ramload;
+            end
+            RAMWRITE1: begin
+                ccif.ccwait[!service_cache] = 1;
+                // ccsnoopaddr[!service_cache] = ccif.daddr[service_cache];
+                ccif.ramWEN = 1;
+                ccif.ramaddr = ccif.daddr[service_cache];
+                ccif.ramstore = ccif.dstore[!service_cache];
+                ccif.dload[service_cache] = ccif.dstore[!service_cache];
+            end
+            RAMWRITE2: begin
+                ccif.ccwait[!service_cache] = 1;
+                // ccsnoopaddr[!service_cache] = ccif.daddr[service_cache];
+                ccif.ramWEN = 1;
+                ccif.ramaddr = ccif.daddr[service_cache];
+                ccif.ramstore = ccif.dstore[!service_cache];
+                ccif.dload[service_cache] = ccif.dstore[!service_cache];
+            end
+            WRITEBACK1: begin
+                ccif.ramWEN = 1;
+                ccif.ramaddr = ccif.daddr[service_cache];
+                ccif.ramstore = ccif.dstore[service_cache];
+            end
+            WRITEBACK2: begin
+                ccif.ramWEN = 1;
+                ccif.ramaddr = ccif.daddr[service_cache];
+                ccif.ramstore = ccif.dstore[service_cache];
+            end
+        endcase
+    end
+
     always_ff @ (posedge CLK, negedge nRST) begin
         if(!nRST) begin
             state <= IDLE;
+            service_cache <= 0;
         end else begin
             state <= next_state;
+            if(ccif.cctrans[0])
+                service_cache <= 0;
+            else if(ccif.cctrans[1])
+                service_cache <= 1;
+            else
+                service_cache <= 0;
         end
     end
 
+    /*
     // load/store signals
     assign ccif.iload = ccif.ramload;
     assign ccif.dload = ccif.ramload;
@@ -148,4 +230,5 @@ module memory_control (
             end
         endcase
     end
+    */
 endmodule
