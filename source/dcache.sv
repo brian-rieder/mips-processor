@@ -18,7 +18,7 @@ module dcache (
     import cpu_types_pkg::*; 
 
     typedef enum logic [3:0] {
-        IDLE, WRITEBACK1, WRITEBACK2,
+        IDLE, SNOOP, COHERENCE1, COHERENCE2, WRITEBACK1, WRITEBACK2,
         CACHE_LOAD1, CACHE_LOAD2,
         CHECK_DIRTY, FLUSH_WB1, FLUSH_WB2, 
         WRITE_COUNT, HALT
@@ -45,21 +45,35 @@ module dcache (
     dcachef_t dcf_dmemaddr;
     assign dcf_dmemaddr = dcachef_t'(dcif.dmemaddr);
 
+    dcachef_t snoopaddr; 
+    assign snoopaddr = dcache_t'(cif.ccsnoopaddr); 
+
     // simplicity's sake: set selected by dmemaddr idx
     dcacheset_t selected_set;
     assign selected_set = dcachetable[dcf_dmemaddr.idx];
 
+    dcacheset_t snoop_set; 
+    assign snoop_set = dcachetable[snoopaddr.idx]; 
+
     // match signals for sanity
-    logic ismatch0, ismatch1;
+    logic ismatch0, ismatch1, snoopmatch0, snoopmatch1;
     assign ismatch0 = selected_set.dcacheframe[0].valid 
                     & (dcf_dmemaddr.tag == selected_set.dcacheframe[0].tag);
     assign ismatch1 = selected_set.dcacheframe[1].valid 
                     & (dcf_dmemaddr.tag == selected_set.dcacheframe[1].tag);
 
+    assign snoopmatch0 = snoopset.dcacheframe[0].valid 
+                    & (dcf_dmemaddr.tag == snoopset.dcacheframe[0].tag);
+    assign snoopmatch1 = snoopset.dcacheframe[1].valid 
+                    & (dcf_dmemaddr.tag == snoopset.dcacheframe[1].tag);
     // assign dhit
+
+    // dmemWEN and cache hit => overwrite in cache and set dirty bit, dont go to memory // modifed, invalidate the other one 
+    // need to change dhit
     assign dcif.dhit = (ismatch0 | ismatch1) 
                      & (dcif.dmemREN | dcif.dmemWEN) 
                      & (current_state == IDLE);
+
 
     // miscellaneous signals
     logic [4:0] flushidx, next_flushidx; // four bits: ABCD, A: which frame, BCD: which set
@@ -91,6 +105,15 @@ module dcache (
                     next_state = IDLE;
                 end
             end
+            SNOOP: begin 
+                
+            end 
+            COHERENCE1: begin 
+            
+            end 
+            COHERENCE2: begin 
+            
+            end 
             WRITEBACK1:  next_state = cif.dwait ? WRITEBACK1  : WRITEBACK2;
             WRITEBACK2:  next_state = cif.dwait ? WRITEBACK2  : CACHE_LOAD1;
             CACHE_LOAD1: next_state = cif.dwait ? CACHE_LOAD1 : CACHE_LOAD2;
@@ -188,6 +211,16 @@ module dcache (
                     // write_idx = 0;
                 end
             end
+
+            SNOOP: begin 
+
+            end 
+            COHERENCE1: begin 
+                
+            end 
+            COHERENCE2: begin 
+            
+            end 
             WRITEBACK1: begin
                 cif.dWEN   = 1;
                 cif.daddr  = {selected_set.dcacheframe[selected_set.lru].tag,
