@@ -44,7 +44,7 @@ module datapath (
     alu ALU (aluif.alu);
     register_file RF (CLK, nRST, rfif.rf);
     control_unit CU (cuif.cu);
-    program_counter PC (CLK, nRST, pcif.pc);
+    program_counter #(.PC_INIT(PC_INIT)) PC (CLK, nRST, pcif.pc);
     IF_ID IFID (CLK, nRST, ifidif.if_id);
     ID_EX IDEX (CLK, nRST, idexif.id_ex);
     EX_MEM EXMEM (CLK, nRST, exmemif.ex_mem);
