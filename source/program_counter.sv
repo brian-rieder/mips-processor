@@ -14,9 +14,11 @@ module program_counter (
   program_counter_if.pc pcif
 );
 
+  parameter PC_INIT = 0;
+
   always_ff @ (posedge CLK, negedge nRST) begin
     if(!nRST) begin
-      pcif.pc_out <= '0;
+      pcif.pc_out <= PC_INIT;
     end
     else if(pcif.pcWEN) begin
       pcif.pc_out <= pcif.pc_next;
