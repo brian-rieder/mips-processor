@@ -1,8 +1,8 @@
 // File name:   dcache.sv
-// Updated:     15 October 2016
+// Updated:     10 November 2016
 // Authors:     Brian Rieder 
 //              Pooja Kale
-// Description: Instruction Cache
+// Description: Data Cache
 
 // interface 
 `include "datapath_cache_if.vh"
@@ -18,10 +18,11 @@ module dcache (
     import cpu_types_pkg::*; 
 
     typedef enum logic [3:0] {
-        IDLE, SNOOP, COHERENCE1, COHERENCE2, WRITEBACK1, WRITEBACK2,
+        IDLE, WRITEBACK1, WRITEBACK2,
+        WAIT, SNOOP_WB1, SNOOP_WB2, UPDATE_CACHE,
         CACHE_LOAD1, CACHE_LOAD2,
         CHECK_DIRTY, FLUSH_WB1, FLUSH_WB2, 
-        WRITE_COUNT, HALT
+        HALT //, WRITE_COUNT
     } dcache_state;
 
     dcache_state current_state, next_state;
@@ -46,7 +47,7 @@ module dcache (
     assign dcf_dmemaddr = dcachef_t'(dcif.dmemaddr);
 
     dcachef_t snoopaddr; 
-    assign snoopaddr = dcache_t'(cif.ccsnoopaddr); 
+    assign snoopaddr = dcachef_t'(cif.ccsnoopaddr); 
 
     // simplicity's sake: set selected by dmemaddr idx
     dcacheset_t selected_set;
@@ -56,23 +57,28 @@ module dcache (
     assign snoop_set = dcachetable[snoopaddr.idx]; 
 
     // match signals for sanity
-    logic ismatch0, ismatch1, snoopmatch0, snoopmatch1;
+    logic ismatch0, ismatch1, snoopmatch0, snoopmatch1, snoopdirty0, snoopdirty1;
     assign ismatch0 = selected_set.dcacheframe[0].valid 
                     & (dcf_dmemaddr.tag == selected_set.dcacheframe[0].tag);
     assign ismatch1 = selected_set.dcacheframe[1].valid 
                     & (dcf_dmemaddr.tag == selected_set.dcacheframe[1].tag);
 
-    assign snoopmatch0 = snoopset.dcacheframe[0].valid 
-                    & (dcf_dmemaddr.tag == snoopset.dcacheframe[0].tag);
-    assign snoopmatch1 = snoopset.dcacheframe[1].valid 
-                    & (dcf_dmemaddr.tag == snoopset.dcacheframe[1].tag);
-    // assign dhit
+    assign snoopmatch0 = snoop_set.dcacheframe[0].valid 
+                       & (snoopaddr.tag == snoop_set.dcacheframe[0].tag);
+    assign snoopmatch1 = snoop_set.dcacheframe[1].valid 
+                       & (snoopaddr.tag == snoop_set.dcacheframe[1].tag);
+
+    assign snoopdirty0 = snoop_set.dcacheframe[0].dirty;
+    assign snoopdirty1 = snoop_set.dcacheframe[1].dirty;
 
     // dmemWEN and cache hit => overwrite in cache and set dirty bit, dont go to memory // modifed, invalidate the other one 
     // need to change dhit
-    assign dcif.dhit = (ismatch0 | ismatch1) 
-                     & (dcif.dmemREN | dcif.dmemWEN) 
-                     & (current_state == IDLE);
+    // assign dcif.dhit = (ismatch0 | ismatch1) 
+    //                  & (dcif.dmemREN | dcif.dmemWEN) 
+    //                  & (current_state == IDLE);
+    assign dcif.dhit = ((ismatch0 || ismatch1) && (dcif.dmemREN || dcif.dmemWEN)) 
+                    || (ismatch0 && selected_set.dcacheframe[0].dirty && dcif.dmemWEN)
+                    || (ismatch1 && selected_set.dcacheframe[1].dirty && dcif.dmemWEN);
 
 
     // miscellaneous signals
@@ -83,7 +89,7 @@ module dcache (
     logic next_valid, next_dirty, next_lru;
     logic [DTAG_W-1:0] next_tag;
     word_t next_data0, next_data1;
-    logic write_idx;
+    logic write_idx, snoop_write_idx;
 
     // next state logic
     always_comb begin
@@ -91,7 +97,9 @@ module dcache (
         next_flushidx = flushidx;
         casez(current_state) 
             IDLE: begin
-                if (dcif.halt) begin
+                if (cif.ccwait) begin
+                    next_state = WAIT;
+                end else if (dcif.halt) begin
                     next_state = CHECK_DIRTY;
                 end else if (!(dcif.dmemREN || dcif.dmemWEN)) begin
                     next_state = IDLE;
@@ -105,22 +113,61 @@ module dcache (
                     next_state = IDLE;
                 end
             end
-            SNOOP: begin 
-                
-            end 
-            COHERENCE1: begin 
-            
-            end 
-            COHERENCE2: begin 
-            
-            end 
-            WRITEBACK1:  next_state = cif.dwait ? WRITEBACK1  : WRITEBACK2;
+            WAIT: begin
+                if ((snoopmatch0 && snoopdirty0) || (snoopmatch1 && snoopdirty1))
+                    next_state = SNOOP_WB1;
+                else if(!cif.ccwait)
+                    next_state = IDLE;
+                else
+                    next_state = WAIT;
+            end
+            SNOOP_WB1: begin
+                if(!cif.ccwait)
+                    next_state = IDLE;
+                else if(!cif.dwait)
+                    next_state = SNOOP_WB2;
+                else
+                    next_state = SNOOP_WB1;
+            end
+            SNOOP_WB2: begin
+                if(!cif.dwait)
+                    next_state = IDLE;
+                else
+                    next_state = SNOOP_WB2;
+            end
+            UPDATE_CACHE: begin
+                next_state = IDLE;
+            end
+            WRITEBACK1: begin
+                if(cif.ccwait)
+                    next_state = WAIT;
+                else if(!cif.dwait)
+                    next_state = WRITEBACK2;
+                else
+                    next_state = WRITEBACK1;
+            end
             WRITEBACK2:  next_state = cif.dwait ? WRITEBACK2  : CACHE_LOAD1;
-            CACHE_LOAD1: next_state = cif.dwait ? CACHE_LOAD1 : CACHE_LOAD2;
-            CACHE_LOAD2: next_state = cif.dwait ? CACHE_LOAD2 : IDLE;
+            CACHE_LOAD1: begin
+                if(cif.ccwait)
+                    next_state = WAIT;
+                else if(cif.dwait)
+                    next_state = CACHE_LOAD1;
+                else
+                    next_state = CACHE_LOAD2;
+            end
+            CACHE_LOAD2: begin
+                if (!cif.dwait & cif.dWEN) 
+                    next_state = UPDATE_CACHE;
+                else if (!cif.dwait) 
+                    next_state = IDLE;
+                else 
+                    next_state = CACHE_LOAD2;
+            end
             CHECK_DIRTY: begin
-                if (flushidx > 5'b1111) begin
-                    next_state = WRITE_COUNT;
+                if (ccif.ccwait)
+                    next_state = WAIT;
+                else if (flushidx > 5'b1111) begin
+                    next_state = HALT;
                 end else if (dcachetable[flushidx[2:0]].dcacheframe[flushidx[3]].dirty) begin
                     next_state = FLUSH_WB1;
                 end else begin
@@ -128,17 +175,25 @@ module dcache (
                     next_state = CHECK_DIRTY;
                 end
             end
-            FLUSH_WB1:   next_state = cif.dwait ? FLUSH_WB1   : FLUSH_WB2;
+            FLUSH_WB1: begin
+                if (cif.ccwait)
+                    next_state = WAIT;
+                else if(cif.dwait)
+                    next_state = FLUSH_WB1;
+                else
+                    next_state = FLUSH_WB2;
+            end
             FLUSH_WB2: begin
                 next_state = cif.dwait ? FLUSH_WB2 : CHECK_DIRTY;
                 next_flushidx = cif.dwait ? flushidx : flushidx + 1;
             end
-            WRITE_COUNT: next_state = cif.dwait ? WRITE_COUNT : HALT;
+            // WRITE_COUNT: next_state = cif.dwait ? WRITE_COUNT : HALT;
             HALT: next_state = HALT;
             default: next_state = IDLE;
         endcase
     end
 
+    assign snoop_write_idx = snoopmatch0 ? 0 : snoopmatch1 ? 1 : 0;
     always_comb begin
         if(ismatch0 && dcif.dmemREN) begin
             write_idx = 0;
@@ -153,6 +208,7 @@ module dcache (
         end
     end
 
+// assign cif.ccwrite = cif.dWEN && !cif.ccwait;
     // cache output combinational logic
     always_comb begin
         // Defaults for next values
@@ -211,31 +267,82 @@ module dcache (
                     // write_idx = 0;
                 end
             end
+            WAIT: begin
+                cif.cctrans = 1;
+                cif.ccwrite = 0;
+                if ((snoopmatch0 && snoopdirty0) || (snoopmatch1 && snoopdirty1)) begin
+                    cif.ccwrite = 1;
+                    cif.cctrans = 1;
+                end
+                if (cif.ccinv) begin
+                    next_valid = 0;
+                    // next_dirty = 0;
+                    cache_WEN = 1;
+                    // if(snoopmatch0) 
+                    //     next_tag = snoop_set.dcacheframe[0].tag;
+                    // else if (snoopmatch1) 
+                    //     next_tag = snoop_set.dcacheframe[1].tag;
+                end 
+            end
+            SNOOP_WB1: begin
+                cif.dWEN = 1;
+                // cache_WEN = 1;
+                // next_dirty = 0;
+                cif.ccwrite = dcif.dmemWEN; 
+                cif.daddr = { cif.ccsnoopaddr[31:3], 3'b000 };
+                if(snoopdirty0) begin
+                    cache_WEN = 1;
+                    next_dirty = 0;
+                    cif.dstore = snoop_set.dcacheframe[0].data[0];
+                end else if(snoopdirty1) begin
+                    cache_WEN = 1;
+                    next_dirty = 0;
+                    cif.dstore = snoop_set.dcacheframe[1].data[0];
+                end
+                // else
+                //     cif.dstore = 32'hBAD7BAD7;
+                // cif.cctrans = 1;
+            end
+            SNOOP_WB2: begin
+                cif.dWEN = 1;
+                // cache_WEN = 1;
+                // next_dirty = 0;
+                cif.ccwrite = dcif.dmemWEN; 
+                cif.daddr = { cif.ccsnoopaddr[31:3], 3'b100 };
+                if(snoopdirty0) begin
+                    cache_WEN = 1;
+                    next_dirty = 0;
+                    cif.dstore = snoop_set.dcacheframe[0].data[1];
+                end else if(snoopdirty1) begin
+                    cache_WEN = 1;
+                    next_dirty = 0;
+                    cif.dstore = snoop_set.dcacheframe[1].data[1];
+                end
+                // else
+                //     cif.dstore = 32'hBAD7BAD7;
+                // cif.cctrans = 1;
+            end
+            UPDATE_CACHE: begin
 
-            SNOOP: begin 
-
-            end 
-            COHERENCE1: begin 
-                
-            end 
-            COHERENCE2: begin 
-            
-            end 
+            end
             WRITEBACK1: begin
                 cif.dWEN   = 1;
                 cif.daddr  = {selected_set.dcacheframe[selected_set.lru].tag,
                              dcf_dmemaddr.idx, 3'b000};
                 cif.dstore = selected_set.dcacheframe[selected_set.lru].data[0];
+                cif.cctrans = 1;
             end
             WRITEBACK2: begin
                 cif.dWEN   = 1;
                 cif.daddr  = {selected_set.dcacheframe[selected_set.lru].tag,
                              dcf_dmemaddr.idx, 3'b100};
                 cif.dstore = selected_set.dcacheframe[selected_set.lru].data[1];
+                cif.cctrans = 1;
             end
             CACHE_LOAD1: begin
                 cif.dREN = 1;
                 cif.daddr  = {dcf_dmemaddr.tag, dcf_dmemaddr.idx, 3'b000};
+                cif.cctrans = 1;
                 if(!cif.dwait) begin
                     cache_WEN = 1;
                     next_valid = 0;
@@ -244,10 +351,13 @@ module dcache (
                     next_data0 = cif.dload;
                     // write_idx = selected_set.lru;
                 end
+                if(dcif.dmemWEN)
+                    cif.ccwrite = 1;
             end
             CACHE_LOAD2: begin
                 cif.dREN = 1;
                 cif.daddr  = {dcf_dmemaddr.tag, dcf_dmemaddr.idx, 3'b100};
+                cif.cctrans = 1;
                 if(!cif.dwait) begin 
                     cache_WEN = 1;
                     next_valid = 1;
@@ -257,6 +367,8 @@ module dcache (
                     // write_idx = selected_set.lru;
                     next_miss_counter = miss_counter + 1;
                 end
+                if(dcif.dmemWEN)
+                    cif.ccwrite = 1;
             end
             CHECK_DIRTY: begin
                 // nuttin but state shiz
@@ -266,20 +378,29 @@ module dcache (
                 cif.daddr  = {dcachetable[flushidx[2:0]].dcacheframe[flushidx[3]].tag,
                               flushidx[2:0], 3'b000};
                 cif.dstore = dcachetable[flushidx[2:0]].dcacheframe[flushidx[3]].data[0];
+                cif.cctrans = 1;
             end
             FLUSH_WB2: begin
                 cif.dWEN   = 1;
                 cif.daddr  = {dcachetable[flushidx[2:0]].dcacheframe[flushidx[3]].tag,
                               flushidx[2:0], 3'b100};
                 cif.dstore = dcachetable[flushidx[2:0]].dcacheframe[flushidx[3]].data[1];
+                cif.cctrans = 1;
+                next_dirty = 0;
+                next_valid = 0;
+                cache_WEN = 1;
             end
-            WRITE_COUNT: begin
-                cif.dWEN   = 1;
-                cif.daddr  = 32'h3100; 
-                cif.dstore = dhit_counter - miss_counter;
-            end
+            // WRITE_COUNT: begin
+            //     cif.dWEN   = 1;
+            //     cif.daddr  = 32'h3100; 
+            //     cif.dstore = dhit_counter - miss_counter;
+            // end
             HALT: begin
                 dcif.flushed = 1; 
+                if(cif.ccwait)
+                    cif.cctrans = 1;
+                else
+                    cif.cctrans = 0;
             end
         endcase
     end
@@ -303,12 +424,21 @@ module dcache (
             flushidx <= next_flushidx;
             miss_counter <= next_miss_counter;
             if(cache_WEN) begin
-                dcachetable[dcf_dmemaddr.idx].dcacheframe[write_idx].valid   <= next_valid;
-                dcachetable[dcf_dmemaddr.idx].dcacheframe[write_idx].dirty   <= next_dirty;
-                dcachetable[dcf_dmemaddr.idx].dcacheframe[write_idx].tag     <= next_tag;
-                dcachetable[dcf_dmemaddr.idx].dcacheframe[write_idx].data[0] <= next_data0;
-                dcachetable[dcf_dmemaddr.idx].dcacheframe[write_idx].data[1] <= next_data1;
-                dcachetable[dcf_dmemaddr.idx].lru <= next_lru;
+                if(current_state == WAIT && !cif.ccwrite) begin
+                    dcachetable[snoopaddr.idx].dcacheframe[snoop_write_idx].valid   <= next_valid;
+                    dcachetable[snoopaddr.idx].dcacheframe[snoop_write_idx].dirty   <= next_dirty;
+                    dcachetable[snoopaddr.idx].dcacheframe[snoop_write_idx].tag     <= next_tag;
+                    dcachetable[snoopaddr.idx].dcacheframe[snoop_write_idx].data[0] <= next_data0;
+                    dcachetable[snoopaddr.idx].dcacheframe[snoop_write_idx].data[1] <= next_data1;
+                    dcachetable[snoopaddr.idx].lru <= next_lru;
+                end else begin
+                    dcachetable[dcf_dmemaddr.idx].dcacheframe[write_idx].valid   <= next_valid;
+                    dcachetable[dcf_dmemaddr.idx].dcacheframe[write_idx].dirty   <= next_dirty;
+                    dcachetable[dcf_dmemaddr.idx].dcacheframe[write_idx].tag     <= next_tag;
+                    dcachetable[dcf_dmemaddr.idx].dcacheframe[write_idx].data[0] <= next_data0;
+                    dcachetable[dcf_dmemaddr.idx].dcacheframe[write_idx].data[1] <= next_data1;
+                    dcachetable[dcf_dmemaddr.idx].lru <= next_lru;
+                end
             end
         end
     end
