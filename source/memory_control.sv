@@ -129,6 +129,7 @@ module memory_control (
         ccif.dwait = '1;
         ccif.iwait = '1;
         next_instr_service = instr_service;
+        next_service_cache = service_cache;
         casez(state)
             IDLE: begin
                 // setting the next cache to service

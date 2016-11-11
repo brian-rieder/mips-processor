@@ -164,7 +164,7 @@ module dcache (
                     next_state = CACHE_LOAD2;
             end
             CHECK_DIRTY: begin
-                if (ccif.ccwait)
+                if (cif.ccwait)
                     next_state = WAIT;
                 else if (flushidx > 5'b1111) begin
                     next_state = HALT;
