@@ -29,6 +29,9 @@ module control_unit (
   assign cuif.j25    = cuif.imemload[25:0];
   assign cuif.shamt  = {27'b0, cuif.imemload[10:6]};
 
+  // Synchronization Output
+  assign cuif.datomic = (op == LL || op == SC);
+
   // Instruction Decoding
   always_comb begin
     casez (op)
