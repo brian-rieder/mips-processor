@@ -19,6 +19,7 @@ interface control_unit_if;
   logic [1:0] ALUsrc, RegDst, JumpSel, MemToReg;
   logic       halt, dWEN, dREN, RegWr, jumpFlush,
               BNE, JAL, LUI, PCsrc, ExtOp, imemREN;
+  logic       datomic;
   regbits_t   Rs, Rt, Rd;
   logic [IMM_W-1:0] imm16;
   logic [ADDR_W-1:0] j25;
@@ -36,7 +37,9 @@ interface control_unit_if;
             // PC logic outputs
             JumpSel, PCsrc, BNE, j25,
             // Datapath logic outputs
-            ExtOp, jumpFlush, opcode
+            ExtOp, jumpFlush, opcode,
+            // Synchronization outputs
+            datomic
   );
   // control unit tb
   modport tb (
