@@ -34,10 +34,16 @@ module dcache (
         word_t [1:0] data;
     } dcacheframe_t;
 
+
     typedef struct packed {
         dcacheframe_t [1:0] dcacheframe;
         logic lru;
     } dcacheset_t;
+
+    typedef struct packed {
+        logic valid;
+        word_t link_addr;
+    } link_register_t;
 
     // create the cache table
     dcacheset_t [7:0] dcachetable;
@@ -70,6 +76,9 @@ module dcache (
 
     assign snoopdirty0 = snoop_set.dcacheframe[0].dirty;
     assign snoopdirty1 = snoop_set.dcacheframe[1].dirty;
+
+    // synchronization link register
+    link_register_t link_reg;
 
     // dmemWEN and cache hit => overwrite in cache and set dirty bit, dont go to memory // modifed, invalidate the other one 
     // need to change dhit
