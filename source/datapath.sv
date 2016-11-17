@@ -74,30 +74,16 @@ module datapath (
 
 
     // Datapath input assignment
-    // assign dpif.halt      = memwbif.halt_out;
-    // assign dpif.imemREN   = 1; // always tied high
     assign dpif.imemREN   = !dpif.halt; // always tied high
     assign dpif.imemaddr  = pcif.pc_out;
     assign dpif.dmemstore = exmemif.dmemstore_out;
     assign dpif.dmemaddr  = exmemif.portO_out;
     assign dpif.dmemREN   = exmemif.dmemREN_out;
     assign dpif.dmemWEN   = exmemif.dmemWEN_out;
-    // always_ff @ (posedge CLK, negedge nRST) begin
-    //     if (!nRST) begin
-    //         dpif.dmemREN <= 0;
-    //         dpif.dmemWEN <= 0;
-    //     end else begin
-    //     end
-    // end 
+    assign dpif.datomic   = cuif.datomic;
 
     assign huif.halt = exmemif.halt_out;
     assign dpif.halt = exmemif.halt_out;
-    // always_ff @ (posedge CLK, negedge nRST) begin
-    //     if (!nRST)
-    //         dpif.halt <= 0;
-    //     else
-    //         dpif.halt <= exmemif.halt_out | dpif.halt;
-    // end
 
     // Control Unit input assignment
     assign cuif.imemload  = ifidif.imemload_out;
