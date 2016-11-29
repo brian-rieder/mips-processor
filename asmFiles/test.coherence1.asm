@@ -11,6 +11,23 @@ org 0x0000
   lui $t1, 0xCAB1
   ori $t1, $t1, 0xFEED
   sw  $t1, 0($t0)
+  #delete from here
+   #ori $t0, $0, data1
+   #lui $t1, 0xDEAD
+   #ori $t1, $t1, 0xBEEF
+   #sw  $t1, 0($t0)
+   #ori $t0, $0, data4
+   #lui $t1, 0xCAB1
+   #ori $t1, $t1, 0xFEED
+   #sw  $t1, 0($t0)
+   #ori $t0, $0, data1
+   #lui $t1, 0xDEAD
+   #ori $t1, $t1, 0xBEEF
+   #sw  $t1, 0($t0)
+   #ori $t0, $0, data4
+   #lui $t1, 0xCAB1
+   #ori $t1, $t1, 0xFEED
+   #sw  $t1, 0($t0)
   halt
 
 # core 2
