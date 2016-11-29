@@ -189,10 +189,7 @@ module memory_control (
             end
             SNOOP: begin
                 ccif.ccwait[!service_cache] = 1;
-                // ccif.ccsnoopaddr[!service_cache] = ccif.daddr[service_cache];
-                // ccwrite is high if service cache has a hit and dWEN 
-                // or if there is a snoop hit (this logic is in dcache)
-                ccif.ccinv[!service_cache] = 1;//ccif.ccwrite[service_cache];
+                ccif.ccinv[!service_cache] = ccif.ccwrite[service_cache];//ccif.ccwrite[service_cache];
             end
             RAMREAD1: begin 
                 ccif.ccwait[!service_cache] = 1;
@@ -218,6 +215,7 @@ module memory_control (
             end
             RAMWRITE1: begin
                 ccif.ccwait[!service_cache] = 1;
+                ccif.ccinv[!service_cache] = 1;
                 // ccsnoopaddr[!service_cache] = ccif.daddr[service_cache];
                 ccif.ramWEN = 1;
                 ccif.ramaddr = ccif.daddr[service_cache];
@@ -229,6 +227,7 @@ module memory_control (
             end
             RAMWRITE2: begin
                 ccif.ccwait[!service_cache] = 1;
+                ccif.ccinv[!service_cache] = 1;
                 // ccsnoopaddr[!service_cache] = ccif.daddr[service_cache];
                 ccif.ramWEN = 1;
                 ccif.ramaddr = ccif.daddr[service_cache];
