@@ -28,7 +28,7 @@ interface EX_MEM_if;
     regbits_t    wsel_in,      wsel_out;
     opcode_t     op_ex,        op_mem;
     logic        flush;
-
+    logic        datomic_in,   datomic_out; 
 
   // control unit ports
   modport ex_mem (
@@ -47,6 +47,7 @@ interface EX_MEM_if;
         enable,
         flush,
         op_ex,
+        datomic_in,
 		
     output  	
         RegDst_out, 
@@ -60,7 +61,8 @@ interface EX_MEM_if;
 		luiValue_out, 
 		pcp4_out,
         wsel_out,
-        op_mem
+        op_mem, 
+        datomic_out
   );
   // control unit tb
   modport tb (
@@ -78,6 +80,7 @@ interface EX_MEM_if;
         enable,
         flush,
 		pcp4_in,	
+        datomic_in,
 		
     input  	
         RegDst_out, 
@@ -90,7 +93,8 @@ interface EX_MEM_if;
 		portO_out, 
 		luiValue_out, 
         wsel_out,
-		pcp4_out
+		pcp4_out, 
+        datomic_out
   );
 
 endinterface

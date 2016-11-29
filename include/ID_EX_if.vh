@@ -20,7 +20,7 @@ interface ID_EX_if;
   word_t      pcp4_in,   rdat1_in,  rdat2_in,   extImm_in,    shamt_in;
   logic [1:0] ALUsrc_in, RegDst_in, JumpSel_in, MemToReg_in;
   logic       dREN_in,   dWEN_in,   halt_in,    jumpFlush_in, PCsrc_in, 
-              RegWr_in,  BNE_in,    enable,     flush;
+              RegWr_in,  BNE_in,    enable,     flush,     datomic_in;
   regbits_t   wsel_in;
   logic [ADDR_W-1:0] j25_in;
   regbits_t   Rs_in, Rt_in; 
@@ -31,6 +31,7 @@ interface ID_EX_if;
   word_t      pcp4_out,   rdat1_out,  rdat2_out,   extImm_out,    shamt_out;
   logic [1:0] ALUsrc_out, RegDst_out, JumpSel_out, MemToReg_out,  PCsrc_out;
   logic       dREN_out,   dWEN_out,   halt_out,    jumpFlush_out, RegWr_out, BNE_out;
+  logic       datomic_out; 
   regbits_t   wsel_out;
   logic [ADDR_W-1:0] j25_out;
   regbits_t   Rs_out, Rt_out; 
@@ -61,6 +62,7 @@ interface ID_EX_if;
            flush,
            Rs_in, 
            Rt_in,
+           datomic_in,
     output pcp4_out,      // PC+4 to EX/MEM and jumpAddr computation
            rdat1_out,     // rdat1 to ALU port A and jumpSel mux
            rdat2_out,     // rdat2 to ALUsrc mux
@@ -82,7 +84,8 @@ interface ID_EX_if;
            wsel_out,      // wsel to EX/MEM
            j25_out,        // j25 to jumpAddr computation
            Rs_out,
-           Rt_out
+           Rt_out,
+           datomic_out
   );
 
 endinterface
