@@ -80,7 +80,7 @@ module datapath (
     assign dpif.dmemaddr  = exmemif.portO_out;
     assign dpif.dmemREN   = exmemif.dmemREN_out;
     assign dpif.dmemWEN   = exmemif.dmemWEN_out;
-    assign dpif.datomic   = cuif.datomic;
+    assign dpif.datomic   = exmemif.datomic_out;
 
     assign huif.halt = exmemif.halt_out;
     assign dpif.halt = exmemif.halt_out;
@@ -260,6 +260,7 @@ module datapath (
     assign idexif.PCsrc_in     = cuif.PCsrc;
     assign idexif.Rs_in        = cuif.Rs; 
     assign idexif.Rt_in        = cuif.Rt; 
+    assign idexif.datomic_in   = cuif.datomic; 
     // wsel
     always_comb begin
         if(cuif.RegDst == 2'b00)  
@@ -290,7 +291,8 @@ module datapath (
     assign exmemif.enable       = huif.EXMEM_enable;
     assign exmemif.flush        = huif.EXMEM_flush;
     assign exmemif.op_ex        = idexif.op_ex;
-
+    assign exmemif.datomic_in   = idexif.datomic_out; 
+    
     // MEM/WB Latch input assignment
     assign memwbif.dmemload_in  = dpif.dmemload;
     assign memwbif.RegWr_in     = exmemif.RegWr_out;
