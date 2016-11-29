@@ -23,6 +23,7 @@ always_ff @(posedge CLK, negedge nRST) begin
 		exmemif.pcp4_out      <= '0; 
 		exmemif.wsel_out      <= '0;
 		exmemif.op_mem        <= RTYPE;
+		exmemif.datomic_out   <= 0; 
 	end 
 	else begin 
 		if(exmemif.enable)  begin
@@ -38,6 +39,7 @@ always_ff @(posedge CLK, negedge nRST) begin
 				exmemif.pcp4_out      <= '0; 
 				exmemif.wsel_out      <= '0;
 				exmemif.op_mem        <= RTYPE;
+				exmemif.datomic_out   <= 0; 
 	        end else begin
 	            exmemif.dmemREN_out <= exmemif.dREN_in;
 	            exmemif.dmemWEN_out <= exmemif.dWEN_in;
@@ -50,6 +52,7 @@ always_ff @(posedge CLK, negedge nRST) begin
 				exmemif.pcp4_out      <= exmemif.pcp4_in; 
 				exmemif.wsel_out      <= exmemif.wsel_in;
 				exmemif.op_mem        <= exmemif.op_ex;
+				exmemif.datomic_out   <= exmemif.datomic_in; 
 	        end
 		end
 	end

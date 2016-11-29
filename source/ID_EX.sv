@@ -39,6 +39,7 @@ always_ff @(posedge CLK, negedge nRST) begin
 		idexif.j25_out       <= '0;
 		idexif.Rs_out        <= '0;
 		idexif.Rt_out        <= '0;
+		idexif.datomic_out   <= 0; 
 	end 
 	else begin 
 		if (idexif.enable)  begin 
@@ -64,6 +65,7 @@ always_ff @(posedge CLK, negedge nRST) begin
 				idexif.j25_out       <= '0;
 				idexif.Rs_out        <= '0;
 				idexif.Rt_out        <= '0;
+				idexif.datomic_out   <= 0; 
 			end else begin
 				idexif.pcp4_out      <= idexif.pcp4_in;
 				idexif.rdat1_out     <= idexif.rdat1_in;
@@ -86,6 +88,7 @@ always_ff @(posedge CLK, negedge nRST) begin
 				idexif.j25_out       <= idexif.j25_in;
 				idexif.Rs_out        <= idexif.Rs_in;
 				idexif.Rt_out        <= idexif.Rt_in;
+				idexif.datomic_out   <= idexif.datomic_in; 
 			end
 		end   
 	end
