@@ -69,7 +69,7 @@ module dcache (
 
     // match signals for sanity
     logic ismatch0, ismatch1, snoopmatch0, snoopmatch1, 
-          snoopdirty0, snoopdirty1, snoop_next_valid;
+          snoopdirty0, snoopdirty1, snoop_next_valid, snoop_next_dirty;
     assign ismatch0 = selected_set.dcacheframe[0].valid 
                     & (dcf_dmemaddr.tag == selected_set.dcacheframe[0].tag);
     assign ismatch1 = selected_set.dcacheframe[1].valid 
@@ -91,7 +91,7 @@ module dcache (
     // assign dcif.dhit = (ismatch0 | ismatch1) 
     //                  & (dcif.dmemREN | dcif.dmemWEN) 
     //                  & (current_state == IDLE);
-    assign dcif.dhit = ((ismatch0 || ismatch1) && (dcif.dmemREN || dcif.dmemWEN)) 
+    assign dcif.dhit = ((ismatch0 || ismatch1) && (dcif.dmemREN)) 
                     || (ismatch0 && selected_set.dcacheframe[0].dirty && dcif.dmemWEN)
                     || (ismatch1 && selected_set.dcacheframe[1].dirty && dcif.dmemWEN);
 
@@ -244,6 +244,7 @@ module dcache (
         dcif.flushed  =  0;
         cache_WEN     =  0;
         snoop_next_valid = 0;
+        snoop_next_dirty = 0;
         // Cache coherency signals
         cif.ccwrite   =  0;
         cif.cctrans   =  0;
@@ -274,7 +275,7 @@ module dcache (
 
                             // normal store
                             cache_WEN  = 1;
-                            next_lru   = 1;
+                            next_lru   = 0; // used to be 1
                             next_valid = 1;
                             next_dirty = 1;
                             if (dcf_dmemaddr.blkoff == 0)
@@ -292,7 +293,7 @@ module dcache (
                         if(link_reg.link_addr == dcif.dmemaddr)
                             next_link_reg.valid = 0;
                         cache_WEN  = 1;
-                        next_lru   = 1;
+                        next_lru   = 0; // used to be 1
                         next_valid = 1;
                         next_dirty = 1;
                         if (dcf_dmemaddr.blkoff == 0)
@@ -309,7 +310,7 @@ module dcache (
                             
                             // normal store
                             cache_WEN  = 1;
-                            next_lru   = 0;
+                            next_lru   = 1; // used to be 0
                             next_valid = 1;
                             next_dirty = 1;
                             if (dcf_dmemaddr.blkoff == 0)
@@ -327,7 +328,7 @@ module dcache (
                         if(link_reg.link_addr == dcif.dmemaddr)
                             next_link_reg.valid = 0;
                         cache_WEN  = 1;
-                        next_lru   = 0;
+                        next_lru   = 1; // used to be 0
                         next_valid = 1;
                         next_dirty = 1;
                         if (dcf_dmemaddr.blkoff == 0)
@@ -340,6 +341,7 @@ module dcache (
                 end
             end
             WAIT: begin
+                snoop_next_dirty = snoop_set.dcacheframe[snoop_write_idx].dirty; 
                 cif.cctrans = 1;
                 cif.ccwrite = 0;
                 if ((snoopmatch0 && snoopdirty0) || (snoopmatch1 && snoopdirty1)) begin
@@ -502,7 +504,7 @@ module dcache (
             if(cache_WEN) begin
                 if(current_state == WAIT || current_state == SNOOP_WB2 && !cif.ccwrite) begin
                     dcachetable[snoopaddr.idx].dcacheframe[snoop_write_idx].valid   <= snoop_next_valid;
-                    dcachetable[snoopaddr.idx].dcacheframe[snoop_write_idx].dirty   <= 0;
+                    dcachetable[snoopaddr.idx].dcacheframe[snoop_write_idx].dirty   <= snoop_next_dirty;
                     /*dcachetable[snoopaddr.idx].dcacheframe[snoop_write_idx].tag     <= next_tag;
                     dcachetable[snoopaddr.idx].dcacheframe[snoop_write_idx].data[0] <= next_data0;
                     dcachetable[snoopaddr.idx].dcacheframe[snoop_write_idx].data[1] <= next_data1;
