@@ -108,6 +108,7 @@ module dcache (
     word_t next_data0, next_data1;
     logic write_idx, snoop_write_idx;
 
+    logic cacheFlushWEN;
     // next state logic
     always_comb begin
         next_state = current_state;
@@ -255,6 +256,8 @@ module dcache (
         // Cache coherency signals
         cif.ccwrite   =  0;
         cif.cctrans   =  0;
+
+        cacheFlushWEN = 0;
         casez(current_state) 
             IDLE: begin
                 if(ismatch0 && dcif.dmemREN) begin
@@ -565,9 +568,10 @@ module dcache (
                               flushidx[2:0], 3'b100};
                 cif.dstore = dcachetable[flushidx[2:0]].dcacheframe[flushidx[3]].data[1];
                 cif.cctrans = 1;
-                next_dirty = 0;
-                next_valid = 0;
-                cache_WEN = 1;
+                //next_dirty = 0;
+                //next_valid = 0;
+               // cache_WEN = 1;
+               cacheFlushWEN = 1;
             end
             // WRITE_COUNT: begin
             //     cif.dWEN   = 1;
@@ -622,6 +626,8 @@ module dcache (
                     dcachetable[dcf_dmemaddr.idx].lru <= next_lru;
                 end
             end
+            if(cacheFlushWEN)
+                dcachetable[flushidx[2:0]].dcacheframe[flushidx[3]].dirty   <= 0;
         end
     end
 
