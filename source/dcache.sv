@@ -68,12 +68,14 @@ module dcache (
     assign snoop_set = dcachetable[snoopaddr.idx]; 
 
     // match signals for sanity
-    logic ismatch0, ismatch1, snoopmatch0, snoopmatch1, 
+    logic ismatch0, ismatch1, isdirty0, isdirty1, snoopmatch0, snoopmatch1, 
           snoopdirty0, snoopdirty1, snoop_next_valid, snoop_next_dirty;
     assign ismatch0 = selected_set.dcacheframe[0].valid 
                     & (dcf_dmemaddr.tag == selected_set.dcacheframe[0].tag);
     assign ismatch1 = selected_set.dcacheframe[1].valid 
                     & (dcf_dmemaddr.tag == selected_set.dcacheframe[1].tag);
+    assign isdirty0 = selected_set.dcacheframe[0].dirty;
+    assign isdirty1 = selected_set.dcacheframe[1].dirty;
 
     assign snoopmatch0 = snoop_set.dcacheframe[0].valid 
                        & (snoopaddr.tag == snoop_set.dcacheframe[0].tag);
@@ -91,9 +93,9 @@ module dcache (
     // assign dcif.dhit = (ismatch0 | ismatch1) 
     //                  & (dcif.dmemREN | dcif.dmemWEN) 
     //                  & (current_state == IDLE);
-    assign dcif.dhit = ((ismatch0 || ismatch1) && (dcif.dmemREN)) 
-                    || (ismatch0 && selected_set.dcacheframe[0].dirty && dcif.dmemWEN)
-                    || (ismatch1 && selected_set.dcacheframe[1].dirty && dcif.dmemWEN);
+    // assign dcif.dhit = ((ismatch0 || ismatch1) && (dcif.dmemREN)) 
+    //                 || (ismatch0 && selected_set.dcacheframe[0].dirty && dcif.dmemWEN)
+    //                 || (ismatch1 && selected_set.dcacheframe[1].dirty && dcif.dmemWEN);
 
 
     // miscellaneous signals
@@ -106,6 +108,7 @@ module dcache (
     word_t next_data0, next_data1;
     logic write_idx, snoop_write_idx;
 
+    logic cacheFlushWEN;
     // next state logic
     always_comb begin
         next_state = current_state;
@@ -124,6 +127,10 @@ module dcache (
                     end else begin
                         next_state = CACHE_LOAD1;
                     end
+                // added with Nick
+                end else if ((ismatch0 & dcif.dmemWEN & !isdirty0) 
+                          || (ismatch1 & dcif.dmemWEN & !isdirty1)) begin
+                    next_state = CACHE_LOAD1;
                 end else begin
                     next_state = IDLE;
                 end
@@ -171,7 +178,7 @@ module dcache (
                     next_state = CACHE_LOAD2;
             end
             CACHE_LOAD2: begin
-                if (!cif.dwait & cif.dWEN) 
+                if (!cif.dwait & dcif.dmemWEN) 
                     next_state = UPDATE_CACHE;
                 else if (!cif.dwait) 
                     next_state = IDLE;
@@ -243,17 +250,21 @@ module dcache (
         dcif.dmemload = '0;
         dcif.flushed  =  0;
         cache_WEN     =  0;
+        dcif.dhit     =  0;
         snoop_next_valid = 0;
         snoop_next_dirty = 0;
         // Cache coherency signals
         cif.ccwrite   =  0;
         cif.cctrans   =  0;
+
+        cacheFlushWEN = 0;
         casez(current_state) 
             IDLE: begin
                 if(ismatch0 && dcif.dmemREN) begin
                     cache_WEN     = 1;
                     next_lru      = 1;
                     dcif.dmemload = selected_set.dcacheframe[0].data[dcf_dmemaddr.blkoff];
+                    dcif.dhit     = 1;
                     if(dcif.datomic) begin
                         next_link_reg.valid = 1;
                         next_link_reg.link_addr = dcif.dmemaddr;
@@ -262,11 +273,13 @@ module dcache (
                     cache_WEN     = 1;
                     next_lru      = 0;
                     dcif.dmemload = selected_set.dcacheframe[1].data[dcf_dmemaddr.blkoff];
+                    dcif.dhit     = 1;
                     if(dcif.datomic) begin
                         next_link_reg.valid = 1;
                         next_link_reg.link_addr = dcif.dmemaddr;
                     end
-                end else if (ismatch0 && dcif.dmemWEN) begin
+                end else if (ismatch0 && dcif.dmemWEN && isdirty0) begin
+                    dcif.dhit = 1;
                     if(dcif.datomic) begin
                         if((dcif.dmemaddr == link_reg.link_addr) && link_reg.valid) begin
                             // rt = 1, invalidate link reg
@@ -275,7 +288,7 @@ module dcache (
 
                             // normal store
                             cache_WEN  = 1;
-                            next_lru   = 0; // used to be 1
+                            next_lru   = 1; // used to be 1
                             next_valid = 1;
                             next_dirty = 1;
                             if (dcf_dmemaddr.blkoff == 0)
@@ -293,7 +306,7 @@ module dcache (
                         if(link_reg.link_addr == dcif.dmemaddr)
                             next_link_reg.valid = 0;
                         cache_WEN  = 1;
-                        next_lru   = 0; // used to be 1
+                        next_lru   = 1; // used to be 1
                         next_valid = 1;
                         next_dirty = 1;
                         if (dcf_dmemaddr.blkoff == 0)
@@ -301,6 +314,79 @@ module dcache (
                         else
                             next_data1 = dcif.dmemstore;
                     end
+                end
+                else if (ismatch1 && dcif.dmemWEN && isdirty1) begin
+                    dcif.dhit = 1;
+                    if(dcif.datomic) begin
+                        if((dcif.dmemaddr == link_reg.link_addr) && link_reg.valid) begin
+                            // rt = 1, invalidate link reg
+                            dcif.dmemload = 1;
+                            next_link_reg.valid = 0;
+                            
+                            // normal store
+                            cache_WEN  = 1;
+                            next_lru   = 0; // used to be 0
+                            next_valid = 1;
+                            next_dirty = 1;
+                            if (dcf_dmemaddr.blkoff == 0)
+                                next_data0 = dcif.dmemstore;
+                            else
+                                next_data1 = dcif.dmemstore;
+                        end
+                        else begin
+                            // rt = 0, don't do the store
+                            dcif.dmemload = 0;
+                        end
+                    end
+                    else begin
+                        // normal store
+                        if(link_reg.link_addr == dcif.dmemaddr)
+                            next_link_reg.valid = 0;
+                        cache_WEN  = 1;
+                        next_lru   = 0; // used to be 0
+                        next_valid = 1;
+                        next_dirty = 1;
+                        if (dcf_dmemaddr.blkoff == 0)
+                            next_data0 = dcif.dmemstore;
+                        else
+                            next_data1 = dcif.dmemstore;
+                    end
+                end
+                else if (ismatch0 && dcif.dmemWEN) begin
+                    if(dcif.datomic) begin
+                        if((dcif.dmemaddr == link_reg.link_addr) && link_reg.valid) begin
+                            // rt = 1, invalidate link reg
+                            dcif.dmemload = 1;
+                            next_link_reg.valid = 0;
+
+                            // normal store
+                            cache_WEN  = 1;
+                            next_lru   = 1; // used to be 1
+                            next_valid = 1;
+                            next_dirty = 1;
+                            if (dcf_dmemaddr.blkoff == 0)
+                                next_data0 = dcif.dmemstore;
+                            else
+                                next_data1 = dcif.dmemstore;
+                        end
+                        else begin
+                            // rt = 0, don't do the store
+                            dcif.dmemload = 0;
+                        end
+                    end
+                    // else begin
+                    //     // normal store
+                    //     if(link_reg.link_addr == dcif.dmemaddr)
+                    //         next_link_reg.valid = 0;
+                    //     cache_WEN  = 1;
+                    //     next_lru   = 1; // used to be 1
+                    //     next_valid = 1;
+                    //     next_dirty = 1;
+                    //     if (dcf_dmemaddr.blkoff == 0)
+                    //         next_data0 = dcif.dmemstore;
+                    //     else
+                    //         next_data1 = dcif.dmemstore;
+                    // end
                 end else if (ismatch1 && dcif.dmemWEN) begin
                     if(dcif.datomic) begin
                         if((dcif.dmemaddr == link_reg.link_addr) && link_reg.valid) begin
@@ -310,7 +396,7 @@ module dcache (
                             
                             // normal store
                             cache_WEN  = 1;
-                            next_lru   = 1; // used to be 0
+                            next_lru   = 0; // used to be 0
                             next_valid = 1;
                             next_dirty = 1;
                             if (dcf_dmemaddr.blkoff == 0)
@@ -323,19 +409,19 @@ module dcache (
                             dcif.dmemload = 0;
                         end
                     end
-                    else begin
-                        // normal store
-                        if(link_reg.link_addr == dcif.dmemaddr)
-                            next_link_reg.valid = 0;
-                        cache_WEN  = 1;
-                        next_lru   = 1; // used to be 0
-                        next_valid = 1;
-                        next_dirty = 1;
-                        if (dcf_dmemaddr.blkoff == 0)
-                            next_data0 = dcif.dmemstore;
-                        else
-                            next_data1 = dcif.dmemstore;
-                    end
+                    // else begin
+                    //     // normal store
+                    //     if(link_reg.link_addr == dcif.dmemaddr)
+                    //         next_link_reg.valid = 0;
+                    //     cache_WEN  = 1;
+                    //     next_lru   = 0; // used to be 0
+                    //     next_valid = 1;
+                    //     next_dirty = 1;
+                    //     if (dcf_dmemaddr.blkoff == 0)
+                    //         next_data0 = dcif.dmemstore;
+                    //     else
+                    //         next_data1 = dcif.dmemstore;
+                    // end
                 end else begin
                     cache_WEN = 0;
                 end
@@ -398,7 +484,20 @@ module dcache (
                 // cif.cctrans = 1;
             end
             UPDATE_CACHE: begin
-
+                dcif.dhit = 1;
+                if(link_reg.link_addr == dcif.dmemaddr)
+                    next_link_reg.valid = 0;
+                cache_WEN  = 1;
+                next_valid = 1;
+                next_dirty = 1;
+                if (dcf_dmemaddr.blkoff == 0)
+                    next_data0 = dcif.dmemstore;
+                else
+                    next_data1 = dcif.dmemstore;
+                if(ismatch0)
+                    next_lru = 0;
+                else if(ismatch1)
+                    next_lru = 1;
             end
             WRITEBACK1: begin
                 cif.dWEN   = 1;
@@ -418,6 +517,8 @@ module dcache (
                 cif.dREN = 1;
                 cif.daddr  = {dcf_dmemaddr.tag, dcf_dmemaddr.idx, 3'b000};
                 cif.cctrans = 1;
+                if(dcif.dmemWEN)
+                    cif.ccwrite = 1;
                 if(!cif.dwait) begin
                     cache_WEN = 1;
                     next_valid = 0;
@@ -428,11 +529,17 @@ module dcache (
                 end
                 if(dcif.dmemWEN)
                     cif.ccwrite = 1;
+                if(ismatch0)
+                    next_lru = 0;
+                else if(ismatch1)
+                    next_lru = 1;
             end
             CACHE_LOAD2: begin
                 cif.dREN = 1;
                 cif.daddr  = {dcf_dmemaddr.tag, dcf_dmemaddr.idx, 3'b100};
                 cif.cctrans = 1;
+                if(dcif.dmemWEN)
+                    cif.ccwrite = 1;
                 if(!cif.dwait) begin 
                     cache_WEN = 1;
                     next_valid = 1;
@@ -461,9 +568,10 @@ module dcache (
                               flushidx[2:0], 3'b100};
                 cif.dstore = dcachetable[flushidx[2:0]].dcacheframe[flushidx[3]].data[1];
                 cif.cctrans = 1;
-                next_dirty = 0;
-                next_valid = 0;
-                cache_WEN = 1;
+                //next_dirty = 0;
+                //next_valid = 0;
+               // cache_WEN = 1;
+               cacheFlushWEN = 1;
             end
             // WRITE_COUNT: begin
             //     cif.dWEN   = 1;
@@ -518,6 +626,8 @@ module dcache (
                     dcachetable[dcf_dmemaddr.idx].lru <= next_lru;
                 end
             end
+            if(cacheFlushWEN)
+                dcachetable[flushidx[2:0]].dcacheframe[flushidx[3]].dirty   <= 0;
         end
     end
 
