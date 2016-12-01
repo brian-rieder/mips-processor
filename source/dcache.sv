@@ -372,6 +372,7 @@ module dcache (
                         else begin
                             // rt = 0, don't do the store
                             dcif.dmemload = 0;
+                            // dcif.dhit = 1;
                         end
                     end
                     // else begin
@@ -439,6 +440,8 @@ module dcache (
                     cache_WEN = 1;
                     snoop_next_valid = 0;
                 end 
+                if(cif.ccinv)
+                    next_link_reg.valid = 0;
             end
             SNOOP_WB1: begin
                 cif.dWEN = 1;
