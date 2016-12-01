@@ -441,7 +441,7 @@ module control_unit (
       end
       SC: begin
         cuif.RegDst = 2'b00; // Rt
-        cuif.RegWr = 0; // Not writing to register
+        cuif.RegWr = 1; // Not writing to register
         cuif.ExtOp  = 1; // Signed Extension
         cuif.ALUsrc = 2'b10; // Immediate
         cuif.alu_op = ALU_ADD; // Calculate memory offset
