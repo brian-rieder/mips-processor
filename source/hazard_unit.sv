@@ -17,7 +17,7 @@ module hazard_unit (
 	logic memstall, hazard, ihit_pause;
 	assign memstall = (huif.EXMEM_RegWr & huif.EXMEM_wsel != 0) 
 	                & (huif.CU_Rs == huif.EXMEM_wsel | huif.CU_Rt == huif.EXMEM_wsel) 
-		            & (huif.ex_op == LW | huif.ex_op == SW);
+		            & (huif.ex_op == LW | huif.ex_op == SW | huif.ex_op == LL | huif.ex_op == SC);
     // assign ihit_pause = (huif.mem_op == LW | huif.mem_op == SW) 
     				  // & (huif.ihit & !huif.dhit);
 
