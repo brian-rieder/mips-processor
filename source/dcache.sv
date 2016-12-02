@@ -127,7 +127,9 @@ module dcache (
                     end else begin
                         next_state = CACHE_LOAD1;
                     end
-                // added with Nick
+                end else if (dcif.datomic & dcif.dmemWEN
+                           & ((ismatch0 & isdirty0) | (ismatch1 & isdirty1))) begin
+                    next_state = IDLE;
                 end else if ((ismatch0 & dcif.dmemWEN & !isdirty0) 
                           || (ismatch1 & dcif.dmemWEN & !isdirty1)) begin
                     next_state = CACHE_LOAD1;
@@ -260,7 +262,10 @@ module dcache (
         cacheFlushWEN = 0;
         casez(current_state) 
             IDLE: begin
-                if(ismatch0 && dcif.dmemREN) begin
+                if(cif.ccwait) begin
+                    dcif.dhit = 0;
+                end
+                else if(ismatch0 && dcif.dmemREN) begin
                     cache_WEN     = 1;
                     next_lru      = 1;
                     dcif.dmemload = selected_set.dcacheframe[0].data[dcf_dmemaddr.blkoff];
@@ -280,11 +285,12 @@ module dcache (
                     end
                 end else if (ismatch0 && dcif.dmemWEN && isdirty0) begin
                     dcif.dhit = 1;
+                    next_link_reg.valid = 0;
                     if(dcif.datomic) begin
                         if((dcif.dmemaddr == link_reg.link_addr) && link_reg.valid) begin
                             // rt = 1, invalidate link reg
                             dcif.dmemload = 1;
-                            next_link_reg.valid = 0;
+                            // next_link_reg.valid = link_reg.valid;
 
                             // normal store
                             cache_WEN  = 1;
@@ -317,11 +323,12 @@ module dcache (
                 end
                 else if (ismatch1 && dcif.dmemWEN && isdirty1) begin
                     dcif.dhit = 1;
+                    next_link_reg.valid = 0;
                     if(dcif.datomic) begin
                         if((dcif.dmemaddr == link_reg.link_addr) && link_reg.valid) begin
                             // rt = 1, invalidate link reg
                             dcif.dmemload = 1;
-                            next_link_reg.valid = 0;
+                            // next_link_reg.valid = link_reg.valid;
                             
                             // normal store
                             cache_WEN  = 1;
@@ -357,7 +364,7 @@ module dcache (
                         if((dcif.dmemaddr == link_reg.link_addr) && link_reg.valid) begin
                             // rt = 1, invalidate link reg
                             dcif.dmemload = 1;
-                            next_link_reg.valid = 0;
+                            // next_link_reg.valid = link_reg.valid;
 
                             // normal store
                             cache_WEN  = 1;
@@ -372,7 +379,7 @@ module dcache (
                         else begin
                             // rt = 0, don't do the store
                             dcif.dmemload = 0;
-                            // dcif.dhit = 1;
+                            dcif.dhit = 1;
                         end
                     end
                     // else begin
@@ -393,7 +400,7 @@ module dcache (
                         if((dcif.dmemaddr == link_reg.link_addr) && link_reg.valid) begin
                             // rt = 1, invalidate link reg
                             dcif.dmemload = 1;
-                            next_link_reg.valid = 0;
+                            // next_link_reg.valid = link_reg.valid;
                             
                             // normal store
                             cache_WEN  = 1;
@@ -408,6 +415,7 @@ module dcache (
                         else begin
                             // rt = 0, don't do the store
                             dcif.dmemload = 0;
+                            dcif.dhit = 1;
                         end
                     end
                     // else begin
@@ -447,15 +455,15 @@ module dcache (
                 cif.dWEN = 1;
                 // cache_WEN = 1;
                 // next_dirty = 0;
-                cif.ccwrite = dcif.dmemWEN; 
+                cif.ccwrite = 1; 
                 cif.daddr = { cif.ccsnoopaddr[31:3], 3'b000 };
                 if(snoopdirty0) begin
                     cache_WEN = 1;
-                    next_dirty = 0;
+                    snoop_next_dirty = 0;
                     cif.dstore = snoop_set.dcacheframe[0].data[0];
                 end else if(snoopdirty1) begin
                     cache_WEN = 1;
-                    next_dirty = 0;
+                    snoop_next_dirty = 0;
                     cif.dstore = snoop_set.dcacheframe[1].data[0];
                 end
                 // else
@@ -466,15 +474,15 @@ module dcache (
                 cif.dWEN = 1;
                 // cache_WEN = 1;
                 // next_dirty = 0;
-                cif.ccwrite = dcif.dmemWEN; 
+                cif.ccwrite = 1; 
                 cif.daddr = { cif.ccsnoopaddr[31:3], 3'b100 };
                 if(snoopdirty0) begin
                     cache_WEN = 1;
-                    next_dirty = 0;
+                    snoop_next_dirty = 0;
                     cif.dstore = snoop_set.dcacheframe[0].data[1];
                 end else if(snoopdirty1) begin
                     cache_WEN = 1;
-                    next_dirty = 0;
+                    snoop_next_dirty = 0;
                     cif.dstore = snoop_set.dcacheframe[1].data[1];
                 end
                 if(!cif.dwait && !cif.ccinv) begin
@@ -501,6 +509,12 @@ module dcache (
                     next_lru = 0;
                 else if(ismatch1)
                     next_lru = 1;
+                if(dcif.datomic && dcif.dmemWEN && (dcif.dmemaddr == link_reg.link_addr) && link_reg.valid) begin
+                    dcif.dmemload = 1;
+                    // next_link_reg.valid = 0;
+                end else begin
+                    dcif.dmemload = 0;
+                end
             end
             WRITEBACK1: begin
                 cif.dWEN   = 1;
@@ -613,7 +627,7 @@ module dcache (
             link_reg.valid <= next_link_reg.valid;
             link_reg.link_addr <= next_link_reg.link_addr;
             if(cache_WEN) begin
-                if(current_state == WAIT || current_state == SNOOP_WB2 && !cif.ccwrite) begin
+                if(current_state == WAIT || current_state == SNOOP_WB2) begin// && !cif.ccwrite) begin
                     dcachetable[snoopaddr.idx].dcacheframe[snoop_write_idx].valid   <= snoop_next_valid;
                     dcachetable[snoopaddr.idx].dcacheframe[snoop_write_idx].dirty   <= snoop_next_dirty;
                     /*dcachetable[snoopaddr.idx].dcacheframe[snoop_write_idx].tag     <= next_tag;
