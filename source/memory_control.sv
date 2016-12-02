@@ -52,9 +52,13 @@ module memory_control (
                 //     next_state = RAMREAD1;
                 // else if(ccif.ccwrite[!service_cache] && !ccif.cctrans[!service_cache]) // BusRdx
                 //     next_state = RAMWRITE1;
-                if(ccif.dREN)
+                if(ccif.dREN[service_cache])
                     next_state = SNOOP;
-                else if(ccif.dWEN) // this used to be !cctrans as well
+                else if(ccif.dWEN[service_cache]) // this used to be !cctrans as well
+                    next_state = WRITEBACK1;
+                else if(ccif.dREN[!service_cache])
+                    next_state = SNOOP;
+                else if(ccif.dWEN[!service_cache]) // this used to be !cctrans as well
                     next_state = WRITEBACK1;
                 else
                     next_state = ARBITRATION;
