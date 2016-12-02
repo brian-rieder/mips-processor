@@ -234,7 +234,7 @@ module control_unit (
       BEQ: begin
         cuif.RegDst = 2'b00; // Don't care
         cuif.RegWr = 0; // Not writing
-        cuif.ExtOp  = 0; // Zero Extension
+        cuif.ExtOp  = 1; // Signed Extension
         cuif.ALUsrc = 2'b00; // rdat2 R[rt]
         cuif.alu_op = ALU_SUB; // Subtraction to find if equal
         cuif.MemToReg = 2'b00; // Don't care - zero flag
@@ -250,7 +250,7 @@ module control_unit (
       BNE: begin
         cuif.RegDst = 2'b00; // Don't care
         cuif.RegWr = 0; // Not writing
-        cuif.ExtOp  = 0; // Zero Extension
+        cuif.ExtOp  = 1; // Signed Extension
         cuif.ALUsrc = 2'b00; // rdat2 R[rt]
         cuif.alu_op = ALU_SUB; // Subtraction to find if equal
         cuif.MemToReg = 2'b00; // Don't care - zero flag
