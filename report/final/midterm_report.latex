@@ -1,0 +1,133 @@
+%!TEX program = pdflatex
+% This is a template to create your midterm report as a pdf.
+% Just fill in the areas and run pdflatex
+% For more information on LaTeX documents consult The (Not So
+% Short Introduction to LateX2e
+%
+% to compile your report use the command
+% pdflatex reportdocument.tex
+%
+% if you have \ref useage or other cross links
+% you will have to run the above command again
+
+% set 12pt font
+\documentclass[12pt]{article}
+% some useful packages
+\usepackage[pdftex]{graphicx,color}
+\usepackage{fullpage}
+\usepackage[margin=1in,footskip=.25in]{geometry}
+\def\baselinestretch{1.5} % line spacing
+% set title
+\title{\vspace{50mm}ECE 437L Midterm Report}
+% fill in the blanks
+\author{Pooja Kale (mg273) \\
+        Brian Rieder (mg267) \\
+        TA: Nick Pfister}
+% \today will put todays date
+% or you can manually put the date in
+\date{October 14, 2016}
+% cover page is a page by itself
+
+
+\begin{document}
+
+  \maketitle
+
+% executive overview remember
+% this should be on a page by itself
+  \pagebreak
+  \section{Executive Overview}
+  
+   This report compares the performance of a single cycle processor and a pipeline processor on a merge-sort assembly (asm) file and analyzes the results. The comparisons of the two processor designs will be based on the maximum clock frequencies, average instructions per clock cycle, the performance of the designs in MIPS, and the FPGA resources required for each design. The comparisons will be further tested using variable latency RAM in order to ensure independence from memory timing. The single cycle processor is a simple design that takes in one instruction at a time to decode it and produce a result. This design does not have any instruction dependencies eliminating the possibility of instruction or data hazards. The pipeline processor is a more intricate design with five stages: instruction fetch, instruction decode, execute, memory, and write-back. This allows the design to process five instructions simultaneously within different stages of their execution.  
+\\ 
+\\
+  The two designs will be tested using the merge-sort assembly file. The benefit of using the merge-sort assembly program is that it includes all possible assembly instructions that both processors can decode and execute. The merge-sort file also includes multiple branches to test branch logic in both designs. The order of instructions in the program will test if the pipeline is constructed to counteract structural hazards and handles data hazards by forwarding, inserting stalls or bubbles in the correct places, and flushing data at the right time. The execution results show that the pipeline processor is the favorable design because it increases the throughput (or decreases the execution time) as compared to the single cycle. While the single cycle handles one instruction at a time, the pipeline processor design processes 5 instructions in different stages in each cycle. 
+
+  \pagebreak
+  \section{Processor Design}
+
+% Uncomment after you create the block diagram graphic.
+  \begin{figure}[hp]
+    \begin{center}
+      \includegraphics[width=\textwidth]{SingleCycleProcessor.jpg}
+    % You can change the type of figure to a .png, .pdf, .jpg, .mps
+    \end{center}
+
+    \caption{Single Cycle Processor Block Diagram}
+		\label{fig:processor}
+  \end{figure}
+
+
+  \begin{figure}[hp]
+    \begin{center}
+      \includegraphics[height=0.93\textheight,keepaspectratio] {PipelineProcessor.jpg}
+    % You can change the type of figure to a .png, .pdf, .jpg, .mps
+    \end{center}
+
+    \caption{Pipelined Processor Block Diagram}
+    \label{fig:processor}
+  \end{figure}
+
+
+  \pagebreak
+
+  \section{Results}
+
+  \begin{table}[!hbp]
+
+    \begin{tabular}{|p{.5\textwidth}|p{.25\textwidth}|p{.25\textwidth}|}
+      \hline
+      & \bf{Single Cycle} & \bf{Pipeline} \\ \hline
+      Maximum Possible Frequency (MHz) & 37.24 (CLK/2) & 48.88 (CPUCLK) \\ \hline
+      Highest Achieved Frequency (MHz) & 55.56 & 100 \\ \hline
+      Average Instructions per Clock Cycle (CPI) & 1.277 & 1.608 \\ \hline
+      Critical Path Length (ns) & 26.939 & 20.774 \\ \hline
+      Instruction Latency (ns) & 26.85 & 102.29 \\ \hline
+      Mergesort Number of Instructions & 5,399 & 5,399 \\ \hline
+      Mergesort Number of Cycles & 13,791 & 17,365 \\ \hline
+      MIPS & 29.158 & 30.395 \\ \hline
+      Total Utilized Combinational Functions & 2,844 & 3,265 \\ \hline
+      Utilized Dedicated Logic Registers & 1,278 & 1,716 \\ \hline
+    \end{tabular}
+
+    \caption{Processor Specs}
+		\label{tb:procspec}
+  \end{table}
+
+  \subsection{Sources of Result Values}
+  \begin{itemize}
+    \item \textbf{Maximum Possible Frequency (MHz)} - Calculated by synthesis tools and retrieved from system.log
+    \item \textbf{Highest Achieved Frequency (MHz)} - Determined through variation of PERIOD parameter within testbench/system\_tb.sv
+    \item \textbf{Average Instructions per Clock Cycle (CPI)} - Calculated using the total number of instructions retrieved from ``sim -t" divided by half of the total number of cycles (displayed cycles are for the CLK instead of the CPUCLK) shown by ``make system.sim"
+    \item \textbf{Critical Path Length (ns)} - Calculated by synthesis tools and retrieved by system.log
+    \item \textbf{Instruction Latency (ns)} - Calculated by multiplying period by a multiplier based on processor design - single cycle processors have a latency multiplier of 1 and a five-stage pipelined processor has a latency multiplier of 5 times
+    \item \textbf{Mergesort Number of Instructions} - Determined using the total number of instructions output by ``sim -t" when executing asmFiles/mergesort.asm
+    \item \textbf{Mergesort Number of Cycles} - Determined using the total number of cycles output by ``make system.sim" when executing asmFiles/mergesort.asm
+    \item \textbf{MIPS} - Calculated using the inverse of CPI multiplied by the frequency of the processor
+    \item \textbf{Total Utilized Combinational Functions} - Determined by synthesis tools and retrieved from system.log
+    \item \textbf{Utilized Dedicated Logic Registers} - Determined by synthesis tools and retrieved from system.log
+  \end{itemize}
+
+  \section{Conclusion}
+
+  The performance results of running the single cycle processor and the pipeline processor on the merge sort algorithm show that the pipeline processor is the more powerful processor. The single cycle processor operates at a speed of 1.2 million less instructions per second (MIPS) to produce the same result as the pipeline processor. The pipeline has a smaller critical path as a result of the five stage breakup in processing instructions, thereby allowing execution to be partitioned such that five instructions can be in process simultaneously. The pipeline design also has a much shorter critical path of 20.77 nanoseconds as compared to single cycle processor which has a critical path of 26.939 nanoseconds - an advantage gained through separation of critical paths and splitting of problem points in execution. 
+  \\
+  \\
+  Ultimately, the performance comparison comes down to the theory of pipelining. This yields empirical data to support the content covered within the class and shows that the partitioning of execution and simultaneous operation shortens the critical path and increases the clock speed at the expense of CPI. Design choices (such as location of branch execution) can actually cause the critical path to be high enough that it inhibits the clock speed such that it can't compensate for the increase in CPI - that was not the case within this design and it is subsequently a faster design when considering a MIPS performance metric on the same program as the single cycle design.
+
+  \section{Contributions and Collaboration Strategies}
+
+  The entirety of the pipeline design was done in tandem between Pooja and Brian. Early on in the process, the design was formulated together with all principles of the design being taken into mutual consideration - all design decisions (for instance, where to resolve branches) were made together before any development began.
+
+  \subsection{Individual Contributions}
+  During development, certain tasks were partitioned between Pooja and Brian. Of the four latches that needed to be created for pipelining, two interfaces and their respective source files were generated by each team member - a direct split of all latch development. The process of developing the datapath was done together using a shared account and computer. Forwarding principles were discussed and a final design was decided upon together - development was done in tandem when both were available and individually when a team member couldn't attend.
+  \subsubsection{Branch Prediction Attempt}
+  A strategy for implementing branch prediction was formulated by Brian and subsequently discussed between Brian and Pooja. Ultimately, the development on the branch predictor was abandoned due to time constraints and is therefore not present within the final submitted design.
+
+  \subsection{Collaboration Strategies}
+  Account information was shared between team members at the beginning of the collaboration stages, but each team member did their development within their respective accounts and contributed to GitHub using their own account. Because of this Git usage and presence on GitHub, all contributions are documented in a quantitative manner within the repository.
+  \subsubsection{Git VCS Usage}
+  In order to compartmentalize development of features and to keep both contributors on the same page, an industry strategy of progressive-stability branching was employed and all development was done within respective branches and ``work silos" - a master branch was maintained with the most recent functioning design, ``singlecycle" and ``pipeline" branches were maintained, and each feature were developed on an independent branch for that feature (some examples being ``branchpredict" and ``forwarding"). While this required more overhead in terms of planning and maintenance, the preservation of states and releases within the development process enabled ease of rollbacks, identification of changes, and the ability to develop without worrying about destruction of a prior working state. 
+
+
+\end{document}

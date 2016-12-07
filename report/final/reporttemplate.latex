@@ -1,0 +1,118 @@
+% Midterm Final Report for ECE437
+% Authors: Brian Rieder, Pooja Kale
+
+% set 12pt font
+\documentclass[12pt]{article}
+% some useful packages
+\usepackage[pdftex]{graphicx,color}
+\usepackage{fullpage}
+\usepackage[margin=1in,footskip=.25in]{geometry}
+\def\baselinestretch{1.5} % line spacing
+% set title
+\title{\vspace{50mm}ECE 437L Final Report}
+% fill in the blanks
+\author{Brian Rieder (mg267) \\
+        Pooja Kale (mg273) \\
+        TA: Nick Pfister}
+% \today will put todays date
+% or you can manually put the date in
+\date{9 December 2016}
+% cover page is a page by itself
+
+\begin{document}
+  \maketitle
+  \newpage
+
+  \section{Executive Summary}
+  % This section should be about two paragraphs in length on a page by itself. 
+  % Give a short overview of what you are comparing and what the benefits are of each design.
+  % Describe how you would analyze the data and hwat results you expect the data to validate.
+  % Finally, give a brief outline of what is in the rest of the report.
+
+  
+  Text for your executive summary
+
+  \section{Processor Design}
+  % Block diagrams should be included for the processor, cache, and coherence control. State diagrams should included where applicable.
+
+% Uncomment after you create the block diagram graphic.
+%  \begin{figure}[hp]
+%    \begin{center}
+%      \includegraphics[width=\textwidth]{blockDiagram.jpg}
+%    % You can change the type of figure to a .png, .pdf, .jpg, .mps
+%    \end{center}
+%
+%    \caption{Multicore Block Diagram}
+%  \end{figure}
+
+  Text for your multicore design
+
+% Uncomment after you create the block diagram graphic.
+%  \begin{figure}[hp]
+%    \begin{center}
+%      \includegraphics[width=\textwidth]{blockDiagram.jpg}
+%    % You can change the type of figure to a .png, .pdf, .jpg, .mps
+%    \end{center}
+%
+%    \caption{Pipeline Block Diagram}
+%  \end{figure}
+
+
+  Text for your pipeline design
+
+% Uncomment after you create the block diagram graphic.
+%  \begin{figure}[hp]
+%    \begin{center}
+%      \includegraphics[width=\textwidth]{blockDiagram.jpg}
+%    % You can change the type of figure to a .png, .pdf, .jpg, .mps
+%    \end{center}
+%
+%    \caption{Cache Block Diagram}
+%  \end{figure}
+
+
+  Text for your cache design
+
+	% \section{Processor Debug}
+
+  \section{Results}
+  % You will use the mapped version of your designs with gate timing included. Use the test program to collect performance data from your designs. Compare the designs by analyzing the data collected from the test program. Memory latency should be above 5 for all designs.
+
+  \begin{table}[!hbp]
+
+    % \begin{tabular}{|l|l|l|l|}
+    \begin{tabular}{|p{.3\textwidth}|p{.2\textwidth}|p{.2\textwidth}|p{.2\textwidth}|}
+      \hline
+      & \bf{Pipeline without Cache} & \bf{Pipeline with Cache} & \bf{Multicore} \\ \hline
+      Estimated Synthesis Frequency & ?? \\ \hline
+      Instructions per Cycle (IPC) & ??ns \\ \hline
+      Single Instruction Latency &  \\ \hline
+      Total Utilized Combinational Functions & & \\ \hline
+      Utilized Dedicated Logic Registers & & \\ \hline
+      Speedup from Sequential to Parallel & \\ \hline
+    \end{tabular}
+
+    \caption{Synthesis Results}
+  \end{table}
+
+  Text for your results
+
+  \section{Conclusion}
+
+  Text for your conclusion
+
+  \section{Contributions and Collaboration Strategies}
+
+  Placeholder for contribution section intro
+
+  \subsection{Individual Contributions}
+
+  Placeholder for individual contributions
+
+  \subsection{Collaboration Strategies}
+  Account information was shared between team members at the beginning of the collaboration stages and SSH keys were set up between the two accounts for ease of user-switching, but each team member did their development within their respective accounts and contributed to GitHub using their own account. Because of this Git usage and presence on GitHub, all contributions are documented in a quantitative manner within the repository.
+  \subsubsection{Git VCS Usage}
+  Just as in the midterm, in order to compartmentalize development of features and to keep both contributors on the same page, an industry strategy of progressive-stability branching was employed and all development was done within respective branches and ``work silos" - a master branch was maintained with the most recent functioning design, ``singlecycle", ``pipeline", ``caches", and ``multicore" branches were maintained, and each feature were developed on an independent branch for that feature (some examples being ``branchpredict" and ``forwarding" in the earlier stages of development). While this required more overhead in terms of planning and maintenance, the preservation of states and releases within the development process enabled ease of rollbacks, identification of changes, and the ability to develop without worrying about destruction of a prior working state. 
+
+
+\end{document}
