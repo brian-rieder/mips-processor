@@ -24,56 +24,81 @@
   \newpage
 
   \section{Executive Summary}
+  
   % This section should be about two paragraphs in length on a page by itself. 
   % Give a short overview of what you are comparing and what the benefits are of each design.
   % Describe how you would analyze the data and hwat results you expect the data to validate.
   % Finally, give a brief outline of what is in the rest of the report.
 
   
-  Text for your executive summary
+
+  The purpose of this report is to provide a comparison of the pipeline processor
+  with  and  without  a  cache  heirarchy  and  the  pipeline  processor  with  cache
+  and a multicore processor. We will be using 4 different points of comparison for this report. 
+  To compare the instruction processing speed, three different CPU designs, we will 
+  look at the estimated synthesis frequency of each design, the number of instructions executed per clock cycle, 
+  and the latency of one instruction, the amount of time it take to complete one unstruction on the multicore. 
+  The comparisons will be further made by looking at the FPGA resources for required for our design 
+  using Total Utilization Combinational Functions on each design, the utilized dedicated logic registers 
+  and the speedup from Sequential to Parallel. 
+\\ \\ 
+  The pipeline without caches is design with five stages: instruction fetch,
+  instruction decode, execute, memory, and write-back. This allows the design to process five
+  instructions simultaneously within different stages of their execution. The pipeline design does not have a cache system, 
+  forcing the design to always access RAM memory. The pipeline design with caches has a level 1 cache hierarchy consisting 
+  of a direct mapped instruction cache with a two-way associative data cache. This allows the fast access to addresses 
+  one level above the memory. The final multicore design includes a coherence control unit. The purpose of this unit is to 
+  maintain a coherent address space for all processors, for any address all processors see the same data. 
+  The coherency logic will be in two places, the memory control unit and the data cache. This allows multiple instructions 
+  to be processed at the same time. 
+\\ \\
+  The three designs will be tested using the merge-sort assembly file and the dualmergesort file. The benefit of the merge-sort 
+  files is that it includes all possible assembly instructions that all three processors can decode and execute. The merge-sort 
+  file also includes multiple branches to test branch logic in all three designs. The merge-sort files  are also more complex giving 
+  more accurate comparisons between the three designs. 
 
   \section{Processor Design}
   % Block diagrams should be included for the processor, cache, and coherence control. State diagrams should included where applicable.
 
 % Uncomment after you create the block diagram graphic.
-%  \begin{figure}[hp]
-%    \begin{center}
-%      \includegraphics[width=\textwidth]{blockDiagram.jpg}
-%    % You can change the type of figure to a .png, .pdf, .jpg, .mps
-%    \end{center}
-%
-%    \caption{Multicore Block Diagram}
-%  \end{figure}
+  \begin{figure}[hp]
+    \begin{center}
+      \includegraphics[width=\textwidth]{MultiCoreDiagram1.jpg}
+    % You can change the type of figure to a .png, .pdf, .jpg, .mps
+    \end{center}
+
+    \caption{Multicore Block Diagram}
+  \end{figure}
 
   Text for your multicore design
 
 % Uncomment after you create the block diagram graphic.
-%  \begin{figure}[hp]
-%    \begin{center}
-%      \includegraphics[width=\textwidth]{blockDiagram.jpg}
-%    % You can change the type of figure to a .png, .pdf, .jpg, .mps
-%    \end{center}
+ \begin{figure}[hp]
+    \begin{center}
+      \includegraphics[width=\textwidth]{CoherenceUnit.jpg}
+    % You can change the type of figure to a .png, .pdf, .jpg, .mps
+    \end{center}
 %
-%    \caption{Pipeline Block Diagram}
-%  \end{figure}
+   \caption{Cache Coherency Unit Block Diagram}
+  \end{figure}
 
 
   Text for your pipeline design
 
 % Uncomment after you create the block diagram graphic.
-%  \begin{figure}[hp]
-%    \begin{center}
-%      \includegraphics[width=\textwidth]{blockDiagram.jpg}
-%    % You can change the type of figure to a .png, .pdf, .jpg, .mps
-%    \end{center}
-%
-%    \caption{Cache Block Diagram}
-%  \end{figure}
+  \begin{figure}[hp]
+    \begin{center}
+      \includegraphics[width=\textwidth]{dcachediagram.jpg}
+    % You can change the type of figure to a .png, .pdf, .jpg, .mps
+    \end{center}
+
+   \caption{Cache State Diagram}
+ \end{figure}
 
 
   Text for your cache design
 
-	% \section{Processor Debug}
+	\section{Processor Debug}
 
   \section{Results}
   % You will use the mapped version of your designs with gate timing included. Use the test program to collect performance data from your designs. Compare the designs by analyzing the data collected from the test program. Memory latency should be above 5 for all designs.
