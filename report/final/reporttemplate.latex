@@ -1,3 +1,4 @@
+%!TEX program = pdflatex
 % Midterm Final Report for ECE437
 % Authors: Brian Rieder, Pooja Kale
 
@@ -79,17 +80,16 @@
   % You will use the mapped version of your designs with gate timing included. Use the test program to collect performance data from your designs. Compare the designs by analyzing the data collected from the test program. Memory latency should be above 5 for all designs.
 
   \begin{table}[!hbp]
-
     % \begin{tabular}{|l|l|l|l|}
-    \begin{tabular}{|p{.3\textwidth}|p{.2\textwidth}|p{.2\textwidth}|p{.2\textwidth}|}
+    \begin{tabular}{|p{.45\textwidth}|p{.15\textwidth}|p{.15\textwidth}|p{.15\textwidth}|}
       \hline
-      & \bf{Pipeline without Cache} & \bf{Pipeline with Cache} & \bf{Multicore} \\ \hline
-      Estimated Synthesis Frequency & ?? \\ \hline
-      Instructions per Cycle (IPC) & ??ns \\ \hline
-      Single Instruction Latency &  \\ \hline
-      Total Utilized Combinational Functions & & \\ \hline
-      Utilized Dedicated Logic Registers & & \\ \hline
-      Speedup from Sequential to Parallel & \\ \hline
+      & \bf{Pipeline w/o Cache} & \bf{Pipeline w/ Cache} & \bf{Multicore} \\ \hline
+      Estimated Synthesis Frequency & 45.09 MHz & 38.01 MHz & 20.37 MHz \\ \hline
+      Instructions per Cycle (IPC) & 0.078 & 0.230 & \\ \hline
+      Single Instruction Latency &  &  & \\ \hline
+      Total Utilized Combinational Functions & 3,274 & 6,446 & 13,800 \\ \hline
+      Utilized Dedicated Logic Registers & 1,720 & 4,175 & 8,208 \\ \hline
+      Speedup from Sequential to Parallel & 1.000 & & \\ \hline
     \end{tabular}
 
     \caption{Synthesis Results}
@@ -103,9 +103,19 @@
 
   \section{Contributions and Collaboration Strategies}
 
-  Placeholder for contribution section intro
+  The entirety of the processor design in all of its stages was done in tandem between Pooja and Brian. Early on in the process, the design was formulated together with all principles of the design being taken into mutual consideration - all design decisions (for instance, the design of the state machines for DCACHE and the coherence controller) were made together before any development began.
 
   \subsection{Individual Contributions}
+  During development, tasks were partitioned between Pooja and Brian in order to ease the development process. As such, there were two primary initiatives in this phase of development, divided up as follows:
+
+  \subsubsection{Cache Design}
+  For cache development, there were two primary products: the instruction cache and the data cache. Both were constructed as a team with the following contributions:
+  \begin{itemize}
+    \item \textbf{Instruction Cache} - The instruction cache was developed by Brian and a testbench was written and used to ensure functionality by Pooja. The instruction cache, in an entirely anomalous case compared to the rest of the project, required no debugging in order to work properly.
+    \item \textbf{Data Cache} - The data cache state machine was developed together in order to ensure understanding between the two teammates. After the cache design was discussed, Brian began to add it to the data cache itself and Pooja constructed the testbench to ensure that the data cache itself would work. At this point, the cache appeared to work properly, but when it was inserted into the greater system new bugs began to appear. The diagnosis process at this point was done together and the changes were discussed and added until the design itself was complete.
+  \end{itemize}
+
+  \subsubsection{Multicore Design}
 
   Placeholder for individual contributions
 
