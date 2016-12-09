@@ -39,21 +39,18 @@
   look at the estimated synthesis frequency of each design, the number of instructions executed per clock cycle, and the latency of one instruction.
   The comparisons will be further made by looking at the FPGA resources for required for our design using Total Utilization Combinational Functions on each design and the utilized Dedicated Logic Registers. Finally, an ultimate comparison will be completed through the computation of the speedup from the original pipeline.
 \\ \\ 
-% continue editing here
-  The pipeline without caches is design with five stages: instruction fetch,
+  The pipeline without caches is designed with five stages: instruction fetch,
   instruction decode, execute, memory, and write-back. This allows the design to process five
-  instructions simultaneously within different stages of their execution. The pipeline design does not have a cache system, 
+  instructions simultaneously within different stages of their execution. The original pipeline design does not have a cache system, 
   forcing the design to always access RAM memory. The pipeline design with caches has a level 1 cache hierarchy consisting 
-  of a direct mapped instruction cache with a two-way associative data cache. This allows the fast access to addresses 
-  one level above the memory. The final multicore design includes a coherence control unit. The purpose of this unit is to 
-  maintain a coherent address space for all processors, for any address all processors see the same data. 
-  The coherency logic will be in two places, the memory control unit and the data cache. This allows multiple instructions 
-  to be processed at the same time. 
+  of a direct-mapped instruction cache and a two-way associative data cache. This allows fast access to addresses 
+  that are stored within caches one level above the memory. The final multicore design includes a coherence control unit that is utilized to 
+  maintain a coherent address space for all processors and to ensure that for any address all processors see the same data. 
+  This allows multiple instructions to be processed at the same time without concern of caches convey conflicting data.
 \\ \\
-  The three designs will be tested using the merge-sort assembly file and the dualmergesort file. The benefit of the merge-sort 
-  files is that it includes all possible assembly instructions that all three processors can decode and execute. The merge-sort 
-  file also includes multiple branches to test branch logic in all three designs. The merge-sort files  are also more complex giving 
-  more accurate comparisons between the three designs. 
+  The three designs will be tested using a merge-sort Assembly algorithm with a parallelized implementation used for the dual-core design. The benefit of utilizing the merge-sort 
+  algorithm for testing is that it allows for a computationally intensive test that utilizes caches to a large degree due to its extended runtime and memory accesses 
+  as well as its inclusion of multiple branches to test branching logic and resolution in all three designs. Due to its complexity and ability to be parallelized, testing with merge-sort is an adequate representation of a "common case" algorithm and is indicative of generalized performance of the processors.
 
   \section{Processor Design}
   % Block diagrams should be included for the processor, cache, and coherence control. State diagrams should included where applicable.
