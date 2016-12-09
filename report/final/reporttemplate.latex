@@ -8,6 +8,7 @@
 \usepackage[pdftex]{graphicx,color}
 \usepackage{fullpage}
 \usepackage[margin=1in,footskip=.25in]{geometry}
+\usepackage[section]{placeins}
 \def\baselinestretch{1.5} % line spacing
 % set title
 \title{\vspace{50mm}ECE 437L Final Report}
@@ -31,18 +32,14 @@
   % Describe how you would analyze the data and hwat results you expect the data to validate.
   % Finally, give a brief outline of what is in the rest of the report.
 
-  
-
   The purpose of this report is to provide a comparison of the pipeline processor
-  with  and  without  a  cache  heirarchy  and  the  pipeline  processor  with  cache
-  and a multicore processor. We will be using 4 different points of comparison for this report. 
-  To compare the instruction processing speed, three different CPU designs, we will 
-  look at the estimated synthesis frequency of each design, the number of instructions executed per clock cycle, 
-  and the latency of one instruction, the amount of time it take to complete one unstruction on the multicore. 
-  The comparisons will be further made by looking at the FPGA resources for required for our design 
-  using Total Utilization Combinational Functions on each design, the utilized dedicated logic registers 
-  and the speedup from Sequential to Parallel. 
+  with and without a cache hierarchy and the pipeline processor with cache
+  and a multicore processor.  
+  To compare the program execution speed of the three different CPU designs, we will 
+  look at the estimated synthesis frequency of each design, the number of instructions executed per clock cycle, and the latency of one instruction.
+  The comparisons will be further made by looking at the FPGA resources for required for our design using Total Utilization Combinational Functions on each design and the utilized Dedicated Logic Registers. Finally, an ultimate comparison will be completed through the computation of the speedup from the original pipeline.
 \\ \\ 
+% continue editing here
   The pipeline without caches is design with five stages: instruction fetch,
   instruction decode, execute, memory, and write-back. This allows the design to process five
   instructions simultaneously within different stages of their execution. The pipeline design does not have a cache system, 
@@ -61,45 +58,39 @@
   \section{Processor Design}
   % Block diagrams should be included for the processor, cache, and coherence control. State diagrams should included where applicable.
 
-% Uncomment after you create the block diagram graphic.
-  \begin{figure}[hp]
+  \begin{figure}[!htb]
     \begin{center}
       \includegraphics[width=\textwidth]{MultiCoreDiagram1.jpg}
-    % You can change the type of figure to a .png, .pdf, .jpg, .mps
     \end{center}
-
     \caption{Multicore Block Diagram}
   \end{figure}
 
-  Text for your multicore design
+  \pagebreak
 
-% Uncomment after you create the block diagram graphic.
- \begin{figure}[hp]
+  \begin{figure}[!htb]
+    \begin{center}
+      \includegraphics[height=0.92\textheight,keepaspectratio] {PipelineProcessor.jpg}
+    \end{center}
+    \caption{Pipelined Processor Block Diagram}
+    \label{fig:processor}
+  \end{figure}
+  \pagebreak
+
+ \begin{figure}[!htb]
     \begin{center}
       \includegraphics[width=\textwidth]{CoherenceUnit.jpg}
-    % You can change the type of figure to a .png, .pdf, .jpg, .mps
     \end{center}
-%
    \caption{Cache Coherency Unit Block Diagram}
   \end{figure}
 
 
-  Text for your pipeline design
-
-% Uncomment after you create the block diagram graphic.
-  \begin{figure}[hp]
+  \begin{figure}[!htb]
     \begin{center}
       \includegraphics[width=\textwidth]{dcachediagram.jpg}
-    % You can change the type of figure to a .png, .pdf, .jpg, .mps
     \end{center}
-
    \caption{Cache State Diagram}
  \end{figure}
 
-
-  Text for your cache design
-
-	\section{Processor Debug}
 
   \section{Results}
   % You will use the mapped version of your designs with gate timing included. Use the test program to collect performance data from your designs. Compare the designs by analyzing the data collected from the test program. Memory latency should be above 5 for all designs.
@@ -110,21 +101,23 @@
       \hline
       & \bf{Pipeline w/o Cache} & \bf{Pipeline w/ Cache} & \bf{Multicore} \\ \hline
       Estimated Synthesis Frequency & 45.09 MHz & 38.01 MHz & 20.37 MHz \\ \hline
-      Instructions per Cycle (IPC) & 0.078 & 0.230 & \\ \hline
-      Single Instruction Latency &  &  & \\ \hline
+      Instructions per Cycle (IPC) & 0.078 & 0.230 & 0.294 \\ \hline
+      Execution Time & 1.535 ms & 0.6175 ms & 0.9040 ms \\ \hline
+      Single Instruction Latency & 110.9 ns & 131.5 ns & 245.5 ns \\ \hline
       Total Utilized Combinational Functions & 3,274 & 6,446 & 13,800 \\ \hline
       Utilized Dedicated Logic Registers & 1,720 & 4,175 & 8,208 \\ \hline
-      Speedup from Sequential to Parallel & 1.000 & & \\ \hline
+      Speedup from Sequential to Parallel & 1.000 & 2.486 & 1.698 \\ \hline
     \end{tabular}
 
     \caption{Synthesis Results}
   \end{table}
 
-  Text for your results
-
   \section{Conclusion}
 
-  Text for your conclusion
+  The performance results of running the merge sort algorithm on the pipelined processor, pipelined processor with caches, and multicore processor with caches indicate decisively that the addition of caches speed up the execution time of the algorithm. Both the cache-added processor and the multicore processor showed increases in instructions per cycle, a decrease of execution time, and a net speedup over the original design. To accompany these positives, however, for both processors the clock speed was required to increase due to longer critical paths, single instruction latency increased in duration (number of latency cycles remained the same at 5), and area increased substantially. While all of these changes are expected due to the increases in area that accompany addition of hardware and intricacies within logical flow, the net gain of performance of the processor was shown to be positive.
+  \\
+  \\
+  Interestingly, as well as somewhat disappointingly, the findings also show that the multicore design actually slowed down in comparison to that of the processor with added caches. Despite the fact that the multicore design has a substantially higher number of instructions per cycle (IPC) with an increase of 27.8\% over that of the cache-added processor, the clock speed loss between the two iterations is sufficient enough to cause the execution time reduction of 46.4\%. There are several reasons that this could be the for this increased critical path such the increase of rise times of long wires with high capacitances within the multicore design. The  speedup, however, still shows that the execution time has remained low enough to net a gain in speed over that of the pipelined processor without caches - a threshold that, if passed, would have implicated more serious issues with the approach to handling parallelism.
 
   \section{Contributions and Collaboration Strategies}
 
@@ -142,7 +135,7 @@
 
   \subsubsection{Multicore Design}
 
-  Placeholder for individual contributions
+  The multicore adaptation of this design, being the most significant time investment of the project, required an immense amount of work. The entirety of the development process consisted of both team members being present for all but a small amount of debugging. Control of cache coherency was added to the design and debugged in tandem - ultimately causing some of the final bugs in the project. Additionally, the data cache was adapted to support a snooping mechanism to support multicore cache coherency. All of these features were added with both teammates present and required a substantial amount of debugging.
 
   \subsection{Collaboration Strategies}
   Account information was shared between team members at the beginning of the collaboration stages and SSH keys were set up between the two accounts for ease of user-switching, but each team member did their development within their respective accounts and contributed to GitHub using their own account. Because of this Git usage and presence on GitHub, all contributions are documented in a quantitative manner within the repository.
